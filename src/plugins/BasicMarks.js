@@ -4,11 +4,19 @@ const MAPPINGS = [
   { hotkey: 'd', mark: 'strike', tag: 'del' },
   { hotkey: 'i', mark: 'italic', tag: 'em' },
   { hotkey: 'u', mark: 'underline', tag: 'u' },
+  { hotkey: undefined, mark: 'superscript', tag: 'sup' },
+  { hotkey: undefined, mark: 'subscript', tag: 'sub' },
 ]
 
-const HOTKEYS = MAPPINGS.reduce((all, { hotkey, ...other }) => ({ ...all, [hotkey]: other }), {})
-const MARKS = MAPPINGS.reduce((marks, { tag, mark }) => ({ ...marks, [mark]: tag }), {})
-const TAGS = MAPPINGS.reduce((tags, { mark, tag }) => ({ ...tags, [tag]: mark }), {})
+const HOTKEYS = MAPPINGS.filter(m => m.hotkey).reduce(
+  (all, { hotkey, ...other }) => ({ ...all, [hotkey]: other })
+, {})
+const MARKS = MAPPINGS.reduce(
+  (marks, { tag, mark }) => ({ ...marks, [mark]: tag })
+, {})
+const TAGS = MAPPINGS.reduce(
+  (tags, { mark, tag }) => ({ ...tags, [tag]: mark })
+, {})
 
 const applyMark = (mark, state) => {
   // TODO: Expand selection to the word if there is no selection length
