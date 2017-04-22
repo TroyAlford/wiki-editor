@@ -36,17 +36,9 @@ const bundle = {
 }
 
 module.exports = [
-  // Object.assign({}, bundle, {
-  //   /* Main JS Bundle */
-  //   entry: `${__dirname}/src/components/${component}.js`,
-  //   output: Object.assign({}, bundle.output, {
-  //     filename: `${library}.min.js`,
-  //     library,
-  //     path: `${__dirname}/lib`,
-  //   }),
-  // }),
   Object.assign({}, bundle, {
-    /* Main JS Bundle, minified */
+    /* Main JS Bundle */
+    devtool: 'source-map',
     entry: `${__dirname}/src/components/${component}.js`,
     output: Object.assign({}, bundle.output, {
       filename: `${library}.js`,
@@ -67,3 +59,17 @@ module.exports = [
     plugins: [],
   })
 ]
+
+if (PRODUCTION) {
+  module.exports.push(
+    Object.assign({}, bundle, {
+      /* Main JS Bundle, minified */
+      entry: `${__dirname}/src/components/${component}.js`,
+      output: Object.assign({}, bundle.output, {
+        filename: `${library}.min.js`,
+        library,
+        path: `${__dirname}/lib`,
+      }),
+    })
+  )
+}
