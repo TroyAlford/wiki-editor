@@ -6,15 +6,22 @@
   "repository": "git@github.com:TroyAlford/wiki-editor.git",
   "author": "Troy Alford <troy@troyalford.com>",
   "license": "MIT",
+  "dependencies": {
+    "react": "^15.5.4",
+    "slate": "^0.19.20"
+  },
   "devDependencies": {
     "babel-cli": "^6.24.1",
+    "babel-eslint": "^7.2.3",
     "babel-loader": "^7.0.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-jest": "^19.0.0",
     "babel-preset-react": "^6.24.1",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^14.1.0",
+    "eslint-plugin-class-property": "^1.0.6",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^4.0.0",
     "eslint-plugin-react": "^6.10.3",
@@ -24,7 +31,10 @@
     "react-dom": "^15.5.4",
     "webpack": "^2.4.1"
   },
-  "dependencies": {
-    "react": "^15.5.4"
-  }
+  "scripts": {
+    "build": "yarn prebuild && NODE_ENV=production webpack",
+    "prebuild": "mkdir -p ./lib && rm -rf ./lib/*",
+    "test": "jest"
+  },
+  "jest": {}
 }
