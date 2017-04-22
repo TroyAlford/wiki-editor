@@ -1,6 +1,4 @@
 /* eslint-disable react/react-in-jsx-scope,react/prop-types */
-import MarkHotkey from './MarkHotkey'
-
 const MAPPINGS = [
   { hotkey: 'b', mark: 'bold', tag: 'strong' },
   { hotkey: 'd', mark: 'strike', tag: 'del' },
@@ -8,10 +6,24 @@ const MAPPINGS = [
   { hotkey: 'u', mark: 'underline', tag: 'u' },
 ]
 
-export const plugins = MAPPINGS.map(({ hotkey, mark }) => MarkHotkey({ hotkey, mark }))
-
-const TAGS = MAPPINGS.reduce((tags, { mark, tag }) => ({ ...tags, [tag]: mark }), {})
+const HOTKEYS = MAPPINGS.reduce((all, { hotkey, ...other }) => ({ ...all, [hotkey]: other }), {})
 const MARKS = MAPPINGS.reduce((marks, { tag, mark }) => ({ ...marks, [mark]: tag }), {})
+const TAGS = MAPPINGS.reduce((tags, { mark, tag }) => ({ ...tags, [tag]: mark }), {})
+
+const applyMark = (mark, state) => {
+  // TODO: Expand selection to the word if there is no selection length
+  return state.transform().toggleMark(mark).apply()
+}
+
+export const plugins = [{
+  onKeyDown: (event, data, state) => {
+    const hotkey = HOTKEYS[data.key]
+    if (!event.metaKey || hotkey === undefined) return undefined
+
+    event.preventDefault()
+    return applyMark(hotkey.mark, state)
+  },
+}]
 
 export const rules = [{
   deserialize(el, next) {
@@ -44,6 +56,6 @@ export const toolbar = MAPPINGS.reduce((all, { mark }) => [
   {
     mark,
     isActive: state => state.marks.some(mk => mk.type === mark),
-    onClick:  state => state.transform().toggleMark(mark).apply(),
+    onClick:  state => applyMark(mark, state),
   },
 ], [])

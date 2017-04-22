@@ -103,31 +103,35 @@ export default class WikiEditor extends Component {
   }
   renderToolbar = () => (
     <div className="menu toolbar-menu">
-      {toolbar.map(button => (
-        <button
-          data-active={button.isActive(this.state.state)}
-          className={`icon icon-${button.mark}`}
-          onMouseDown={event => this.handleToolbar(event, button)}
-        />
-      ))}
+      {toolbar.map((btn) => {
+        const isActive = btn.isActive(this.state.state)
+        const className = [
+          `toolbar-button icon icon-${btn.mark}`,
+          isActive ? 'is-active' : 'is-inactive',
+        ].filter(c => c).join(' ')
+
+        return (<button
+          className={className}
+          data-active={btn.isActive(this.state.state)}
+          onMouseDown={event => this.handleToolbar(event, btn)}
+        />)
+      })}
     </div>
   )
 
   renderEditor = () => (
-    <div className="editor">
-      <Editor
-        spellCheck
-        placeholder="Enter some rich text..."
-        plugins={plugins}
-        schema={schema}
-        state={this.state.state}
-        onChange={this.onChange}
-      />
-    </div>
+    <Editor
+      spellCheck
+      placeholder="Enter some rich text..."
+      plugins={plugins}
+      schema={schema}
+      state={this.state.state}
+      onChange={this.onChange}
+    />
   )
 
   render = () => (
-    <div>
+    <div className="wiki-editor">
       {this.renderToolbar()}
       {this.renderEditor()}
     </div>
@@ -144,6 +148,6 @@ WikiEditor.propTypes = {
   })),
 }
 WikiEditor.defaultProps = {
-  html: '<b>Test!</b>',
+  html: '<b>This is a test sentence!</b>',
   toolbar,
 }
