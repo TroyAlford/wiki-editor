@@ -31,7 +31,6 @@ const findWordBoundaries = (text, position) => {
 }
 
 const applyMark = (mark, state) => {
-  // TODO: Expand selection to the word if there is no selection length
   const transform = state.transform()
 
   if (state.selection.isCollapsed) {
