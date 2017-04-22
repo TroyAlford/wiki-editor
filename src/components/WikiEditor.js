@@ -99,7 +99,7 @@ export default class WikiEditor extends Component {
   handleToolbar = (event, button) => {
     event.preventDefault()
     const state = button.onClick(this.state.state)
-    if (state) this.setState({ state })
+    if (state) this.setState({ state }, this.editor.focus)
   }
   renderToolbar = () => (
     <div className="menu toolbar-menu">
@@ -127,6 +127,7 @@ export default class WikiEditor extends Component {
       schema={schema}
       state={this.state.state}
       onChange={this.onChange}
+      ref={(self) => { this.editor = self }}
     />
   )
 
@@ -148,6 +149,6 @@ WikiEditor.propTypes = {
   })),
 }
 WikiEditor.defaultProps = {
-  html: '<b>This is a test sentence!</b>',
+  html: '<b>Some test-data to play with!</b>',
   toolbar,
 }

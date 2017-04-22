@@ -18,9 +18,37 @@ const TAGS = MAPPINGS.reduce(
   (tags, { mark, tag }) => ({ ...tags, [tag]: mark })
 , {})
 
+const findWordBoundaries = (text, position) => {
+  const before = position > 0 ? text.slice(0, position) : ''
+  const after = position < text.length ? text.slice(position) : ''
+
+  const offsetLeft = before.split('')
+    .reverse().join('').search(/\W/)
+
+  const offsetRight = after.search(/\W/)
+
+  return { offsetLeft, offsetRight }
+}
+
 const applyMark = (mark, state) => {
   // TODO: Expand selection to the word if there is no selection length
-  return state.transform().toggleMark(mark).apply()
+  const transform = state.transform()
+
+  if (state.selection.isCollapsed) {
+    const position = state.anchorOffset
+    const text = (state.anchorInline || state.anchorBlock).text
+
+    const offsets = findWordBoundaries(text, state.anchorOffset)
+    return transform.moveOffsetsTo(
+      offsets.offsetLeft === -1 ? 0 : position - offsets.offsetLeft,
+      offsets.offsetRight === -1 ? text.length : position + offsets.offsetRight
+    )
+    .toggleMark(mark)
+    .moveOffsetsTo(position, position)
+    .apply()
+  }
+
+  return transform.toggleMark(mark).apply()
 }
 
 export const plugins = [{
