@@ -1,0 +1,12 @@
+/* Define color palette */
+$palette-gray: #eee!default;
+$palette-light-blue: #f1f8ff!default;
+$palette-dark-blue: #c8e1ff!default;
+
+$editor-padding: 1rem!default;
+
+/* Import component SCSS files */
+@import '../fontello/css/wiki-editor-embedded';
+@import '../fontello/css/animation';
+@import 'components/*.scss';
+@import 'plugins/*.scss';

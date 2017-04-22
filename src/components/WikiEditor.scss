@@ -1,0 +1,31 @@
+$bg-color-defocused-selection: $palette-gray!default;
+
+$bg-color-button-inactive:     transparent!default;
+$bg-color-button-active:       $palette-light-blue!default;
+
+$border-color-button-inactive: transparent!default;
+$border-color-button-active:   $palette-dark-blue!default;
+
+.wiki-editor {
+  .menu.toolbar-menu {
+    .toolbar-button {
+      padding: .5rem;
+      border: 1px solid $border-color-button-inactive;
+      background: $bg-color-button-inactive;
+
+      &.is-active {
+        border-color: $border-color-button-active;
+        background: $bg-color-button-active;
+      }
+    }
+  }
+
+  div[contenteditable=true] {
+    ::selection {
+      background-color: $bg-color-defocused-selection;
+    }
+
+    border: 1px solid $palette-gray;
+    padding: $editor-padding;
+  }
+}
