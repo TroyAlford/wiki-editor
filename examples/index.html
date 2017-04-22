@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8">
+  <script type="text/javascript">
+    /* eslint-disable */
+    var base = document.location.host
+    var branch = 'develop'
+
+    switch(document.location.host) {
+      case 'github.com':
+        branch = document.location.pathname.split('/')[4] || 'develop'
+      case 'troyalford.github.io':
+        branch = 'master'
+
+        base = 'https://rawgit.com/TroyAlford/react-editable-treeview/' + branch + '/'
+        break;
+
+      default:
+        var loc = document.location.pathname.split('/')
+        loc.pop(); loc.pop()
+        loc.push('')
+        base = loc.join('/')
+    }
+
+    document.write("<base href='" + base + "' />")
+  </script>
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.min.js">
+  </script>
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.min.js">
+  </script>
+
+  <link
+    href="https://fonts.googleapis.com/css?family=Ubuntu"
+    rel="stylesheet"
+  />
+
+ </head>
+ <body>
+  <div id="application">
+    <!-- components will render here -->
+  </div>
+
+  <script type="text/javascript" src="examples/lib/example.js"></script>
+ </body>
+</html>
