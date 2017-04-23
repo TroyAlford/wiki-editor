@@ -68,9 +68,9 @@ export function insertTable(transform, columns = 2, rows = 2) {
   return transform.insertBlock(createTable(columns, rows))
 }
 
-export function removeTable(transform) {
+export function deleteTable(transform) {
   const { state } = transform
-  if (state.startBlock.type !== 'td') inCellOnlyError('removeTable')
+  if (state.startBlock.type !== 'td') inCellOnlyError('deleteTable')
 
   const { table } = getTableInfo(transform)
   const parent = state.document.getParent(table.key)
@@ -88,7 +88,7 @@ export function removeTable(transform) {
 
 export function deleteRow(transform) {
   const { row, height } = getTableInfo(transform)
-  if (height === 1) return removeTable(transform)
+  if (height === 1) return deleteTable(transform)
 
   return transform.removeNodeByKey(row.key)
 }
@@ -97,7 +97,7 @@ export function deleteColumn(transform) {
   const { table, x, width } = getTableInfo(transform)
   const rows = table.nodes
 
-  if (width === 1) return removeTable(transform)
+  if (width === 1) return deleteTable(transform)
 
   return rows.reduce((t, row) =>
     t.removeNodeByKey(row.nodes.get(x).key)

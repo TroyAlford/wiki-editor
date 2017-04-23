@@ -12,8 +12,7 @@ const BUTTONS = [
   { icon: 'insert-row-below', action: 'insertRow', params: ['below'] },
   { icon: 'delete-column', action: 'deleteColumn' },
   { icon: 'delete-row', action: 'deleteRow' },
-
-  { text: 'Remove Table', action: 'removeTable' },
+  { icon: 'delete-table', action: 'deleteTable' },
 ]
 
 const applyAction = (action, state, params) => {

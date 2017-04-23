@@ -70,7 +70,7 @@ function onEnter(transform, event, data, state) {
 
   if (y === height - 1) { // last row
     return flow([
-      t => insertRow(t, 'after'),
+      t => insertRow(t, 'below'),
       t => moveTo(t, x, y + 1),
     ], transform)
   }

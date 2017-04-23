@@ -24,6 +24,6 @@ export const serializers = PLUGINS
 
 export const toolbarButtons = PLUGINS
   .filter(p => Array.isArray(p.toolbarButtons))
-  .reduce((all, p) => [...all, ...p.toolbarButtons], [])
+  .reduce((all, p) => [...all, p.toolbarButtons], [])
 
 export default PLUGINS
