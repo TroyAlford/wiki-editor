@@ -3,14 +3,18 @@ import Paragraph from '../Paragraph'
 import { isWithinTable } from '../Table'
 import { getTableInfo, insertColumn, insertRow, moveTo } from './Actions'
 
+function isHotkeyCommand(event) {
+  return (event.metaKey || event.ctrlKey) && event.shiftKey
+}
+
 const flow = (functions, startWith) => (
   functions.reduce((value, fn) => fn(value), startWith)
 )
 
-function onDelete(transform, event, data, state) {
+function onDelete(transform, event, state) {
   const { startBlock, startOffset, isCollapsed, endBlock } = state
 
-  if (startBlock === endBlock && event.ctrlKey && event.shiftKey) {
+  if (startBlock === endBlock && isHotkeyCommand(event)) {
     // Clear cell contents
     const range = Slate.Selection.create().moveToRangeOf(startBlock)
     return transform.deleteAtRange(range).collapseToStartOf(startBlock).apply()
@@ -35,18 +39,18 @@ function onDelete(transform, event, data, state) {
   ], transform).apply()
 }
 
-function onDown(transform, event, data, state) {
+function onDown(transform, event, state) {
   event.preventDefault()
   const { x, y, height, table } = getTableInfo({ state })
 
-  if (event.ctrlKey && event.shiftKey) {
+  if (isHotkeyCommand(event)) {
     return flow([
       t => insertRow(t, 'below'),
       t => moveTo(t, x, y + 1),
     ], transform)
   }
 
-  if (y === height - 1) { // Last Row - move out of table
+  if (event.shiftKey && y === height - 1) { // Last Row - move out of table
     let sibling = state.document.getNextSibling(table.key)
     let t = transform
 
@@ -64,7 +68,7 @@ function onDown(transform, event, data, state) {
   return moveTo(transform, x, y + 1)
 }
 
-function onEnter(transform, event, data, state) {
+function onEnter(transform, event, state) {
   event.preventDefault()
   const { x, y, height } = getTableInfo({ state })
 
@@ -78,8 +82,8 @@ function onEnter(transform, event, data, state) {
   return moveTo(transform, x, y + 1)
 }
 
-function onLeft(transform, event, data, state) {
-  if (event.ctrlKey && event.shiftKey) {
+function onLeft(transform, event, state) {
+  if (isHotkeyCommand(event)) {
     const { x, y } = getTableInfo({ state })
     return flow([
       t => insertColumn(t, 'left'),
@@ -90,8 +94,8 @@ function onLeft(transform, event, data, state) {
   return transform
 }
 
-function onRight(transform, event, data, state) {
-  if (event.ctrlKey && event.shiftKey) {
+function onRight(transform, event, state) {
+  if (isHotkeyCommand(event)) {
     const { x, y } = getTableInfo({ state })
     return flow([
       t => insertColumn(t, 'right'),
@@ -102,7 +106,7 @@ function onRight(transform, event, data, state) {
   return transform
 }
 
-function onTab(transform, event, data, state) {
+function onTab(transform, event, state) {
   event.preventDefault()
   const { x, y, height, width } = getTableInfo({ state })
 
@@ -120,11 +124,11 @@ function onTab(transform, event, data, state) {
   return moveTo(transform, toX, toY)
 }
 
-function onUp(transform, event, data, state) {
+function onUp(transform, event, state) {
   event.preventDefault()
   const { x, y, table } = getTableInfo({ state })
 
-  if (event.ctrlKey && event.shiftKey) {
+  if (isHotkeyCommand(event)) {
     return flow([
       t => insertRow(t, 'above'),
       t => moveTo(t, x, y),
@@ -135,7 +139,7 @@ function onUp(transform, event, data, state) {
     let sibling = state.document.getPreviousSibling(table.key)
     let t = transform
 
-    if (!sibling && event.ctrlKey && event.shiftKey) {
+    if (event.shiftKey && !sibling) {
       const parent = state.document.getParent(table.key)
       const tableIndex = parent.nodes.findIndex(n => n === table)
 
@@ -159,19 +163,19 @@ export default {
     switch (data.key) {
       case 'backspace':
       case 'delete':
-        return onDelete(transform, event, data, state)
+        return onDelete(transform, event, state)
       case 'down':
-        return onDown(transform, event, data, state).apply()
+        return onDown(transform, event, state).apply()
       case 'enter':
-        return onEnter(transform, event, data, state).apply()
+        return onEnter(transform, event, state).apply()
       case 'left':
-        return onLeft(transform, event, data, state).apply()
+        return onLeft(transform, event, state).apply()
       case 'right':
-        return onRight(transform, event, data, state).apply()
+        return onRight(transform, event, state).apply()
       case 'tab':
-        return onTab(transform, event, data, state).apply()
+        return onTab(transform, event, state).apply()
       case 'up':
-        return onUp(transform, event, data, state).apply()
+        return onUp(transform, event, state).apply()
       default:
         return undefined
     }

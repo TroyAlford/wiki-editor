@@ -5,7 +5,6 @@ import { renderAligned } from './Alignment'
 
 const BUTTONS = [
   { icon: 'add-table', action: 'insertTable', params: [1, 1], alwaysVisible: true },
-
   { icon: 'insert-column-left', action: 'insertColumn', params: ['left'] },
   { icon: 'insert-column-right', action: 'insertColumn', params: ['right'] },
   { icon: 'insert-row-above', action: 'insertRow', params: ['above'] },
