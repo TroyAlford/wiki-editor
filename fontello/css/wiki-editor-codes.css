@@ -15,6 +15,8 @@
 .icon-delete-column:before { content: '\e80d'; } /* '' */
 .icon-delete-row:before { content: '\e80e'; } /* '' */
 .icon-delete-table:before { content: '\e80f'; } /* '' */
+.icon-float-left:before { content: '\e811'; } /* '' */
+.icon-float-right:before { content: '\e812'; } /* '' */
 .icon-bulleted-list:before { content: '\f0ca'; } /* '' */
 .icon-numbered-list:before { content: '\f0cb'; } /* '' */
 .icon-strike:before { content: '\f0cc'; } /* '' */
