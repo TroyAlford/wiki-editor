@@ -1,0 +1,3 @@
+[submodule "submodules/slate-editor"]
+	path = submodules/slate-editor
+	url = git@github.com:nossas/slate-editor.git

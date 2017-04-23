@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { Editor, Html } from 'slate'
-import { plugins, rules, schema, toolbar } from '../plugins'
+import plugins, { schema, serializers, toolbarButtons } from '../plugins'
 
-const HtmlSerializer = new Html({ rules })
+const HtmlSerializer = new Html({ rules: serializers })
 
 export default class WikiEditor extends Component {
   constructor(props) {
@@ -23,108 +23,47 @@ export default class WikiEditor extends Component {
     this.setState({ state })
   }
 
-  // onClickBlock = (e, type) => {
-  //   e.preventDefault()
-  //   let { state } = this.state
-  //   const transform = state.transform()
-  //   const { document } = state
-
-  //   if (type !== 'bulleted-list' && type !== 'numbered-list') {
-  //     const isActive = this.hasBlock(type)
-  //     const isList = this.hasBlock('list-item')
-
-  //     if (isList) {
-  //       transform
-  //         .setBlock(isActive ? DEFAULT_NODE : type)
-  //         .unwrapBlock('bulleted-list')
-  //         .unwrapBlock('numbered-list')
-  //     } else {
-  //       transform
-  //         .setBlock(isActive ? DEFAULT_NODE : type)
-  //     }
-  //   } else {
-  //     const isList = this.hasBlock('list-item')
-  //     const isType = state.blocks.some(block => (
-  //       !!document.getClosest(block.key, parent => parent.type === type)
-  //     ))
-
-  //     if (isList && isType) {
-  //       transform
-  //         .setBlock(DEFAULT_NODE)
-  //         .unwrapBlock('bulleted-list')
-  //         .unwrapBlock('numbered-list')
-  //     } else if (isList) {
-  //       transform
-  //         .unwrapBlock(type === 'bulleted-list' ? 'numbered-list' : 'bulleted-list')
-  //         .wrapBlock(type)
-  //     } else {
-  //       transform
-  //         .setBlock('list-item')
-  //         .wrapBlock(type)
-  //     }
-  //   }
-
-  //   state = transform.apply()
-  //   this.setState({ state })
-  // }
-
-  // onClickMark = (e, type) => {
-  //   e.preventDefault()
-  //   let { state } = this.state
-
-  //   state = state
-  //     .transform()
-  //     .toggleMark(type)
-  //     .apply()
-
-  //   this.setState({ state })
-  // }
-
-  // hasBlock = (type) => {
-  //   const { state } = this.state
-  //   return state.blocks.some(node => node.type === type)
-  // }
-
-  // renderBlockButton = (type, icon) => {
-  //   const isActive = this.hasBlock(type)
-  //   const onMouseDown = e => this.onClickBlock(e, type)
-
-  //   return (
-  //     <span className="button" onMouseDown={onMouseDown} data-active={isActive}>
-  //       <span className="material-icons">{icon}</span>
-  //     </span>
-  //   )
-  // }
-
   handleToolbar = (event, button) => {
     event.preventDefault()
     const state = button.onClick(this.state.state)
     if (state) this.setState({ state }, this.editor.focus)
   }
+
   renderToolbar = () => (
     <div className="menu toolbar-menu">
-      {toolbar.map((btn) => {
-        const isActive = btn.isActive(this.state.state)
+      {toolbarButtons.map((button) => {
+        let isVisible = true
+        if (typeof button.isVisible === 'function') {
+          isVisible = button.isVisible(this.state.state)
+        } else {
+          isVisible = !!button.isVisible
+        }
+
+        if (!isVisible) return null
+
+        const isActive = typeof button.isActive === 'function'
+          ? button.isActive(this.state.state)
+          : !!button.isActive
+
         const className = [
-          `toolbar-button icon icon-${btn.mark}`,
+          `toolbar-button icon icon-${button.icon}`,
           isActive ? 'is-active' : 'is-inactive',
         ].filter(c => c).join(' ')
 
-        return (<button
-          className={className}
-          data-active={btn.isActive(this.state.state)}
-          onMouseDown={event => this.handleToolbar(event, btn)}
-        />)
+        return (
+          <button
+            className={className} data-active={isActive}
+            onMouseDown={event => this.handleToolbar(event, button)}
+          >{button.text}</button>
+        )
       })}
     </div>
   )
 
   renderEditor = () => (
     <Editor
-      spellCheck
-      placeholder="Enter some rich text..."
-      plugins={plugins}
-      schema={schema}
+      placeholder="" spellCheck
+      plugins={plugins} schema={schema}
       state={this.state.state}
       onChange={this.onChange}
       ref={(self) => { this.editor = self }}
@@ -140,15 +79,10 @@ export default class WikiEditor extends Component {
 }
 
 WikiEditor.propTypes = {
-  html: PropTypes.string,
-
-  toolbar: PropTypes.arrayOf(PropTypes.shape({
-    mark:     PropTypes.string.isRequired,
-    isActive: PropTypes.func.isRequired,
-    onClick:  PropTypes.func.isRequired,
-  })),
+  html:        PropTypes.string,
+  placeholder: PropTypes.string,
 }
 WikiEditor.defaultProps = {
-  html: '<b>Some test-data to play with!</b>',
-  toolbar,
+  html:        '<b>Some test-data to play with!</b>',
+  placeholder: 'Enter some text...',
 }

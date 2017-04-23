@@ -1,21 +1,25 @@
-import * as BasicMarks from './BasicMarks'
+import BasicMarksPlugin from './BasicMarksPlugin'
+import TablePlugin from './TablePlugin'
 
 const PLUGINS = [
-  BasicMarks,
+  BasicMarksPlugin,
+  TablePlugin,
 ]
 
-export const plugins = PLUGINS.reduce(
-  (all, p) => [...all, ...(p.plugins || [p])]
+export const serializers = PLUGINS.filter(p => Array.isArray(p.serializers)).reduce(
+  (all, p) => [...all, ...p.serializers]
 , [])
-export const rules = PLUGINS.reduce(
-  (all, p) => [...all, ...(p.rules || [])]
-, [])
-export const schema = PLUGINS.reduce(
-  (all, p) => ({
-    marks: { ...all.marks, ...(p.schema.marks || {}) },
-    nodes: { ...all.nodes, ...(p.schema.nodes || {}) },
-  })
-, { marks: {}, nodes: {} })
-export const toolbar = PLUGINS.reduce(
-  (all, p) => [...all, ...(p.toolbar || [])]
-, [])
+
+export const schema = PLUGINS
+  .filter(plugin => plugin.schema)
+  .reduce((all, plugin) => ({
+    marks: { ...all.marks, ...(plugin.schema.marks || {}) },
+    nodes: { ...all.nodes, ...(plugin.schema.nodes || {}) },
+    rules: [...all.rules, ...(plugin.schema.rules || [])],
+  }), { marks: {}, nodes: {}, rules: [] })
+
+export const toolbarButtons = PLUGINS
+  .filter(p => Array.isArray(p.toolbarButtons))
+  .reduce((all, p) => [...all, ...p.toolbarButtons], [])
+
+export default PLUGINS

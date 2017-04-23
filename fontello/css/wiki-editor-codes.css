@@ -12,6 +12,7 @@
 .icon-numbered-list:before { content: '\f0cb'; } /* '' */
 .icon-strike:before { content: '\f0cc'; } /* '' */
 .icon-underline:before { content: '\f0cd'; } /* '' */
+.icon-add-table:before { content: '\f0ce'; } /* '' */
 .icon-superscript:before { content: '\f12b'; } /* '' */
 .icon-subscript:before { content: '\f12c'; } /* '' */
 .icon-heading:before { content: '\f1dc'; } /* '' */

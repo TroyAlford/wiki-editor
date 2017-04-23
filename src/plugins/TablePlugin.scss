@@ -1,0 +1,5 @@
+$table-border: dotted 1px darken($palette-gray, 50%)!default;
+
+.wiki-editor {
+  table, th, td { border: $table-border; }
+}

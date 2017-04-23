@@ -50,47 +50,49 @@ const applyMark = (mark, state) => {
   return transform.toggleMark(mark).apply()
 }
 
-export const plugins = [{
-  onKeyDown: (event, data, state) => {
+export default {
+  onKeyDown(event, data, state) {
     const hotkey = HOTKEYS[data.key]
     if (!event.metaKey || hotkey === undefined) return undefined
 
     event.preventDefault()
     return applyMark(hotkey.mark, state)
   },
-}]
 
-export const rules = [{
-  deserialize(el, next) {
-    const mark = TAGS[el.tagName]
-    if (!mark) return undefined
-    return {
-      kind:  'mark',
-      type:  mark,
-      nodes: next(el.children),
-    }
+  schema: {
+    marks: MAPPINGS.reduce((marks, { mark, tag: Tag }) => ({
+      ...marks, [mark]: props => <Tag>{props.children}</Tag>,
+    }), {}),
   },
-  serialize(object, children) {
-    if (object.kind !== 'mark') return undefined
 
-    const Tag = MARKS[object.type]
-    if (!Tag) return undefined
+  serializers: [{
+    deserialize(el, next) {
+      const mark = TAGS[el.tagName]
+      if (!mark) return undefined
+      return {
+        kind:  'mark',
+        type:  mark,
+        nodes: next(el.children),
+      }
+    },
+    serialize(object, children) {
+      if (object.kind !== 'mark') return undefined
 
-    return <Tag>{children}</Tag>
-  },
-}]
+      const Tag = MARKS[object.type]
+      if (!Tag) return undefined
 
-export const schema = {
-  marks: MAPPINGS.reduce((marks, { mark, tag: Tag }) => ({
-    ...marks, [mark]: props => <Tag>{props.children}</Tag>,
-  }), {}),
+      return <Tag>{children}</Tag>
+    },
+  }],
+
+  toolbarButtons: MAPPINGS.reduce((all, { mark }) => [
+    ...all,
+    {
+      icon: mark,
+
+      isActive:  state => state.marks.some(m => m.type === mark),
+      onClick:   state => applyMark(mark, state),
+      isVisible: true,
+    },
+  ], []),
 }
-
-export const toolbar = MAPPINGS.reduce((all, { mark }) => [
-  ...all,
-  {
-    mark,
-    isActive: state => state.marks.some(mk => mk.type === mark),
-    onClick:  state => applyMark(mark, state),
-  },
-], [])

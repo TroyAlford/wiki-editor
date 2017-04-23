@@ -101,6 +101,12 @@
       "css": "heading",
       "code": 61916,
       "src": "fontawesome"
+    },
+    {
+      "uid": "8fb55fd696d9a0f58f3b27c1d8633750",
+      "css": "add-table",
+      "code": 61646,
+      "src": "fontawesome"
     }
   ]
 }
