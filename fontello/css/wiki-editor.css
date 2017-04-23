@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'wiki-editor';
-  src: url('../font/wiki-editor.eot?91249284');
-  src: url('../font/wiki-editor.eot?91249284#iefix') format('embedded-opentype'),
-       url('../font/wiki-editor.woff2?91249284') format('woff2'),
-       url('../font/wiki-editor.woff?91249284') format('woff'),
-       url('../font/wiki-editor.ttf?91249284') format('truetype'),
-       url('../font/wiki-editor.svg?91249284#wiki-editor') format('svg');
+  src: url('../font/wiki-editor.eot?66608592');
+  src: url('../font/wiki-editor.eot?66608592#iefix') format('embedded-opentype'),
+       url('../font/wiki-editor.woff2?66608592') format('woff2'),
+       url('../font/wiki-editor.woff?66608592') format('woff'),
+       url('../font/wiki-editor.ttf?66608592') format('truetype'),
+       url('../font/wiki-editor.svg?66608592#wiki-editor') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -15,7 +15,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'wiki-editor';
-    src: url('../font/wiki-editor.svg?91249284#wiki-editor') format('svg');
+    src: url('../font/wiki-editor.svg?66608592#wiki-editor') format('svg');
   }
 }
 */
@@ -70,6 +70,7 @@
 .icon-insert-row-below:before { content: '\e80c'; } /* '' */
 .icon-delete-column:before { content: '\e80d'; } /* '' */
 .icon-delete-row:before { content: '\e80e'; } /* '' */
+.icon-delete-table:before { content: '\e80f'; } /* '' */
 .icon-bulleted-list:before { content: '\f0ca'; } /* '' */
 .icon-numbered-list:before { content: '\f0cb'; } /* '' */
 .icon-strike:before { content: '\f0cc'; } /* '' */
