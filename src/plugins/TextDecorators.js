@@ -81,8 +81,6 @@ export default {
       }
     },
     serialize(object, children) {
-      if (object.kind !== 'mark') return undefined
-
       const Tag = MARKS[object.type]
       if (!Tag) return undefined
 

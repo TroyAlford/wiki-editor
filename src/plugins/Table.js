@@ -1,5 +1,6 @@
 /* eslint-disable react/react-in-jsx-scope,react/prop-types */
 import * as Actions from './Table/Actions'
+import { renderAligned } from './Alignment'
 
 const BUTTONS = [
   { icon: 'add-table', action: 'insertTable', params: [1, 1], alwaysVisible: true },
@@ -31,34 +32,41 @@ export default {
     nodes: {
       table: props => <table><tbody {...props.attributes}>{props.children}</tbody></table>,
       tr:    props => <tr {...props.attributes}>{props.children}</tr>,
-      td:    props => <td {...props.attributes}>{props.children}</td>,
+
+      td: ({ attributes, children, node }) => (
+        renderAligned('td', node.data, children, attributes)
+      ),
     },
   },
 
   serializers: [{
     deserialize(el, next) {
+      const node = {
+        kind:  'block',
+        type:  el.tagName,
+        nodes: next(el.children),
+      }
+
       switch (el.tagName) {
         case 'table':
         case 'tr':
+          return node
         case 'td':
           return {
-            kind:  'block',
-            type:  el.tagName,
-            nodes: next(el.children),
+            ...node,
           }
         default:
           return undefined
       }
     },
     serialize(object, children) {
-      if (object.kind !== 'block') return undefined
       switch (object.type) {
         case 'table':
           return <table><tbody {...object.attributes}>{children}</tbody></table>
         case 'tr':
           return <tr {...object.attributes}>{children}</tr>
         case 'td':
-          return <td {...object.attributes}>{children}</td>
+          return renderAligned('td', object.data, children, {})
         default:
           return undefined
       }
