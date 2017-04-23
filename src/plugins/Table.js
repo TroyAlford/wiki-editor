@@ -1,15 +1,7 @@
 /* eslint-disable react/react-in-jsx-scope,react/prop-types */
 import * as Actions from './Table/Actions'
 
-const options = {
-  typeTable: 'table',
-  typeRow:   'tr',
-  typeCell:  'td',
-
-  defaultAlign: 'justify',
-}
-
-const MAPPINGS = [
+const BUTTONS = [
   { icon: 'add-table', action: 'insertTable', params: [1, 1], alwaysVisible: true },
 
   { icon: 'insert-column-left', action: 'insertColumn', params: ['left'] },
@@ -65,16 +57,15 @@ export default {
           return <table><tbody {...object.attributes}>{children}</tbody></table>
         case 'tr':
           return <tr {...object.attributes}>{children}</tr>
-        case 'td': // eslint-disable-line no-case-declarations
-          const textAlign = object.data.get('align') || options.defaultAlign
-          return <td style={{ textAlign }} {...object.attributes}>{children}</td>
+        case 'td':
+          return <td {...object.attributes}>{children}</td>
         default:
           return undefined
       }
     },
   }],
 
-  toolbarButtons: MAPPINGS.filter(m => m.icon || m.text)
+  toolbarButtons: BUTTONS.filter(m => m.icon || m.text)
     .reduce((all, { alwaysVisible, action, icon, text, params = [] }) => [
       ...all, {
         icon,
