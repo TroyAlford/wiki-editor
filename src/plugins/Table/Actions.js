@@ -1,10 +1,6 @@
 import { createCell, createRow, createTable } from './Creators'
 import Paragraph from '../Paragraph'
 
-function flow(functions, value) {
-  return functions.reduce((sum, fn) => fn(sum), value)
-}
-
 function forceRange(value, lowerBound, upperBound) {
   if (value < lowerBound) return lowerBound
   if (value > upperBound) return upperBound
@@ -52,18 +48,20 @@ export function moveTo(transform, targetX, targetY) {
                   .moveOffsetsTo(startOffset)
 }
 
-export function insertColumn(transform) {
+export function insertColumn(transform, where = 'left') {
   const { x, table } = getTableInfo(transform)
   const rows = table.nodes
 
+  const insertAt = where === 'right' ? x + 1 : x
   return rows.reduce((t, row) =>
-    t.insertNodeByKey(row.key, x, createCell())
+    t.insertNodeByKey(row.key, insertAt, createCell())
   , transform)
 }
 
-export function insertRow(transform) {
+export function insertRow(transform, where = 'below') {
   const { table, width, y } = getTableInfo(transform)
-  return transform.insertNodeByKey(table.key, y, createRow(width))
+  const insertAt = where === 'below' ? y + 1 : y
+  return transform.insertNodeByKey(table.key, insertAt, createRow(width))
 }
 
 export function insertTable(transform, columns = 2, rows = 2) {
@@ -88,14 +86,14 @@ export function removeTable(transform) {
                   .removeNodeByKey(table.key)
 }
 
-export function removeRow(transform) {
+export function deleteRow(transform) {
   const { row, height } = getTableInfo(transform)
   if (height === 1) return removeTable(transform)
 
   return transform.removeNodeByKey(row.key)
 }
 
-export function removeColumn(transform) {
+export function deleteColumn(transform) {
   const { table, x, width } = getTableInfo(transform)
   const rows = table.nodes
 
@@ -105,67 +103,3 @@ export function removeColumn(transform) {
     t.removeNodeByKey(row.nodes.get(x).key)
   , transform)
 }
-
- // setColumnAlign: (transform, setTo) => {
- //    const { columnIndex, table } = getPosition(transform)
- //    const align = table.data.get('align')
- //    align.splice(columnIndex, 1, setTo)
-
- //    let t = transform.setNodeByKey(table.key, { data: { align } })
- //    table.nodes.forEach((row) => {
- //      const cell = row.nodes.get(columnIndex)
- //      t = t.setNodeByKey(cell.key, { data: { align: setTo } })
- //    })
-
- //    return t
- //  },
-
- //  removeColumn: (transform) => {
- //    const { moveSelectionBy } = plugin.transforms
- //    const { columnCount, columnIndex, table } = getPosition(transform)
-
- //    let moveBy = 0
- //    if (columnCount > 1 && columnIndex === 0) {
- //      moveBy = 1
- //    } else if (columnCount > 1 && columnIndex === columnCount - 1) {
- //      moveBy = -1
- //    }
-
- //    const rows = table.nodes
-
- //    let t = moveSelectionBy(transform, moveBy, 0)
- //    if (columnCount > 1) {
- //      rows.forEach((row) => {
- //        const cell = row.nodes.get(columnIndex)
- //        t = t.removeNodeByKey(cell.key)
- //      })
-
- //      const align = table.data.get('align')
- //      align.splice(columnIndex, 1)
- //      t = t.setNodeByKey(table.key, { data: { align } })
- //    } else {
- //      rows.forEach((row) => {
- //        row.nodes.forEach((cell) => {
- //          cell.nodes.forEach((node) => {
- //            t = t.removeNodeByKey(node.key)
- //          })
- //        })
- //      })
- //    }
-
- //    return t
- //  },
-
- //  removeRow: (transform) => {
- //    const { moveSelectionBy } = plugin.transforms
- //    const { row, rowCount, rowIndex } = getPosition(transform)
-
- //    let moveBy = 0
- //    if (rowCount > 1 && rowIndex === 0) {
- //      moveBy = 1
- //    } else if (rowCount > 1 && rowIndex === rowCount - 1) {
- //      moveBy = -1
- //    }
-
- //    return moveSelectionBy(transform, 0, moveBy).removeNodeByKey(row.key)
- //  },

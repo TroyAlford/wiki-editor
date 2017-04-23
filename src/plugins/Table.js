@@ -1,5 +1,4 @@
 /* eslint-disable react/react-in-jsx-scope,react/prop-types */
-// import EditTablePlugin from 'slate-edit-table'
 import * as Actions from './Table/Actions'
 
 const options = {
@@ -10,21 +9,17 @@ const options = {
   defaultAlign: 'justify',
 }
 
-// const plugin = EditTablePlugin(options)
-
 const MAPPINGS = [
   { icon: 'add-table', action: 'insertTable', params: [1, 1], alwaysVisible: true },
+
+  { icon: 'insert-column-left', action: 'insertColumn', params: ['left'] },
+  { icon: 'insert-column-right', action: 'insertColumn', params: ['right'] },
+  { icon: 'insert-row-above', action: 'insertRow', params: ['above'] },
+  { icon: 'insert-row-below', action: 'insertRow', params: ['below'] },
+  { icon: 'delete-column', action: 'deleteColumn' },
+  { icon: 'delete-row', action: 'deleteRow' },
+
   { text: 'Remove Table', action: 'removeTable' },
-
-  { text: 'Insert Column', action: 'insertColumn' },
-  { text: 'Insert Row', action: 'insertRow' },
-  { text: 'Remove Column', action: 'removeColumn' },
-  { text: 'Remove Row', action: 'removeRow' },
-
-  { icon: 'align-left', params: ['left'], action: 'setColumnAlign' },
-  { icon: 'align-right', params: ['right'], action: 'setColumnAlign' },
-  { icon: 'align-center', params: ['center'], action: 'setColumnAlign' },
-  { icon: 'align-justify', params: ['justify'], action: 'setColumnAlign' },
 ]
 
 const applyAction = (action, state, params) => {
@@ -44,11 +39,7 @@ export default {
     nodes: {
       table: props => <table><tbody {...props.attributes}>{props.children}</tbody></table>,
       tr:    props => <tr {...props.attributes}>{props.children}</tr>,
-      td:    (props) => {
-        // const { columnIndex, table } = getPosition(props)
-        // const align = table.data.get('align')[columnIndex] || options.defaultAlign
-        return <td style={{ textAlign: 'left' }} {...props.attributes}>{props.children}</td>
-      },
+      td:    props => <td {...props.attributes}>{props.children}</td>,
     },
   },
 

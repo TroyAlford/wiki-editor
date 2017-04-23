@@ -107,6 +107,90 @@
       "css": "add-table",
       "code": 61646,
       "src": "fontawesome"
+    },
+    {
+      "uid": "d61d2492ebe4464be6f24b0c4f88d613",
+      "css": "insert-column-left",
+      "code": 59396,
+      "src": "custom_icons",
+      "selected": true,
+      "svg": {
+        "path": "M555.6 327.8H444.4V438.9H333.3V550H444.4V661.1H555.6V550H666.7V438.9H555.6V327.8ZM111.1 105.6H222.2V883.3H111.1V105.6Z",
+        "width": 1000
+      },
+      "search": [
+        "insert-column-left"
+      ]
+    },
+    {
+      "uid": "a018d93994194937809af3453a61f7b5",
+      "css": "insert-column-right",
+      "code": 59402,
+      "src": "custom_icons",
+      "selected": true,
+      "svg": {
+        "path": "M555.6 333.3H444.4V444.4H333.3V555.6H444.4V666.7H555.6V555.6H666.7V444.4H555.6V333.3ZM777.8 111.1H888.9V888.9H777.8V111.1Z",
+        "width": 1000
+      },
+      "search": [
+        "insert-column-right"
+      ]
+    },
+    {
+      "uid": "09da633dd125f3973e150bff28a0481c",
+      "css": "insert-row-above",
+      "code": 59403,
+      "src": "custom_icons",
+      "selected": true,
+      "svg": {
+        "path": "M555.6 333.3H444.4V444.4H333.3V555.6H444.4V666.7H555.6V555.6H666.7V444.4H555.6V333.3ZM111.1 111.1H888.9V222.2H111.1V111.1Z",
+        "width": 1000
+      },
+      "search": [
+        "insert-row-above"
+      ]
+    },
+    {
+      "uid": "90d25b60a0966589460f348094c9c62a",
+      "css": "insert-row-below",
+      "code": 59404,
+      "src": "custom_icons",
+      "selected": true,
+      "svg": {
+        "path": "M555.6 333.3H444.4V444.4H333.3V555.6H444.4V666.7H555.6V555.6H666.7V444.4H555.6V333.3ZM111.1 777.8H888.9V888.9H111.1V777.8Z",
+        "width": 1000
+      },
+      "search": [
+        "insert-row-below"
+      ]
+    },
+    {
+      "uid": "daeb71ec27fb0aec5df5de59c9378868",
+      "css": "delete-column",
+      "code": 59405,
+      "src": "custom_icons",
+      "selected": true,
+      "svg": {
+        "path": "M422.2 338.9L344.4 416.7 422.2 494.4 344.4 572.2 422.2 650 500 572.2 577.8 650 655.6 572.2 577.8 494.4 655.6 416.7 577.8 338.9 500 416.7 422.2 338.9ZM111.1 105.6H222.2V883.3H111.1V105.6ZM777.8 111.1H888.9V888.9H777.8V111.1Z",
+        "width": 1000
+      },
+      "search": [
+        "delete-column"
+      ]
+    },
+    {
+      "uid": "8e4da09e25507ad7f0a4ff995b8e56fb",
+      "css": "delete-row",
+      "code": 59406,
+      "src": "custom_icons",
+      "selected": true,
+      "svg": {
+        "path": "M422.2 344.4L344.4 422.2 422.2 500 344.4 577.8 422.2 655.6 500 577.8 577.8 655.6 655.6 577.8 577.8 500 655.6 422.2 577.8 344.4 500 422.2 422.2 344.4ZM111.1 111.1H888.9V222.2H111.1V111.1ZM111.1 777.8H888.9V888.9H111.1V777.8Z",
+        "width": 1000
+      },
+      "search": [
+        "delete-row"
+      ]
     }
   ]
 }

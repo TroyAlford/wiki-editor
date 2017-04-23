@@ -3800,12 +3800,6 @@ slash@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/slash/-/slash-1.0.0.tgz#c41f2f6c39fc16d1cd17ad4b5d896114ae470d55"
 
-slate-edit-table@^0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/slate-edit-table/-/slate-edit-table-0.9.0.tgz#13432226584430e79be91e52a421d1152f072b19"
-  dependencies:
-    immutable "^3.8.1"
-
 slate@^0.19.20:
   version "0.19.20"
   resolved "https://registry.yarnpkg.com/slate/-/slate-0.19.20.tgz#3d3a7f772b9fe12f8b2de6d646a44e5ab635f5d5"
