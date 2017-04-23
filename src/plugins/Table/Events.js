@@ -1,21 +1,26 @@
 import Slate from 'slate'
 import Paragraph from '../Paragraph'
 import { isWithinTable } from '../Table'
-import { getTableInfo, insertRow, moveTo } from './Actions'
+import { getTableInfo, insertColumn, insertRow, moveTo } from './Actions'
 
 const flow = (functions, startWith) => (
   functions.reduce((value, fn) => fn(value), startWith)
 )
 
-function onBackspace(transform, event, data, state) {
+function onDelete(transform, event, data, state) {
   const { startBlock, startOffset, isCollapsed, endBlock } = state
+
+  if (startBlock === endBlock && event.ctrlKey && event.shiftKey) {
+    // Clear cell contents
+    const range = Slate.Selection.create().moveToRangeOf(startBlock)
+    return transform.deleteAtRange(range).collapseToStartOf(startBlock).apply()
+  }
 
   if (startOffset === 0 && isCollapsed) {
     event.preventDefault()
-    return transform
+    return undefined
   }
-
-  if (startBlock === endBlock) return transform
+  if (startBlock === endBlock) return undefined
 
   event.preventDefault()
 
@@ -27,12 +32,19 @@ function onBackspace(transform, event, data, state) {
       return result.deleteAtRange(range)
     }, t),
     t => t.collapseToStartOf(focusBlock),
-  ], transform)
+  ], transform).apply()
 }
 
 function onDown(transform, event, data, state) {
   event.preventDefault()
   const { x, y, height, table } = getTableInfo({ state })
+
+  if (event.ctrlKey && event.shiftKey) {
+    return flow([
+      t => insertRow(t, 'below'),
+      t => moveTo(t, x, y + 1),
+    ], transform)
+  }
 
   if (y === height - 1) { // Last Row - move out of table
     let sibling = state.document.getNextSibling(table.key)
@@ -66,6 +78,30 @@ function onEnter(transform, event, data, state) {
   return moveTo(transform, x, y + 1)
 }
 
+function onLeft(transform, event, data, state) {
+  if (event.ctrlKey && event.shiftKey) {
+    const { x, y } = getTableInfo({ state })
+    return flow([
+      t => insertColumn(t, 'left'),
+      t => moveTo(t, x, y),
+    ], transform)
+  }
+
+  return transform
+}
+
+function onRight(transform, event, data, state) {
+  if (event.ctrlKey && event.shiftKey) {
+    const { x, y } = getTableInfo({ state })
+    return flow([
+      t => insertColumn(t, 'right'),
+      t => moveTo(t, x + 1, y),
+    ], transform)
+  }
+
+  return transform
+}
+
 function onTab(transform, event, data, state) {
   event.preventDefault()
   const { x, y, height, width } = getTableInfo({ state })
@@ -88,11 +124,18 @@ function onUp(transform, event, data, state) {
   event.preventDefault()
   const { x, y, table } = getTableInfo({ state })
 
+  if (event.ctrlKey && event.shiftKey) {
+    return flow([
+      t => insertRow(t, 'above'),
+      t => moveTo(t, x, y),
+    ], transform)
+  }
+
   if (y === 0) { // First Row - move out of table
     let sibling = state.document.getPreviousSibling(table.key)
     let t = transform
 
-    if (!sibling && event.shiftKey) {
+    if (!sibling && event.ctrlKey && event.shiftKey) {
       const parent = state.document.getParent(table.key)
       const tableIndex = parent.nodes.findIndex(n => n === table)
 
@@ -115,11 +158,16 @@ export default {
     const transform = state.transform()
     switch (data.key) {
       case 'backspace':
-        return onBackspace(transform, event, data, state).apply()
+      case 'delete':
+        return onDelete(transform, event, data, state)
       case 'down':
         return onDown(transform, event, data, state).apply()
       case 'enter':
         return onEnter(transform, event, data, state).apply()
+      case 'left':
+        return onLeft(transform, event, data, state).apply()
+      case 'right':
+        return onRight(transform, event, data, state).apply()
       case 'tab':
         return onTab(transform, event, data, state).apply()
       case 'up':
