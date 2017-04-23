@@ -52,21 +52,18 @@ export default class WikiEditor extends Component {
         const className = [
           `toolbar-button icon icon-${button.icon}`,
           isActive ? 'is-active' : 'is-inactive',
-        ].filter(c => c).join(' ')
+        ].join(' ')
 
-        return (
-          <button
-            className={className} data-active={isActive}
-            onMouseDown={event => this.handleToolbar(event, button)}
-          >{button.text}</button>
-        )
+        const onMouseDown = event => this.handleToolbar(event, button)
+        return <button className={className} onMouseDown={onMouseDown}>{button.text}</button>
       })}
     </div>
   )
 
   renderEditor = () => (
     <Editor
-      placeholder="" spellCheck
+      spellCheck={this.props.spellCheck}
+      placeholder={this.props.placeholder}
       plugins={plugins} schema={schema}
       state={this.state.state}
       onChange={this.onChange}
@@ -85,12 +82,14 @@ export default class WikiEditor extends Component {
 WikiEditor.propTypes = {
   html:        PropTypes.string,
   placeholder: PropTypes.string,
+  spellCheck:  PropTypes.bool,
 
   onHtmlChange: PropTypes.func,
 }
 WikiEditor.defaultProps = {
   html:        '<p></p>',
   placeholder: 'Enter some text...',
+  spellCheck:  true,
 
   onHtmlChange: undefined,
 }

@@ -4,8 +4,8 @@ import TextDecorators from './TextDecorators'
 
 const PLUGINS = [
   Paragraph,
-  Table,
   TextDecorators,
+  Table,
 ]
 
 export const serializers = PLUGINS

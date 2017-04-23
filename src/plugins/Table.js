@@ -1,5 +1,6 @@
 /* eslint-disable react/react-in-jsx-scope,react/prop-types */
-import EditTablePlugin from 'slate-edit-table'
+// import EditTablePlugin from 'slate-edit-table'
+import * as Actions from './Table/Actions'
 
 const options = {
   typeTable: 'table',
@@ -9,10 +10,10 @@ const options = {
   defaultAlign: 'justify',
 }
 
-const plugin = EditTablePlugin(options)
+// const plugin = EditTablePlugin(options)
 
 const MAPPINGS = [
-  { icon: 'add-table', action: 'insertTable', params: [5, 5], alwaysVisible: true },
+  { icon: 'add-table', action: 'insertTable', params: [1, 1], alwaysVisible: true },
   { text: 'Remove Table', action: 'removeTable' },
 
   { text: 'Insert Column', action: 'insertColumn' },
@@ -26,121 +27,27 @@ const MAPPINGS = [
   { icon: 'align-justify', params: ['justify'], action: 'setColumnAlign' },
 ]
 
-const getPosition = ({ state }) => {
-  const cell = state.startBlock
-  const row = state.document.getParent(cell.key)
-  const table = state.document.getParent(row.key)
-  return {
-    cell,
-    columnIndex: row.nodes.findIndex(c => c === cell),
-    columnCount: row.nodes.size,
-    row,
-    rowIndex:    table.nodes.findIndex(r => r === row),
-    rowCount:    table.nodes.size,
-    table,
-  }
-}
-
-const transforms = {
-  ...plugin.transforms,
-
-  setColumnAlign: (transform, setTo) => {
-    const { columnIndex, table } = getPosition(transform)
-    const align = table.data.get('align')
-    align.splice(columnIndex, 1, setTo)
-
-    let t = transform.setNodeByKey(table.key, { data: { align } })
-    table.nodes.forEach((row) => {
-      const cell = row.nodes.get(columnIndex)
-      t = t.setNodeByKey(cell.key, { data: { align: setTo } })
-    })
-
-    return t
-  },
-
-  insertColumn: (transform) => {
-    const { moveSelectionBy, insertColumn } = plugin.transforms
-    const { selection } = transform.state
-    return insertColumn(moveSelectionBy(transform, -1, 0)).select(selection)
-  },
-
-  removeColumn: (transform) => {
-    const { moveSelectionBy } = plugin.transforms
-    const { columnCount, columnIndex, table } = getPosition(transform)
-
-    let moveBy = 0
-    if (columnCount > 1 && columnIndex === 0) {
-      moveBy = 1
-    } else if (columnCount > 1 && columnIndex === columnCount - 1) {
-      moveBy = -1
-    }
-
-    const rows = table.nodes
-
-    let t = moveSelectionBy(transform, moveBy, 0)
-    if (columnCount > 1) {
-      rows.forEach((row) => {
-        const cell = row.nodes.get(columnIndex)
-        t = t.removeNodeByKey(cell.key)
-      })
-
-      const align = table.data.get('align')
-      align.splice(columnIndex, 1)
-      t = t.setNodeByKey(table.key, { data: { align } })
-    } else {
-      rows.forEach((row) => {
-        row.nodes.forEach((cell) => {
-          cell.nodes.forEach((node) => {
-            t = t.removeNodeByKey(node.key)
-          })
-        })
-      })
-    }
-
-    return t
-  },
-
-  insertRow: (transform) => {
-    const { moveSelectionBy, insertRow } = plugin.transforms
-    const { selection } = transform.state
-    return insertRow(moveSelectionBy(transform, 0, -1)).select(selection)
-  },
-
-  removeRow: (transform) => {
-    const { moveSelectionBy } = plugin.transforms
-    const { row, rowCount, rowIndex } = getPosition(transform)
-
-    let moveBy = 0
-    if (rowCount > 1 && rowIndex === 0) {
-      moveBy = 1
-    } else if (rowCount > 1 && rowIndex === rowCount - 1) {
-      moveBy = -1
-    }
-
-    return moveSelectionBy(transform, 0, moveBy).removeNodeByKey(row.key)
-  },
-}
-
 const applyAction = (action, state, params) => {
-  const fn = transforms[action]
+  const fn = Actions[action]
   if (typeof fn !== 'function') return state
 
   return fn(state.transform(), ...params).apply()
 }
 
+function isWithinTable(state) {
+  if (!state.selection.startKey) return false
+  return (state.startBlock.type === 'td')
+}
+
 export default {
-  ...plugin,
-
   schema: {
-    ...plugin.schema,
-
     nodes: {
       table: props => <table><tbody {...props.attributes}>{props.children}</tbody></table>,
       tr:    props => <tr {...props.attributes}>{props.children}</tr>,
       td:    (props) => {
-        const { columnIndex, table } = getPosition(props)
-        const align = table.data.get('align')[columnIndex] || options.defaultAlign
-        return <td style={{ textAlign: align }} {...props.attributes}>{props.children}</td>
+        // const { columnIndex, table } = getPosition(props)
+        // const align = table.data.get('align')[columnIndex] || options.defaultAlign
+        return <td style={{ textAlign: 'left' }} {...props.attributes}>{props.children}</td>
       },
     },
   },
@@ -176,8 +83,6 @@ export default {
     },
   }],
 
-  transforms,
-
   toolbarButtons: MAPPINGS.filter(m => m.icon || m.text)
     .reduce((all, { alwaysVisible, action, icon, text, params = [] }) => [
       ...all, {
@@ -185,7 +90,7 @@ export default {
         text,
         isActive:  () => false,
         onClick:   state => applyAction(action, state, params),
-        isVisible: alwaysVisible || plugin.utils.isSelectionInTable,
+        isVisible: state => alwaysVisible || isWithinTable(state),
       },
     ], [])
   ,

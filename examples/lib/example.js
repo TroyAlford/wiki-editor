@@ -6241,199 +6241,7 @@ module.exports = ReactComponentTreeHook;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Immutable = __webpack_require__(4);
-
-var DEFAULTS = {
-    // Block containr for the table
-    table: null,
-
-    // Block for current row
-    row: null,
-
-    // Block for current cell
-    cell: null
-};
-
-var TablePosition = function (_ref) {
-    _inherits(TablePosition, _ref);
-
-    function TablePosition() {
-        _classCallCheck(this, TablePosition);
-
-        return _possibleConstructorReturn(this, (TablePosition.__proto__ || Object.getPrototypeOf(TablePosition)).apply(this, arguments));
-    }
-
-    _createClass(TablePosition, [{
-        key: 'getWidth',
-
-
-        /**
-         * Get count of columns
-         * @return {Number}
-         */
-        value: function getWidth() {
-            var table = this.table;
-
-            var rows = table.nodes;
-            var cells = rows.get(0).nodes;
-
-            return cells.size;
-        }
-
-        /**
-         * Get count of rows
-         * @return {Number}
-         */
-
-    }, {
-        key: 'getHeight',
-        value: function getHeight() {
-            var table = this.table;
-
-            var rows = table.nodes;
-
-            return rows.size;
-        }
-
-        /**
-         * Get index of current row in the table.
-         * @return {Number}
-         */
-
-    }, {
-        key: 'getRowIndex',
-        value: function getRowIndex() {
-            var table = this.table,
-                row = this.row;
-
-            var rows = table.nodes;
-
-            return rows.findIndex(function (x) {
-                return x === row;
-            });
-        }
-
-        /**
-         * Get index of current column in the row.
-         * @return {Number}
-         */
-
-    }, {
-        key: 'getColumnIndex',
-        value: function getColumnIndex() {
-            var row = this.row,
-                cell = this.cell;
-
-            var cells = row.nodes;
-
-            return cells.findIndex(function (x) {
-                return x === cell;
-            });
-        }
-
-        /**
-         * @return {Boolean} True if on first cell of the table
-         */
-
-    }, {
-        key: 'isFirstCell',
-        value: function isFirstCell() {
-            return this.isFirstRow() && this.isFirstColumn();
-        }
-
-        /**
-         * @return {Boolean} True if on last cell of the table
-         */
-
-    }, {
-        key: 'isLastCell',
-        value: function isLastCell() {
-            return this.isLastRow() && this.isLastColumn();
-        }
-
-        /**
-         * @return {Boolean} True if on first row
-         */
-
-    }, {
-        key: 'isFirstRow',
-        value: function isFirstRow() {
-            return this.getRowIndex() === 0;
-        }
-
-        /**
-         * @return {Boolean} True if on last row
-         */
-
-    }, {
-        key: 'isLastRow',
-        value: function isLastRow() {
-            return this.getRowIndex() === this.getHeight() - 1;
-        }
-
-        /**
-         * @return {Boolean} True if on first column
-         */
-
-    }, {
-        key: 'isFirstColumn',
-        value: function isFirstColumn() {
-            return this.getColumnIndex() === 0;
-        }
-
-        /**
-         * @return {Boolean} True if on last column
-         */
-
-    }, {
-        key: 'isLastColumn',
-        value: function isLastColumn() {
-            return this.getColumnIndex() === this.getWidth() - 1;
-        }
-
-        /**
-         * Create a new instance of a TablePosition from a Slate state
-         * and a current cell.
-         *
-         * @param  {Slate.State} state
-         * @param  {State.Block} cell
-         * @return {TablePosition}
-         */
-
-    }], [{
-        key: 'create',
-        value: function create(state, cell) {
-            var row = state.document.getParent(cell.key);
-            var table = state.document.getParent(row.key);
-
-            return new TablePosition({
-                table: table,
-                row: row,
-                cell: cell
-            });
-        }
-    }]);
-
-    return TablePosition;
-}(new Immutable.Record(DEFAULTS));
-
-module.exports = TablePosition;
-
-/***/ }),
+/* 14 */,
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -15663,23 +15471,7 @@ module.exports = canDefineProperty;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 65 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var ALIGN = {
-    LEFT: 'left',
-    RIGHT: 'right',
-    CENTER: 'center'
-};
-
-ALIGN.DEFAULT = ALIGN.LEFT;
-
-module.exports = ALIGN;
-
-/***/ }),
+/* 65 */,
 /* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -25334,201 +25126,10 @@ exports.PassThrough = __webpack_require__(370);
 
 
 /***/ }),
-/* 106 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _require = __webpack_require__(4),
-    Range = _require.Range;
-
-var ALIGN = __webpack_require__(65);
-
-/**
- * Create a set of alignment
- * @param  {Number} columns
- * @param  {List} base
- * @return {List} list
- */
-function createAlign(columns) {
-  var base = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-
-  return Range(0, columns).map(function (i) {
-    return base[i] || ALIGN.DEFAULT;
-  }).toArray();
-}
-
-module.exports = createAlign;
-
-/***/ }),
-/* 107 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var createRow = __webpack_require__(169);
-var TablePosition = __webpack_require__(14);
-
-/**
- * Insert a new row in current table
- *
- * @param {Object} opts
- * @param {Slate.Transform} transform
- * @param {Number} at
- * @param {Function} textGetter
- * @return {Slate.Transform}
- */
-function insertRow(opts, transform, at, textGetter) {
-    var state = transform.state;
-    var startBlock = state.startBlock;
-
-
-    var pos = TablePosition.create(state, startBlock);
-    var table = pos.table;
-
-    // Create a new row with the right count of cells
-
-    var firstRow = table.nodes.get(0);
-    var newRow = createRow(opts, firstRow.nodes.size, textGetter);
-
-    if (typeof at === 'undefined') {
-        at = pos.getRowIndex() + 1;
-    }
-
-    return transform.insertNodeByKey(table.key, at, newRow).collapseToEndOf(newRow.nodes.get(pos.getColumnIndex()));
-}
-
-module.exports = insertRow;
-
-/***/ }),
-/* 108 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var TablePosition = __webpack_require__(14);
-
-/**
- * Move selection to {x,y}
- *
- * @param {Object} opts
- * @param {Slate.Transform} transform
- * @param {Number} x
- * @param {Number} y
- * @return {Slate.Transform}
- */
-function moveSelection(opts, transform, x, y) {
-    var state = transform.state;
-    var startBlock = state.startBlock,
-        startOffset = state.startOffset;
-
-
-    if (startBlock.type !== opts.typeCell) {
-        throw new Error('moveSelection can only be applied from within a cell');
-    }
-
-    var pos = TablePosition.create(state, startBlock);
-    var table = pos.table;
-
-
-    var row = table.nodes.get(y);
-    var cell = row.nodes.get(x);
-
-    // Calculate new offset
-    if (startOffset > cell.length) {
-        startOffset = cell.length;
-    }
-
-    return transform.collapseToEndOf(cell).moveOffsetsTo(startOffset);
-}
-
-module.exports = moveSelection;
-
-/***/ }),
-/* 109 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-var TablePosition = __webpack_require__(14);
-var moveSelection = __webpack_require__(108);
-
-/**
- * Move selection by a {x,y} relative movement
- *
- * @param {Object} opts
- * @param {Slate.Transform} transform
- * @param {Number} x Move horizontally by x
- * @param {Number} y Move vertically by y
- * @return {Slate.Transform}
- */
-function moveSelectionBy(opts, transform, x, y) {
-    var state = transform.state;
-    var startBlock = state.startBlock;
-
-
-    if (startBlock.type !== opts.typeCell) {
-        throw new Error('moveSelectionBy can only be applied in a cell');
-    }
-
-    var pos = TablePosition.create(state, startBlock);
-    var rowIndex = pos.getRowIndex();
-    var colIndex = pos.getColumnIndex();
-    var width = pos.getWidth();
-    var height = pos.getHeight();
-
-    var _normPos = normPos(x + colIndex, y + rowIndex, width, height),
-        _normPos2 = _slicedToArray(_normPos, 2),
-        absX = _normPos2[0],
-        absY = _normPos2[1];
-
-    if (absX === -1) {
-        // Out of table
-        return transform;
-    }
-
-    return moveSelection(opts, transform, absX, absY);
-}
-
-/**
- * Normalize position in a table. If x is out of the row, update y accordingly
- * @param {Number} x
- * @param {Number} y
- * @param {Number} width
- * @param {Number} height
- * @return {Array<Number>} [-1, -1] if the new selection is out of table
- */
-function normPos(x, y, width, height) {
-    if (x < 0) {
-        x = width - 1;
-        y--;
-    }
-
-    if (y < 0) {
-        return [-1, -1];
-    }
-
-    if (x >= width) {
-        x = 0;
-        y++;
-    }
-
-    if (y >= height) {
-        return [-1, -1];
-    }
-
-    return [x, y];
-}
-
-module.exports = moveSelectionBy;
-
-/***/ }),
+/* 106 */,
+/* 107 */,
+/* 108 */,
+/* 109 */,
 /* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -35499,67 +35100,8 @@ module.exports = __webpack_require__(58).EventEmitter;
 
 
 /***/ }),
-/* 168 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var Slate = __webpack_require__(32);
-
-/**
- * Create a new cell
- * @param {String} type
- * @param {String} text?
- * @return {Slate.Node}
- */
-function createCell(type, text) {
-    text = text || '';
-
-    return Slate.Block.create({
-        type: type,
-        nodes: [Slate.Raw.deserializeText({
-            kind: 'text',
-            text: text
-        }, { terse: true })]
-    });
-}
-
-module.exports = createCell;
-
-/***/ }),
-/* 169 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var Immutable = __webpack_require__(4);
-var Slate = __webpack_require__(32);
-var createCell = __webpack_require__(168);
-
-/**
- * Create a new row block
- *
- * @param {Object} opts
- * @param {Number} columns
- * @param {Function} textGetter
- * @return {State.Block}
- */
-function createRow(opts, columns, textGetter) {
-    var cellNodes = Immutable.Range(0, columns).map(function (i) {
-        return createCell(opts.typeCell, textGetter ? textGetter(i) : '');
-    }).toList();
-
-    return Slate.Block.create({
-        type: opts.typeRow,
-        nodes: cellNodes
-    });
-}
-
-module.exports = createRow;
-
-/***/ }),
+/* 168 */,
+/* 169 */,
 /* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -36840,18 +36382,14 @@ var WikiEditor = function (_Component) {
 
           var isActive = typeof button.isActive === 'function' ? button.isActive(_this.state.state) : !!button.isActive;
 
-          var className = ['toolbar-button icon icon-' + button.icon, isActive ? 'is-active' : 'is-inactive'].filter(function (c) {
-            return c;
-          }).join(' ');
+          var className = ['toolbar-button icon icon-' + button.icon, isActive ? 'is-active' : 'is-inactive'].join(' ');
 
+          var onMouseDown = function onMouseDown(event) {
+            return _this.handleToolbar(event, button);
+          };
           return _react2.default.createElement(
             'button',
-            {
-              className: className, 'data-active': isActive,
-              onMouseDown: function onMouseDown(event) {
-                return _this.handleToolbar(event, button);
-              }
-            },
+            { className: className, onMouseDown: onMouseDown },
             button.text
           );
         })
@@ -36860,7 +36398,8 @@ var WikiEditor = function (_Component) {
 
     _this.renderEditor = function () {
       return _react2.default.createElement(_slate.Editor, {
-        placeholder: '', spellCheck: true,
+        spellCheck: _this.props.spellCheck,
+        placeholder: _this.props.placeholder,
         plugins: _plugins2.default, schema: _plugins.schema,
         state: _this.state.state,
         onChange: _this.onChange,
@@ -36904,12 +36443,14 @@ exports.default = WikiEditor;
 WikiEditor.propTypes = {
   html: _react.PropTypes.string,
   placeholder: _react.PropTypes.string,
+  spellCheck: _react.PropTypes.bool,
 
   onHtmlChange: _react.PropTypes.func
 };
 WikiEditor.defaultProps = {
   html: '<p></p>',
   placeholder: 'Enter some text...',
+  spellCheck: true,
 
   onHtmlChange: undefined
 };
@@ -37006,7 +36547,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-var PLUGINS = [_Paragraph2.default, _Table2.default, _TextDecorators2.default];
+var PLUGINS = [_Paragraph2.default, _TextDecorators2.default, _Table2.default];
 
 var serializers = exports.serializers = PLUGINS.filter(function (plugin) {
   return Array.isArray(plugin.serializers);
@@ -70408,936 +69949,19 @@ module.exports = isBackward;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8), __webpack_require__(0)))
 
 /***/ }),
-/* 377 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _require = __webpack_require__(4),
-    Range = _require.Range;
-
-var Slate = __webpack_require__(32);
-var createRow = __webpack_require__(169);
-var createAlign = __webpack_require__(106);
-
-/**
- * Create a table
- *
- * @param {Slate.State} state
- * @param {Object} opts
- * @param {Number} columns
- * @param {Number} rows
- * @param {Function} textGetter
- * @return {State.Block}
- */
-function createTable(opts, columns, rows, textGetter) {
-    var rowNodes = Range(0, rows).map(function (i) {
-        return createRow(opts, columns, textGetter ? textGetter.bind(null, i) : null);
-    }).toList();
-    var align = createAlign(columns);
-
-    return Slate.Block.create({
-        type: opts.typeTable,
-        nodes: rowNodes,
-        data: {
-            align: align
-        }
-    });
-}
-
-module.exports = createTable;
-
-/***/ }),
-/* 378 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-var insertTable = __webpack_require__(385);
-var insertRow = __webpack_require__(107);
-var removeRow = __webpack_require__(387);
-var insertColumn = __webpack_require__(384);
-var removeColumn = __webpack_require__(386);
-var removeTable = __webpack_require__(388);
-var moveSelection = __webpack_require__(108);
-var moveSelectionBy = __webpack_require__(109);
-var setColumnAlign = __webpack_require__(389);
-
-var onEnter = __webpack_require__(381);
-var onTab = __webpack_require__(382);
-var onBackspace = __webpack_require__(380);
-var onUpDown = __webpack_require__(383);
-var ALIGN = __webpack_require__(65);
-var makeSchema = __webpack_require__(379);
-
-var KEY_ENTER = 'enter';
-var KEY_TAB = 'tab';
-var KEY_BACKSPACE = 'backspace';
-var KEY_DOWN = 'down';
-var KEY_UP = 'up';
-
-/**
- * @param {String} opts.typeTable The type of table blocks
- * @param {String} opts.typeRow The type of row blocks
- * @param {String} opts.typeCell The type of cell blocks
- */
-function EditTable(opts) {
-    opts = opts || {};
-    opts.typeTable = opts.typeTable || 'table';
-    opts.typeRow = opts.typeRow || 'table_row';
-    opts.typeCell = opts.typeCell || 'table_cell';
-
-    /**
-     * Is the selection in a table
-     */
-    function isSelectionInTable(state) {
-        if (!state.selection.startKey) return false;
-
-        var startBlock = state.startBlock;
-
-        // Only handle events in cells
-
-        return startBlock.type === opts.typeCell;
-    }
-
-    /**
-     * Bind a transform
-     */
-    function bindTransform(fn) {
-        return function (transform) {
-            var state = transform.state;
-
-
-            if (!isSelectionInTable(state)) {
-                return transform;
-            }
-
-            for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-                args[_key - 1] = arguments[_key];
-            }
-
-            return fn.apply(undefined, _toConsumableArray([opts, transform].concat(args)));
-        };
-    }
-
-    /**
-     * User is pressing a key in the editor
-     */
-    function onKeyDown(e, data, state) {
-        // Only handle events in cells
-        if (!isSelectionInTable(state)) {
-            return;
-        }
-
-        // Build arguments list
-        var args = [e, data, state, opts];
-
-        switch (data.key) {
-            case KEY_ENTER:
-                return onEnter.apply(undefined, args);
-            case KEY_TAB:
-                return onTab.apply(undefined, args);
-            case KEY_BACKSPACE:
-                return onBackspace.apply(undefined, args);
-            case KEY_DOWN:
-            case KEY_UP:
-                return onUpDown.apply(undefined, args);
-        }
-    }
-
-    var schema = makeSchema(opts);
-
-    return {
-        onKeyDown: onKeyDown,
-
-        schema: schema,
-
-        utils: {
-            isSelectionInTable: isSelectionInTable
-        },
-
-        transforms: {
-            insertTable: insertTable.bind(null, opts),
-            insertRow: bindTransform(insertRow),
-            removeRow: bindTransform(removeRow),
-            insertColumn: bindTransform(insertColumn),
-            removeColumn: bindTransform(removeColumn),
-            removeTable: bindTransform(removeTable),
-            moveSelection: bindTransform(moveSelection),
-            moveSelectionBy: bindTransform(moveSelectionBy),
-            setColumnAlign: bindTransform(setColumnAlign)
-        }
-    };
-}
-
-// Expose align constants to the plugin
-EditTable.ALIGN = ALIGN;
-
-module.exports = EditTable;
-
-/***/ }),
-/* 379 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var Slate = __webpack_require__(32);
-
-var _require = __webpack_require__(4),
-    Range = _require.Range,
-    List = _require.List;
-
-var createAlign = __webpack_require__(106);
-
-/**
- * Create a schema for tables
- * @param {String} opts.typeTable The type of table blocks
- * @param {String} opts.typeRow The type of row blocks
- * @param {String} opts.typeCell The type of cell blocks
- * @return {Object} A schema definition with rules to normalize tables
- */
-function makeSchema(opts) {
-    return {
-        rules: [cellsWithinTable(opts), rowsWithinTable(opts), tablesContainOnlyRows(opts), rowsContainRequiredColumns(opts), tableContainAlignData(opts)]
-    };
-}
-
-/**
- * Rule to enforce cells are always surrounded by a row.
- *
- * @param {String} opts.typeTable The type of table blocks
- * @param {String} opts.typeRow The type of row blocks
- * @param {String} opts.typeCell The type of cell blocks
- * @return {Object} A rule to ensure cells are always surrounded by a row.
- */
-function cellsWithinTable(opts) {
-    return {
-        match: function match(node) {
-            return (node.kind === 'document' || node.kind === 'block') && node.type !== opts.typeRow;
-        },
-
-
-        // Find child cells nodes not in a row
-        validate: function validate(node) {
-            var cells = node.nodes.filter(function (n) {
-                return n.type === opts.typeCell;
-            });
-
-            if (cells.isEmpty()) return;
-
-            return {
-                cells: cells
-            };
-        },
-
-
-        // If any, wrap all cells in a row block
-        normalize: function normalize(transform, node, _ref) {
-            var cells = _ref.cells;
-
-            transform = cells.reduce(function (tr, cell) {
-                return tr.wrapBlockByKey(cell.key, opts.typeRow, { normalize: false });
-            }, transform);
-
-            return transform;
-        }
-    };
-}
-
-/**
- * Rule to enforce rows are always surrounded by a table.
- *
- * @param {String} opts.typeTable The type of table blocks
- * @param {String} opts.typeRow The type of row blocks
- * @param {String} opts.typeCell The type of cell blocks
- * @return {Object} A rule to ensure rows are always surrounded by a table.
- */
-function rowsWithinTable(opts) {
-    return {
-        match: function match(node) {
-            return (node.kind === 'document' || node.kind === 'block') && node.type !== opts.typeTable;
-        },
-
-
-        // Find child cells nodes not in a row
-        validate: function validate(node) {
-            var rows = node.nodes.filter(function (n) {
-                return n.type === opts.typeRow;
-            });
-
-            if (rows.isEmpty()) return;
-
-            return {
-                rows: rows
-            };
-        },
-
-
-        // If any, wrap all cells in a row block
-        normalize: function normalize(transform, node, _ref2) {
-            var rows = _ref2.rows;
-
-            transform = rows.reduce(function (tr, row) {
-                return tr.wrapBlockByKey(row.key, {
-                    type: opts.typeTable,
-                    data: {
-                        align: createAlign(row.nodes.size)
-                    }
-                }, { normalize: false });
-            }, transform);
-
-            return transform;
-        }
-    };
-}
-
-/**
- * @param {String} opts.typeTable The type of table blocks
- * @param {String} opts.typeRow The type of row blocks
- * @param {String} opts.typeCell The type of cell blocks
- * @return {Object} A rule that ensures tables only contain rows and
- * at least one.
- */
-function tablesContainOnlyRows(opts) {
-    var isRow = function isRow(node) {
-        return node.type === opts.typeRow;
-    };
-
-    return {
-        match: function match(node) {
-            return node.type === opts.typeTable;
-        },
-        validate: function validate(table) {
-            // Figure out invalid rows
-            var invalids = table.nodes.filterNot(isRow);
-
-            // Figure out valid rows
-            var add = invalids.size === table.nodes.size ? [makeEmptyRow(opts)] : [];
-
-            if (invalids.isEmpty() && add.length === 0) {
-                return null;
-            }
-
-            return {
-                invalids: invalids,
-                add: add
-            };
-        },
-
-
-        /**
-         * Replaces the node's children
-         * @param {List<Nodes>} value.nodes
-         */
-        normalize: function normalize(transform, node, _ref3) {
-            var _ref3$invalids = _ref3.invalids,
-                invalids = _ref3$invalids === undefined ? [] : _ref3$invalids,
-                _ref3$add = _ref3.add,
-                add = _ref3$add === undefined ? [] : _ref3$add;
-
-            // Remove invalids
-            transform = invalids.reduce(function (t, child) {
-                return t.removeNodeByKey(child.key, { normalize: false });
-            }, transform);
-
-            // Add valids
-            transform = add.reduce(function (t, child) {
-                return t.insertNodeByKey(node.key, 0, child);
-            }, transform);
-
-            return transform;
-        }
-    };
-}
-
-/**
- * @param {String} opts.typeTable The type of table blocks
- * @param {String} opts.typeRow The type of row blocks
- * @param {String} opts.typeCell The type of cell blocks
- * @return {Object} A rule that ensures rows contains only cells, and
- * as much cells as there is columns in the table.
- */
-function rowsContainRequiredColumns(opts) {
-    var isRow = function isRow(node) {
-        return node.type === opts.typeRow;
-    };
-    var isCell = function isCell(node) {
-        return node.type === opts.typeCell;
-    };
-    var countCells = function countCells(row) {
-        return row.nodes.count(isCell);
-    };
-
-    return {
-        match: function match(node) {
-            return node.type === opts.typeTable;
-        },
-        validate: function validate(table) {
-            var rows = table.nodes.filter(isRow);
-
-            // The number of column this table has
-            var columns = rows.reduce(function (count, row) {
-                return Math.max(count, countCells(row));
-            }, 1); // Min 1 column
-
-
-            var valid = rows.every(function (row) {
-                return columns === countCells(row);
-            });
-            if (valid) {
-                return null;
-            }
-            // else normalize, by padding with empty cells
-            return rows.map(function (row) {
-                var cells = countCells(row);
-                var invalids = row.nodes.filterNot(isCell);
-
-                // Row is valid: right count of cells and no extra node
-                if (invalids.isEmpty() && cells === columns) {
-                    return null;
-                }
-
-                // Otherwise, remove the invalids and append the missing cells
-                return {
-                    row: row,
-                    invalids: invalids,
-                    add: columns - cells
-                };
-            }).filter(Boolean);
-        },
-
-
-        /**
-         * Updates by key every given nodes
-         * @param {List<Nodes>} value.toUpdate
-         */
-        normalize: function normalize(transform, node, rows) {
-            return rows.reduce(function (tr, _ref4) {
-                var row = _ref4.row,
-                    invalids = _ref4.invalids,
-                    add = _ref4.add;
-
-                tr = invalids.reduce(function (t, child) {
-                    return t.removeNodeByKey(child.key, { normalize: false });
-                }, tr);
-
-                tr = Range(0, add).reduce(function (t) {
-                    var cell = makeEmptyCell(opts);
-                    return t.insertNodeByKey(row.key, 0, cell, { normalize: false });
-                }, tr);
-
-                return tr;
-            }, transform);
-        }
-    };
-}
-
-/**
- * @param {String} opts.typeTable The type of table blocks
- * @param {String} opts.typeRow The type of row blocks
- * @param {String} opts.typeCell The type of cell blocks
- * @return {Object} A rule that ensures table node has all align data
- */
-function tableContainAlignData(opts) {
-    return {
-        match: function match(node) {
-            return node.type === opts.typeTable;
-        },
-        validate: function validate(table) {
-            var align = table.data.get('align', List());
-            var row = table.nodes.first();
-            var columns = row.nodes.size;
-
-            return align.length == columns ? null : { align: align, columns: columns };
-        },
-
-
-        /**
-         * Updates by key the table to add the data
-         * @param {Map} align
-         * @param {Number} columns
-         */
-        normalize: function normalize(transform, node, _ref5) {
-            var align = _ref5.align,
-                columns = _ref5.columns;
-
-            return transform.setNodeByKey(node.key, {
-                data: { align: createAlign(columns, align) }
-            }, { normalize: false });
-        }
-    };
-}
-
-function makeEmptyCell(opts) {
-    return Slate.Block.create({
-        type: opts.typeCell
-    });
-}
-
-function makeEmptyRow(opts) {
-    return Slate.Block.create({
-        type: opts.typeRow,
-        nodes: List([makeEmptyCell(opts)])
-    });
-}
-
-module.exports = makeSchema;
-
-/***/ }),
-/* 380 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var Slate = __webpack_require__(32);
-
-function onBackspace(event, data, state, opts) {
-    var startBlock = state.startBlock,
-        startOffset = state.startOffset,
-        isCollapsed = state.isCollapsed,
-        endBlock = state.endBlock;
-
-    // If a cursor is collapsed at the start of the block, do nothing
-
-    if (startOffset === 0 && isCollapsed) {
-        event.preventDefault();
-        return state;
-    }
-
-    // If "normal" deletion, we continue
-    if (startBlock === endBlock) {
-        return;
-    }
-
-    // If cursor is between multiple blocks,
-    // we clear the content of the cells
-    event.preventDefault();
-
-    var blocks = state.blocks,
-        focusBlock = state.focusBlock;
-
-    var transform = blocks.reduce(function (tr, block) {
-        if (block.type !== opts.typeCell) {
-            return transform;
-        }
-
-        var cellRange = Slate.Selection.create().moveToRangeOf(block);
-
-        return tr.deleteAtRange(cellRange);
-    }, state.transform());
-
-    // Clear selected cells
-    return transform.collapseToStartOf(focusBlock).apply();
-}
-
-module.exports = onBackspace;
-
-/***/ }),
-/* 381 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var insertRow = __webpack_require__(107);
-
-/**
- * Insert a new row when pressing "Enter"
- */
-function onEnter(event, data, state, opts) {
-  event.preventDefault();
-
-  return insertRow(opts, state.transform()).apply();
-}
-
-module.exports = onEnter;
-
-/***/ }),
-/* 382 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var TablePosition = __webpack_require__(14);
-var moveSelectionBy = __webpack_require__(109);
-var insertRow = __webpack_require__(107);
-
-/**
- * Select all text of current block.
- * @param {Slate.Transform} transform
- * @return {Slate.Transform}
- */
-function selectAllText(transform) {
-    var state = transform.state;
-    var startBlock = state.startBlock;
-
-
-    return transform.moveOffsetsTo(0).extend(startBlock.length);
-}
-
-/**
- * Pressing "Tab" moves the cursor to the next cell
- * and select the whole text
- */
-function onTab(event, data, state, opts) {
-    event.preventDefault();
-    var direction = data.isShift ? -1 : +1;
-    var transform = state.transform();
-
-    // Create new row if needed
-    var startBlock = state.startBlock;
-
-    var pos = TablePosition.create(state, startBlock);
-    if (pos.isFirstCell() && direction === -1) {
-        transform = insertRow(opts, transform, 0);
-    } else if (pos.isLastCell() && direction === 1) {
-        transform = insertRow(opts, transform);
-    }
-
-    // Move
-    transform = moveSelectionBy(opts, transform, direction, 0);
-
-    // Select all cell.
-    return selectAllText(transform).apply();
-}
-
-module.exports = onTab;
-
-/***/ }),
-/* 383 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var TablePosition = __webpack_require__(14);
-var moveSelectionBy = __webpack_require__(109);
-
-function onUpDown(event, data, state, opts) {
-
-    var direction = data.key === 'up' ? -1 : +1;
-    var pos = TablePosition.create(state, state.startBlock);
-
-    if (pos.isFirstRow() && direction === -1 || pos.isLastRow() && direction === +1) {
-        // Let the default behavior move out of the table
-        return state;
-    } else {
-        event.preventDefault();
-
-        var transform = state.transform();
-        transform = moveSelectionBy(opts, transform, 0, data.key === 'up' ? -1 : +1);
-
-        return transform.apply();
-    }
-}
-
-module.exports = onUpDown;
-
-/***/ }),
-/* 384 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _require = __webpack_require__(4),
-    List = _require.List;
-
-var TablePosition = __webpack_require__(14);
-var moveSelection = __webpack_require__(108);
-var createCell = __webpack_require__(168);
-var ALIGN = __webpack_require__(65);
-
-/**
- * Insert a new column in current table
- *
- * @param {Object} opts
- * @param {Slate.Transform} transform
- * @param {Number} at
- * @param {String} columnAlign
- * @return {Slate.Transform}
- */
-function insertColumn(opts, transform, at) {
-    var columnAlign = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : ALIGN.DEFAULT;
-    var _transform = transform,
-        state = _transform.state;
-    var startBlock = state.startBlock;
-
-
-    var pos = TablePosition.create(state, startBlock);
-    var table = pos.table;
-
-
-    if (typeof at === 'undefined') {
-        at = pos.getColumnIndex() + 1;
-    }
-
-    // Insert the new cell
-    table.nodes.forEach(function (row) {
-        var newCell = createCell(opts.typeCell);
-        transform = transform.insertNodeByKey(row.key, at, newCell);
-    });
-
-    // Update alignment
-    var align = List(table.data.get('align'));
-    align = align.insert(at, columnAlign);
-    transform = transform.setNodeByKey(table.key, {
-        data: { align: align }
-    });
-
-    // Update the selection (not doing can break the undo)
-    return moveSelection(opts, transform, pos.getColumnIndex() + 1, pos.getRowIndex());
-}
-
-module.exports = insertColumn;
-
-/***/ }),
-/* 385 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var createTable = __webpack_require__(377);
-
-/**
- * Insert a new table
- *
- * @param {Object} opts
- * @param {Slate.Transform} transform
- * @param {Number} columns
- * @param {Number} rows
- * @return {Slate.Transform}
- */
-function insertTable(opts, transform) {
-  var columns = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 2;
-  var rows = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 2;
-  var state = transform.state;
-
-
-  if (!state.selection.startKey) return false;
-
-  // Create the table node
-  var fillWithEmptyText = function fillWithEmptyText(x, y) {
-    return '';
-  };
-  var table = createTable(opts, columns, rows, fillWithEmptyText);
-
-  return transform.insertBlock(table);
-}
-
-module.exports = insertTable;
-
-/***/ }),
-/* 386 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _require = __webpack_require__(4),
-    List = _require.List;
-
-var TablePosition = __webpack_require__(14);
-
-/**
- * Delete current column in a table
- *
- * @param {Object} opts
- * @param {Slate.Transform} transform
- * @param {Number} at
- * @return {Slate.Transform}
- */
-function removeColumn(opts, transform, at) {
-    var _transform = transform,
-        state = _transform.state;
-    var startBlock = state.startBlock;
-
-
-    var pos = TablePosition.create(state, startBlock);
-    var table = pos.table;
-
-
-    if (typeof at === 'undefined') {
-        at = pos.getColumnIndex();
-    }
-
-    var rows = table.nodes;
-
-    // Remove the cell from every row
-    if (pos.getWidth() > 1) {
-        rows.forEach(function (row) {
-            var cell = row.nodes.get(at);
-            transform.removeNodeByKey(cell.key);
-        });
-
-        // Update alignment
-        var align = List(table.data.get('align'));
-        align = align.delete(at);
-        transform = transform.setNodeByKey(table.key, {
-            data: { align: align }
-        });
-    }
-    // If last column, clear text in cells instead
-    else {
-            rows.forEach(function (row) {
-                row.nodes.forEach(function (cell) {
-                    cell.nodes.forEach(function (node) {
-                        // We clear the texts in the cells
-                        transform.removeNodeByKey(node.key);
-                    });
-                });
-            });
-        }
-
-    // Replace the table
-    return transform;
-}
-
-module.exports = removeColumn;
-
-/***/ }),
-/* 387 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var TablePosition = __webpack_require__(14);
-
-/**
- * Remove current row in a table. Clear it if last remaining row
- *
- * @param {Object} opts
- * @param {Slate.Transform} transform
- * @param {Number} at
- * @return {Slate.Transform}
- */
-function removeRow(opts, transform, at) {
-    var state = transform.state;
-    var startBlock = state.startBlock;
-
-
-    var pos = TablePosition.create(state, startBlock);
-    var table = pos.table;
-
-
-    if (typeof at === 'undefined') {
-        at = pos.getRowIndex();
-    }
-
-    var row = table.nodes.get(at);
-    // Update table by removing the row
-    if (pos.getHeight() > 1) {
-        transform.removeNodeByKey(row.key);
-    }
-    // If last remaining row, clear it instead
-    else {
-            row.nodes.forEach(function (cell) {
-                cell.nodes.forEach(function (node) {
-                    transform.removeNodeByKey(node.key);
-                });
-            });
-        }
-
-    return transform;
-}
-
-module.exports = removeRow;
-
-/***/ }),
-/* 388 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var TablePosition = __webpack_require__(14);
-
-/**
- * Delete the whole table
- *
- * @param {Object} opts
- * @param {Slate.Transform} transform
- * @param {Number} at
- * @return {Slate.Transform}
- */
-function removeTable(opts, transform, at) {
-  var state = transform.state;
-  var startBlock = state.startBlock;
-
-
-  var pos = TablePosition.create(state, startBlock);
-  var table = pos.table;
-
-
-  return transform.deselect().removeNodeByKey(table.key);
-}
-
-module.exports = removeTable;
-
-/***/ }),
-/* 389 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var TablePosition = __webpack_require__(14);
-
-var _require = __webpack_require__(4),
-    List = _require.List;
-
-var ALIGN = __webpack_require__(65);
-var createAlign = __webpack_require__(106);
-
-/**
- * Sets column alignment for a given column
- *
- * @param {Object} opts
- * @param {Slate.Transform} transform
- * @param {Number} at
- * @param {String} align
- * @return {Slate.Transform}
- */
-function setColumnAlign(opts, transform) {
-    var align = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : ALIGN.DEFAULT;
-    var at = arguments[3];
-    var state = transform.state;
-    var startBlock = state.startBlock;
-
-
-    var pos = TablePosition.create(state, startBlock);
-    var table = pos.table;
-
-    // Figure out column position
-
-    if (typeof at === 'undefined') {
-        at = pos.getColumnIndex();
-    }
-
-    var newAlign = createAlign(pos.getWidth(), table.data.get('align'));
-    newAlign[at] = align;
-
-    transform.setNodeByKey(table.key, {
-        data: {
-            align: newAlign
-        }
-    });
-
-    return transform;
-}
-
-module.exports = setColumnAlign;
-
-/***/ }),
+/* 377 */,
+/* 378 */,
+/* 379 */,
+/* 380 */,
+/* 381 */,
+/* 382 */,
+/* 383 */,
+/* 384 */,
+/* 385 */,
+/* 386 */,
+/* 387 */,
+/* 388 */,
+/* 389 */,
 /* 390 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -80317,9 +78941,24 @@ function config (name) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-/* eslint-disable react/react-in-jsx-scope,react/prop-types */
+
+var _slate = __webpack_require__(32);
+
+var _slate2 = _interopRequireDefault(_slate);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
+  create: function create(text) {
+    var textNode = _slate2.default.Raw.deserializeText({
+      kind: 'text',
+      text: text || ''
+    }, { terse: true });
+
+    return _slate2.default.Block.create({ type: 'p', nodes: [textNode] });
+  },
+
+
   schema: {
     nodes: {
       paragraph: function paragraph(_ref) {
@@ -80352,7 +78991,7 @@ exports.default = {
       );
     }
   }]
-};
+}; /* eslint-disable react/react-in-jsx-scope,react/prop-types */
 
 /***/ }),
 /* 422 */,
@@ -80366,16 +79005,17 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; /* eslint-disable react/react-in-jsx-scope,react/prop-types */
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+var _Actions = __webpack_require__(426);
 
-var _slateEditTable = __webpack_require__(378);
+var Actions = _interopRequireWildcard(_Actions);
 
-var _slateEditTable2 = _interopRequireDefault(_slateEditTable);
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } } /* eslint-disable react/react-in-jsx-scope,react/prop-types */
+// import EditTablePlugin from 'slate-edit-table'
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 var options = {
   typeTable: 'table',
@@ -80385,138 +79025,24 @@ var options = {
   defaultAlign: 'justify'
 };
 
-var plugin = (0, _slateEditTable2.default)(options);
+// const plugin = EditTablePlugin(options)
 
-var MAPPINGS = [{ icon: 'add-table', action: 'insertTable', params: [5, 5], alwaysVisible: true }, { text: 'Remove Table', action: 'removeTable' }, { text: 'Insert Column', action: 'insertColumn' }, { text: 'Insert Row', action: 'insertRow' }, { text: 'Remove Column', action: 'removeColumn' }, { text: 'Remove Row', action: 'removeRow' }, { icon: 'align-left', params: ['left'], action: 'setColumnAlign' }, { icon: 'align-right', params: ['right'], action: 'setColumnAlign' }, { icon: 'align-center', params: ['center'], action: 'setColumnAlign' }, { icon: 'align-justify', params: ['justify'], action: 'setColumnAlign' }];
-
-var getPosition = function getPosition(_ref) {
-  var state = _ref.state;
-
-  var cell = state.startBlock;
-  var row = state.document.getParent(cell.key);
-  var table = state.document.getParent(row.key);
-  return {
-    cell: cell,
-    columnIndex: row.nodes.findIndex(function (c) {
-      return c === cell;
-    }),
-    columnCount: row.nodes.size,
-    row: row,
-    rowIndex: table.nodes.findIndex(function (r) {
-      return r === row;
-    }),
-    rowCount: table.nodes.size,
-    table: table
-  };
-};
-
-var transforms = _extends({}, plugin.transforms, {
-
-  setColumnAlign: function setColumnAlign(transform, setTo) {
-    var _getPosition = getPosition(transform),
-        columnIndex = _getPosition.columnIndex,
-        table = _getPosition.table;
-
-    var align = table.data.get('align');
-    align.splice(columnIndex, 1, setTo);
-
-    var t = transform.setNodeByKey(table.key, { data: { align: align } });
-    table.nodes.forEach(function (row) {
-      var cell = row.nodes.get(columnIndex);
-      t = t.setNodeByKey(cell.key, { data: { align: setTo } });
-    });
-
-    return t;
-  },
-
-  insertColumn: function insertColumn(transform) {
-    var _plugin$transforms = plugin.transforms,
-        moveSelectionBy = _plugin$transforms.moveSelectionBy,
-        insertColumn = _plugin$transforms.insertColumn;
-    var selection = transform.state.selection;
-
-    return insertColumn(moveSelectionBy(transform, -1, 0)).select(selection);
-  },
-
-  removeColumn: function removeColumn(transform) {
-    var moveSelectionBy = plugin.transforms.moveSelectionBy;
-
-    var _getPosition2 = getPosition(transform),
-        columnCount = _getPosition2.columnCount,
-        columnIndex = _getPosition2.columnIndex,
-        table = _getPosition2.table;
-
-    var moveBy = 0;
-    if (columnCount > 1 && columnIndex === 0) {
-      moveBy = 1;
-    } else if (columnCount > 1 && columnIndex === columnCount - 1) {
-      moveBy = -1;
-    }
-
-    var rows = table.nodes;
-
-    var t = moveSelectionBy(transform, moveBy, 0);
-    if (columnCount > 1) {
-      rows.forEach(function (row) {
-        var cell = row.nodes.get(columnIndex);
-        t = t.removeNodeByKey(cell.key);
-      });
-
-      var align = table.data.get('align');
-      align.splice(columnIndex, 1);
-      t = t.setNodeByKey(table.key, { data: { align: align } });
-    } else {
-      rows.forEach(function (row) {
-        row.nodes.forEach(function (cell) {
-          cell.nodes.forEach(function (node) {
-            t = t.removeNodeByKey(node.key);
-          });
-        });
-      });
-    }
-
-    return t;
-  },
-
-  insertRow: function insertRow(transform) {
-    var _plugin$transforms2 = plugin.transforms,
-        moveSelectionBy = _plugin$transforms2.moveSelectionBy,
-        insertRow = _plugin$transforms2.insertRow;
-    var selection = transform.state.selection;
-
-    return insertRow(moveSelectionBy(transform, 0, -1)).select(selection);
-  },
-
-  removeRow: function removeRow(transform) {
-    var moveSelectionBy = plugin.transforms.moveSelectionBy;
-
-    var _getPosition3 = getPosition(transform),
-        row = _getPosition3.row,
-        rowCount = _getPosition3.rowCount,
-        rowIndex = _getPosition3.rowIndex;
-
-    var moveBy = 0;
-    if (rowCount > 1 && rowIndex === 0) {
-      moveBy = 1;
-    } else if (rowCount > 1 && rowIndex === rowCount - 1) {
-      moveBy = -1;
-    }
-
-    return moveSelectionBy(transform, 0, moveBy).removeNodeByKey(row.key);
-  }
-});
+var MAPPINGS = [{ icon: 'add-table', action: 'insertTable', params: [1, 1], alwaysVisible: true }, { text: 'Remove Table', action: 'removeTable' }, { text: 'Insert Column', action: 'insertColumn' }, { text: 'Insert Row', action: 'insertRow' }, { text: 'Remove Column', action: 'removeColumn' }, { text: 'Remove Row', action: 'removeRow' }, { icon: 'align-left', params: ['left'], action: 'setColumnAlign' }, { icon: 'align-right', params: ['right'], action: 'setColumnAlign' }, { icon: 'align-center', params: ['center'], action: 'setColumnAlign' }, { icon: 'align-justify', params: ['justify'], action: 'setColumnAlign' }];
 
 var applyAction = function applyAction(action, state, params) {
-  var fn = transforms[action];
+  var fn = Actions[action];
   if (typeof fn !== 'function') return state;
 
   return fn.apply(undefined, [state.transform()].concat(_toConsumableArray(params))).apply();
 };
 
-exports.default = _extends({}, plugin, {
+function isWithinTable(state) {
+  if (!state.selection.startKey) return false;
+  return state.startBlock.type === 'td';
+}
 
-  schema: _extends({}, plugin.schema, {
-
+exports.default = {
+  schema: {
     nodes: {
       table: function table(props) {
         return React.createElement(
@@ -80537,19 +79063,16 @@ exports.default = _extends({}, plugin, {
         );
       },
       td: function td(props) {
-        var _getPosition4 = getPosition(props),
-            columnIndex = _getPosition4.columnIndex,
-            table = _getPosition4.table;
-
-        var align = table.data.get('align')[columnIndex] || options.defaultAlign;
+        // const { columnIndex, table } = getPosition(props)
+        // const align = table.data.get('align')[columnIndex] || options.defaultAlign
         return React.createElement(
           'td',
-          _extends({ style: { textAlign: align } }, props.attributes),
+          _extends({ style: { textAlign: 'left' } }, props.attributes),
           props.children
         );
       }
     }
-  }),
+  },
 
   serializers: [{
     deserialize: function deserialize(el, next) {
@@ -80599,17 +79122,15 @@ exports.default = _extends({}, plugin, {
     }
   }],
 
-  transforms: transforms,
-
   toolbarButtons: MAPPINGS.filter(function (m) {
     return m.icon || m.text;
-  }).reduce(function (all, _ref2) {
-    var alwaysVisible = _ref2.alwaysVisible,
-        action = _ref2.action,
-        icon = _ref2.icon,
-        text = _ref2.text,
-        _ref2$params = _ref2.params,
-        params = _ref2$params === undefined ? [] : _ref2$params;
+  }).reduce(function (all, _ref) {
+    var alwaysVisible = _ref.alwaysVisible,
+        action = _ref.action,
+        icon = _ref.icon,
+        text = _ref.text,
+        _ref$params = _ref.params,
+        params = _ref$params === undefined ? [] : _ref$params;
     return [].concat(_toConsumableArray(all), [{
       icon: icon,
       text: text,
@@ -80619,11 +79140,13 @@ exports.default = _extends({}, plugin, {
       onClick: function onClick(state) {
         return applyAction(action, state, params);
       },
-      isVisible: alwaysVisible || plugin.utils.isSelectionInTable
+      isVisible: function isVisible(state) {
+        return alwaysVisible || isWithinTable(state);
+      }
     }]);
   }, [])
 
-});
+};
 
 /***/ }),
 /* 424 */
@@ -80756,6 +79279,284 @@ exports.default = {
     }]);
   }, [])
 };
+
+/***/ }),
+/* 425 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.createCell = createCell;
+exports.createRow = createRow;
+exports.createTable = createTable;
+
+var _slate = __webpack_require__(32);
+
+var _slate2 = _interopRequireDefault(_slate);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var range = function range(start, stop) {
+  return Array.from(new Array(stop - start + 1), function (_, i) {
+    return i + start;
+  });
+};
+
+function createCell() {
+  var textNode = _slate2.default.Raw.deserializeText({
+    kind: 'text',
+    text: ''
+  }, { terse: true });
+
+  return _slate2.default.Block.create({ type: 'td', nodes: [textNode] });
+}
+function createRow() {
+  var columns = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 2;
+
+  return _slate2.default.Block.create({
+    type: 'tr',
+    nodes: range(1, columns).map(function () {
+      return createCell();
+    })
+  });
+}
+function createTable() {
+  var columns = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 2;
+  var rows = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 2;
+
+  return _slate2.default.Block.create({
+    type: 'table',
+    nodes: range(1, rows).map(function () {
+      return createRow(columns);
+    })
+  });
+}
+
+/***/ }),
+/* 426 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getTableInfo = getTableInfo;
+exports.moveTo = moveTo;
+exports.insertColumn = insertColumn;
+exports.insertRow = insertRow;
+exports.insertTable = insertTable;
+exports.removeTable = removeTable;
+exports.removeRow = removeRow;
+exports.removeColumn = removeColumn;
+
+var _Creators = __webpack_require__(425);
+
+var _Paragraph = __webpack_require__(421);
+
+var _Paragraph2 = _interopRequireDefault(_Paragraph);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function flow(functions, value) {
+  return functions.reduce(function (sum, fn) {
+    return fn(sum);
+  }, value);
+}
+
+function forceRange(value, lowerBound, upperBound) {
+  if (value < lowerBound) return lowerBound;
+  if (value > upperBound) return upperBound;
+  return value;
+}
+
+function inCellOnlyError(fnName) {
+  throw new Error(fnName + ' can only be applied from within a cell');
+}
+
+function getTableInfo(_ref) {
+  var state = _ref.state;
+
+  var cell = state.startBlock;
+  if (cell.type !== 'td') inCellOnlyError('getTableInfo');
+
+  var row = state.document.getParent(cell.key);
+  var table = state.document.getParent(row.key);
+  return {
+    cell: cell,
+    row: row,
+    table: table,
+
+    height: table.nodes.size,
+    width: row.nodes.size,
+
+    x: row.nodes.findIndex(function (c) {
+      return c === cell;
+    }),
+    y: table.nodes.findIndex(function (r) {
+      return r === row;
+    })
+  };
+}
+
+function moveTo(transform, targetX, targetY) {
+  var state = transform.state;
+
+  if (state.startBlock.type !== 'td') inCellOnlyError('moveTo');
+
+  var tableInfo = getTableInfo(transform);
+
+  var x = forceRange(targetX, 0, tableInfo.width - 1);
+  var y = forceRange(targetY, 0, tableInfo.height - 1);
+
+  var cell = tableInfo.table.nodes.get(y).nodes.get(x);
+
+  var startOffset = state.startOffset;
+
+  if (startOffset > cell.length) startOffset = cell.length;
+
+  return transform.collapseToEndOf(cell).moveOffsetsTo(startOffset);
+}
+
+function insertColumn(transform) {
+  var _getTableInfo = getTableInfo(transform),
+      x = _getTableInfo.x,
+      table = _getTableInfo.table;
+
+  var rows = table.nodes;
+
+  return rows.reduce(function (t, row) {
+    return t.insertNodeByKey(row.key, x, (0, _Creators.createCell)());
+  }, transform);
+}
+
+function insertRow(transform) {
+  var _getTableInfo2 = getTableInfo(transform),
+      table = _getTableInfo2.table,
+      width = _getTableInfo2.width,
+      y = _getTableInfo2.y;
+
+  return transform.insertNodeByKey(table.key, y, (0, _Creators.createRow)(width));
+}
+
+function insertTable(transform) {
+  var columns = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 2;
+  var rows = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 2;
+
+  return transform.insertBlock((0, _Creators.createTable)(columns, rows));
+}
+
+function removeTable(transform) {
+  var state = transform.state;
+
+  if (state.startBlock.type !== 'td') inCellOnlyError('removeTable');
+
+  var _getTableInfo3 = getTableInfo(transform),
+      table = _getTableInfo3.table;
+
+  var parent = state.document.getParent(table.key);
+  var index = parent.nodes.findIndex(function (e) {
+    return e === table;
+  });
+
+  var replacement = parent.type === 'tr' ? (0, _Creators.createCell)() : _Paragraph2.default.create();
+
+  return transform.collapseToStartOf(parent).moveOffsetsTo(0).insertNodeByKey(parent.key, index, replacement).removeNodeByKey(table.key);
+}
+
+function removeRow(transform) {
+  var _getTableInfo4 = getTableInfo(transform),
+      row = _getTableInfo4.row,
+      height = _getTableInfo4.height;
+
+  if (height === 1) return removeTable(transform);
+
+  return transform.removeNodeByKey(row.key);
+}
+
+function removeColumn(transform) {
+  var _getTableInfo5 = getTableInfo(transform),
+      table = _getTableInfo5.table,
+      x = _getTableInfo5.x,
+      width = _getTableInfo5.width;
+
+  var rows = table.nodes;
+
+  if (width === 1) return removeTable(transform);
+
+  return rows.reduce(function (t, row) {
+    return t.removeNodeByKey(row.nodes.get(x).key);
+  }, transform);
+}
+
+// setColumnAlign: (transform, setTo) => {
+//    const { columnIndex, table } = getPosition(transform)
+//    const align = table.data.get('align')
+//    align.splice(columnIndex, 1, setTo)
+
+//    let t = transform.setNodeByKey(table.key, { data: { align } })
+//    table.nodes.forEach((row) => {
+//      const cell = row.nodes.get(columnIndex)
+//      t = t.setNodeByKey(cell.key, { data: { align: setTo } })
+//    })
+
+//    return t
+//  },
+
+//  removeColumn: (transform) => {
+//    const { moveSelectionBy } = plugin.transforms
+//    const { columnCount, columnIndex, table } = getPosition(transform)
+
+//    let moveBy = 0
+//    if (columnCount > 1 && columnIndex === 0) {
+//      moveBy = 1
+//    } else if (columnCount > 1 && columnIndex === columnCount - 1) {
+//      moveBy = -1
+//    }
+
+//    const rows = table.nodes
+
+//    let t = moveSelectionBy(transform, moveBy, 0)
+//    if (columnCount > 1) {
+//      rows.forEach((row) => {
+//        const cell = row.nodes.get(columnIndex)
+//        t = t.removeNodeByKey(cell.key)
+//      })
+
+//      const align = table.data.get('align')
+//      align.splice(columnIndex, 1)
+//      t = t.setNodeByKey(table.key, { data: { align } })
+//    } else {
+//      rows.forEach((row) => {
+//        row.nodes.forEach((cell) => {
+//          cell.nodes.forEach((node) => {
+//            t = t.removeNodeByKey(node.key)
+//          })
+//        })
+//      })
+//    }
+
+//    return t
+//  },
+
+//  removeRow: (transform) => {
+//    const { moveSelectionBy } = plugin.transforms
+//    const { row, rowCount, rowIndex } = getPosition(transform)
+
+//    let moveBy = 0
+//    if (rowCount > 1 && rowIndex === 0) {
+//      moveBy = 1
+//    } else if (rowCount > 1 && rowIndex === rowCount - 1) {
+//      moveBy = -1
+//    }
+
+//    return moveSelectionBy(transform, 0, moveBy).removeNodeByKey(row.key)
+//  },
 
 /***/ })
 /******/ ]);
