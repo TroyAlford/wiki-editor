@@ -7,7 +7,6 @@
   "author": "Troy Alford <troy@troyalford.com>",
   "license": "MIT",
   "dependencies": {
-    "immutable": "^3.8.1",
     "react": "^15.5.4",
     "slate": "^0.19.20",
     "slate-edit-table": "^0.9.0"

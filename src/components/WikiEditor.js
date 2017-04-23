@@ -14,19 +14,23 @@ export default class WikiEditor extends Component {
   }
 
   componentWillReceiveProps(props) {
-    this.setState({
-      state: HtmlSerializer.deserialize(props.html),
-    })
+    if (props.html !== this.props.html) {
+      this.setState({ state: HtmlSerializer.deserialize(props.html) })
+    }
   }
 
-  onChange = (state) => {
-    this.setState({ state })
+  onChange = (state, callback) => {
+    this.setState({ state }, callback)
+
+    if (typeof this.props.onHtmlChange === 'function') {
+      this.props.onHtmlChange(HtmlSerializer.serialize(state))
+    }
   }
 
   handleToolbar = (event, button) => {
     event.preventDefault()
     const state = button.onClick(this.state.state)
-    if (state) this.setState({ state }, this.editor.focus)
+    if (state) this.onChange(state, this.editor.focus)
   }
 
   renderToolbar = () => (
@@ -81,8 +85,12 @@ export default class WikiEditor extends Component {
 WikiEditor.propTypes = {
   html:        PropTypes.string,
   placeholder: PropTypes.string,
+
+  onHtmlChange: PropTypes.func,
 }
 WikiEditor.defaultProps = {
-  html:        '<b>Some test-data to play with!</b>',
+  html:        '<p></p>',
   placeholder: 'Enter some text...',
+
+  onHtmlChange: undefined,
 }

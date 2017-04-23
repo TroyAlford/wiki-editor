@@ -1,6 +1,5 @@
 /* eslint-disable react/react-in-jsx-scope,react/prop-types */
 import EditTablePlugin from 'slate-edit-table'
-import { List } from 'immutable'
 
 const options = {
   typeTable: 'table',
@@ -27,8 +26,7 @@ const MAPPINGS = [
   { icon: 'align-justify', params: ['justify'], action: 'setColumnAlign' },
 ]
 
-const getPosition = (transform) => {
-  const { state } = transform
+const getPosition = ({ state }) => {
   const cell = state.startBlock
   const row = state.document.getParent(cell.key)
   const table = state.document.getParent(row.key)
@@ -51,7 +49,13 @@ const transforms = {
     const align = table.data.get('align')
     align.splice(columnIndex, 1, setTo)
 
-    return transform.setNodeByKey(table.key, { data: { align } })
+    let t = transform.setNodeByKey(table.key, { data: { align } })
+    table.nodes.forEach((row) => {
+      const cell = row.nodes.get(columnIndex)
+      t = t.setNodeByKey(cell.key, { data: { align: setTo } })
+    })
+
+    return t
   },
 
   insertColumn: (transform) => {
@@ -163,8 +167,9 @@ export default {
           return <table><tbody {...object.attributes}>{children}</tbody></table>
         case 'tr':
           return <tr {...object.attributes}>{children}</tr>
-        case 'td':
-          return <td {...object.attributes}>{children}</td>
+        case 'td': // eslint-disable-line no-case-declarations
+          const textAlign = object.data.get('align') || options.defaultAlign
+          return <td style={{ textAlign }} {...object.attributes}>{children}</td>
         default:
           return undefined
       }

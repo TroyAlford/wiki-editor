@@ -3,6 +3,17 @@ import * as ReactDOM from 'react-dom'
 
 import WikiEditor from '../../src/components/WikiEditor'
 
-ReactDOM.render(
-  <WikiEditor />
-, document.getElementById('application'))
+class Example extends React.Component {
+  state = { html: undefined }
+
+  handleHtmlChange = html => this.setState({ html })
+
+  render = () => (
+    <div>
+      <WikiEditor onHtmlChange={this.handleHtmlChange} />
+      <textarea value={this.state.html} />
+    </div>
+  )
+}
+
+ReactDOM.render(<Example />, document.getElementById('application'))

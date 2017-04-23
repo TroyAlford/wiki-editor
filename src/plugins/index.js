@@ -1,14 +1,16 @@
-import BasicMarksPlugin from './BasicMarksPlugin'
-import TablePlugin from './TablePlugin'
+import Paragraph from './Paragraph'
+import Table from './Table'
+import TextDecorators from './TextDecorators'
 
 const PLUGINS = [
-  BasicMarksPlugin,
-  TablePlugin,
+  Paragraph,
+  Table,
+  TextDecorators,
 ]
 
-export const serializers = PLUGINS.filter(p => Array.isArray(p.serializers)).reduce(
-  (all, p) => [...all, ...p.serializers]
-, [])
+export const serializers = PLUGINS
+  .filter(plugin => Array.isArray(plugin.serializers))
+  .reduce((all, plugin) => [...all, ...plugin.serializers], [])
 
 export const schema = PLUGINS
   .filter(plugin => plugin.schema)
