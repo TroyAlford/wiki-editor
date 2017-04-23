@@ -1,5 +1,6 @@
 /* eslint-disable react/react-in-jsx-scope,react/prop-types */
 import * as Actions from './Table/Actions'
+import Events from './Table/Events'
 import { renderAligned } from './Alignment'
 
 const BUTTONS = [
@@ -22,12 +23,14 @@ const applyAction = (action, state, params) => {
   return fn(state.transform(), ...params).apply()
 }
 
-function isWithinTable(state) {
+export function isWithinTable(state) {
   if (!state.selection.startKey) return false
   return (state.startBlock.type === 'td')
 }
 
 export default {
+  ...Events,
+
   schema: {
     nodes: {
       table: props => <table><tbody {...props.attributes}>{props.children}</tbody></table>,
