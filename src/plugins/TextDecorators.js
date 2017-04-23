@@ -22,10 +22,12 @@ const findWordBoundaries = (text, position) => {
   const before = position > 0 ? text.slice(0, position) : ''
   const after = position < text.length ? text.slice(position) : ''
 
-  const offsetLeft = before.split('')
+  let offsetLeft = before.split('')
     .reverse().join('').search(/\W/)
+  if (offsetLeft === -1) offsetLeft = before.length
 
-  const offsetRight = after.search(/\W/)
+  let offsetRight = after.search(/\W/)
+  if (offsetRight === -1) offsetRight = after.length
 
   return { offsetLeft, offsetRight }
 }
@@ -34,17 +36,20 @@ const applyMark = (mark, state) => {
   const transform = state.transform()
 
   if (state.selection.isCollapsed) {
-    const position = state.anchorOffset
     const text = (state.anchorInline || state.anchorBlock).text
+    const position = state.anchorOffset
+    const { offsetLeft, offsetRight } = findWordBoundaries(text, position)
 
-    const offsets = findWordBoundaries(text, state.anchorOffset)
-    return transform.moveOffsetsTo(
-      offsets.offsetLeft === -1 ? 0 : position - offsets.offsetLeft,
-      offsets.offsetRight === -1 ? text.length : position + offsets.offsetRight
-    )
-    .toggleMark(mark)
-    .moveOffsetsTo(position, position)
-    .apply()
+    const endOfWord = (offsetRight <= 0)
+    if (!endOfWord) {
+      return transform.moveOffsetsTo(
+        offsetLeft === -1 ? 0 : position - offsetLeft,
+        offsetRight === -1 ? text.length : position + offsetRight
+      )
+      .toggleMark(mark)
+      .moveOffsetsTo(position, position)
+      .apply()
+    }
   }
 
   return transform.toggleMark(mark).apply()
@@ -85,14 +90,11 @@ export default {
     },
   }],
 
-  toolbarButtons: MAPPINGS.reduce((all, { mark }) => [
-    ...all,
-    {
-      icon: mark,
+  toolbarButtons: MAPPINGS.map(({ mark }) => ({
+    icon: mark,
 
-      isActive:  state => state.marks.some(m => m.type === mark),
-      onClick:   state => applyMark(mark, state),
-      isVisible: true,
-    },
-  ], []),
+    isActive:  state => state.marks.some(m => m.type === mark),
+    onClick:   state => applyMark(mark, state),
+    isVisible: true,
+  })),
 }
