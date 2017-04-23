@@ -35,28 +35,32 @@ export default class WikiEditor extends Component {
 
   renderToolbar = () => (
     <div className="menu toolbar-menu">
-      {toolbarButtons.map((button) => {
-        let isVisible = true
-        if (typeof button.isVisible === 'function') {
-          isVisible = button.isVisible(this.state.state)
-        } else {
-          isVisible = !!button.isVisible
-        }
+      {toolbarButtons.map(group => (
+        <div className="toolbar-button-group">
+          {group.map((button) => {
+            let isVisible = true
+            if (typeof button.isVisible === 'function') {
+              isVisible = button.isVisible(this.state.state)
+            } else {
+              isVisible = !!button.isVisible
+            }
 
-        if (!isVisible) return null
+            if (!isVisible) return null
 
-        const isActive = typeof button.isActive === 'function'
-          ? button.isActive(this.state.state)
-          : !!button.isActive
+            const isActive = typeof button.isActive === 'function'
+              ? button.isActive(this.state.state)
+              : !!button.isActive
 
-        const className = [
-          `toolbar-button icon icon-${button.icon}`,
-          isActive ? 'is-active' : 'is-inactive',
-        ].join(' ')
+            const className = [
+              `toolbar-button icon icon-${button.icon}`,
+              isActive ? 'is-active' : 'is-inactive',
+            ].join(' ')
 
-        const onMouseDown = event => this.handleToolbar(event, button)
-        return <button className={className} onMouseDown={onMouseDown}>{button.text}</button>
-      })}
+            const onMouseDown = event => this.handleToolbar(event, button)
+            return <button className={className} onMouseDown={onMouseDown}>{button.text}</button>
+          })}
+        </div>
+      ))}
     </div>
   )
 

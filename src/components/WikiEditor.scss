@@ -8,6 +8,15 @@ $border-color-button-active:   $palette-dark-blue!default;
 
 .wiki-editor {
   .menu.toolbar-menu {
+    .toolbar-button-group {
+      display: inline-flex;
+    }
+    .toolbar-button-group + .toolbar-button-group {
+      margin-left: .5rem;
+      padding-left: .5rem;
+      border-left: 2px groove;
+    }
+
     .toolbar-button {
       padding: .5rem;
       border: 1px solid $border-color-button-inactive;
