@@ -6,6 +6,8 @@ const options = {
   typeTable: 'table',
   typeRow:   'tr',
   typeCell:  'td',
+
+  defaultAlign: 'justify',
 }
 
 const plugin = EditTablePlugin(options)
@@ -19,10 +21,10 @@ const MAPPINGS = [
   { text: 'Remove Column', action: 'removeColumn' },
   { text: 'Remove Row', action: 'removeRow' },
 
-  { icon: 'align-left', param: ['left'], action: 'setColumnAlign' },
-  { icon: 'align-right', param: ['right'], action: 'setColumnAlign' },
-  { icon: 'align-center', param: ['center'], action: 'setColumnAlign' },
-  { icon: 'align-justify', param: ['justify'], action: 'setColumnAlign' },
+  { icon: 'align-left', params: ['left'], action: 'setColumnAlign' },
+  { icon: 'align-right', params: ['right'], action: 'setColumnAlign' },
+  { icon: 'align-center', params: ['center'], action: 'setColumnAlign' },
+  { icon: 'align-justify', params: ['justify'], action: 'setColumnAlign' },
 ]
 
 const getPosition = (transform) => {
@@ -43,6 +45,14 @@ const getPosition = (transform) => {
 
 const transforms = {
   ...plugin.transforms,
+
+  setColumnAlign: (transform, setTo) => {
+    const { columnIndex, table } = getPosition(transform)
+    const align = table.data.get('align')
+    align.splice(columnIndex, 1, setTo)
+
+    return transform.setNodeByKey(table.key, { data: { align } })
+  },
 
   insertColumn: (transform) => {
     const { moveSelectionBy, insertColumn } = plugin.transforms
@@ -70,11 +80,9 @@ const transforms = {
         t = t.removeNodeByKey(cell.key)
       })
 
-      t = t.setNodeByKey(table.key, {
-        data: {
-          align: List(table.data.get('align')).delete(columnIndex),
-        },
-      })
+      const align = table.data.get('align')
+      align.splice(columnIndex, 1)
+      t = t.setNodeByKey(table.key, { data: { align } })
     } else {
       rows.forEach((row) => {
         row.nodes.forEach((cell) => {
@@ -126,7 +134,8 @@ export default {
       table: props => <table><tbody {...props.attributes}>{props.children}</tbody></table>,
       tr:    props => <tr {...props.attributes}>{props.children}</tr>,
       td:    (props) => {
-        const align = props.node.get('data').get('align') || 'justify'
+        const { columnIndex, table } = getPosition(props)
+        const align = table.data.get('align')[columnIndex] || options.defaultAlign
         return <td style={{ textAlign: align }} {...props.attributes}>{props.children}</td>
       },
     },
