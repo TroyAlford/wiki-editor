@@ -1,0 +1,7 @@
+.wiki-editor {
+  div[contenteditable=true]::after {
+    content: '';
+    clear: both;
+    display: table;
+  }
+}

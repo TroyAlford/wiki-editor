@@ -31,8 +31,16 @@ export default {
 
   schema: {
     nodes: {
-      table: props => <table><tbody {...props.attributes}>{props.children}</tbody></table>,
-      tr:    props => <tr {...props.attributes}>{props.children}</tr>,
+      table: ({ attributes, children, node }) => {
+        const float = node.data.get('float') || undefined
+        return (
+          <table style={{ float }} {...attributes}>
+            <tbody>{children}</tbody>
+          </table>
+        )
+      },
+
+      tr: props => <tr {...props.attributes}>{props.children}</tr>,
 
       td: ({ attributes, children, node }) => (
         renderAligned('td', node.data, children, attributes)
@@ -51,19 +59,21 @@ export default {
       switch (el.tagName) {
         case 'table':
         case 'tr':
-          return node
         case 'td':
-          return {
-            ...node,
-          }
+          return node
         default:
           return undefined
       }
     },
     serialize(object, children) {
       switch (object.type) {
-        case 'table':
-          return <table><tbody {...object.attributes}>{children}</tbody></table>
+        case 'table': // eslint-disable-line no-case-declarations
+          const float = object.data.get('float') || undefined
+          return (
+            <table style={{ float }}>
+              <tbody {...object.attributes}>{children}</tbody>
+            </table>
+          )
         case 'tr':
           return <tr {...object.attributes}>{children}</tr>
         case 'td':
