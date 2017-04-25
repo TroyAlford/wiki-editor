@@ -1,6 +1,5 @@
-/* eslint-disable react/react-in-jsx-scope,react/prop-types */
 import Slate from 'slate'
-import { renderAligned } from './Alignment'
+import { renderStyled } from '../utility/renderStyled'
 
 export default {
   create(text) {
@@ -19,7 +18,7 @@ export default {
   schema: {
     nodes: {
       paragraph: ({ attributes, children, node }) => (
-        renderAligned('p', node.data, children, attributes)
+        renderStyled('p', node.data, children, attributes)
       ),
     },
   },
@@ -35,7 +34,7 @@ export default {
     },
     serialize(object, children) {
       if (object.type !== 'paragraph') return undefined
-      return renderAligned('p', object.data, children, {})
+      return renderStyled('p', object.data, children, {})
     },
   }],
 }

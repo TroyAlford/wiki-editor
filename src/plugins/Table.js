@@ -2,7 +2,7 @@
 import * as Actions from './Table/Actions'
 import events from './Table/Events'
 import rules from './Table/Rules'
-import { renderAligned } from './Alignment'
+import { renderStyled } from '../utility/renderStyled'
 
 const BUTTONS = [
   { icon: 'add-table', action: 'insertTable', params: [1, 1], alwaysVisible: true },
@@ -45,7 +45,7 @@ export default {
       tr: props => <tr {...props.attributes}>{props.children}</tr>,
 
       td: ({ attributes, children, node }) => (
-        renderAligned('td', node.data, children, attributes)
+        renderStyled('td', node.data, children, attributes)
       ),
     },
   },
@@ -79,7 +79,7 @@ export default {
         case 'tr':
           return <tr {...object.attributes}>{children}</tr>
         case 'td':
-          return renderAligned('td', object.data, children, {})
+          return renderStyled('td', object.data, children, {})
         default:
           return undefined
       }

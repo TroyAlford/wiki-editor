@@ -17421,30 +17421,23 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; /* eslint-disable react/react-in-jsx-scope,react/prop-types */
-
-
-exports.renderAligned = renderAligned;
-
-var _contains = __webpack_require__(427);
+var _styles = __webpack_require__(433);
 
 var _Table = __webpack_require__(71);
 
 var _Actions = __webpack_require__(72);
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } } /* eslint-disable react/react-in-jsx-scope,react/prop-types */
+
 
 var ALIGNMENTS = ['left', 'center', 'right', 'justify'];
 var FLOATS = ['left', 'right'];
-var NO_FLOAT = ['td', 'tr', 'tbody'];
 
-var applyAlignment = function applyAlignment(transform, textAlign) {
-  var block = transform.state.startBlock;
-
-  return transform.setNodeByKey(block.key, {
-    data: _extends({}, block.data, { textAlign: textAlign })
-  }).apply();
+var toggleAlign = function toggleAlign(state, alignment) {
+  var transform = state.transform();
+  return (0, _styles.toggleStyle)(transform, state.startBlock, 'textAlign', alignment).apply();
 };
+
 var toggleFloat = function toggleFloat(transform, toggle) {
   var block = transform.state.startBlock;
 
@@ -17453,34 +17446,18 @@ var toggleFloat = function toggleFloat(transform, toggle) {
     block = (0, _Actions.getTableInfo)(transform).table;
   }
 
-  var float = block.data.get('float') === toggle ? undefined : toggle;
-  return transform.setNodeByKey(block.key, {
-    data: _extends({}, block.data, { float: float })
-  }).apply();
+  return (0, _styles.toggleStyle)(transform, block, 'float', toggle).apply();
 };
-
-function renderAligned(Tag, data, children, attributes) {
-  var float = !(0, _contains.contains)(NO_FLOAT, Tag) ? data.get('float') : undefined;
-  var style = {
-    textAlign: data.get('textAlign') || 'inherit',
-    float: float
-  };
-  return React.createElement(
-    Tag,
-    _extends({ style: style }, attributes),
-    children
-  );
-}
 
 exports.default = {
   toolbarButtons: [].concat(_toConsumableArray(ALIGNMENTS.map(function (textAlign) {
     return {
       icon: 'align-' + textAlign,
       isActive: function isActive(state) {
-        return state.startBlock.data.get('textAlign') === textAlign;
+        return (0, _styles.getStyle)(state.startBlock, 'textAlign') === textAlign;
       },
       onClick: function onClick(state) {
-        return applyAlignment(state.transform(), textAlign);
+        return toggleAlign(state, textAlign);
       },
       isVisible: true
     };
@@ -17488,7 +17465,7 @@ exports.default = {
     return {
       icon: 'float-' + float,
       isActive: function isActive(state) {
-        return state.startBlock.data.get('float') === float;
+        return (0, _styles.getStyle)(state.startBlock, 'float') === float;
       },
       onClick: function onClick(state) {
         return toggleFloat(state.transform(), float);
@@ -17513,11 +17490,10 @@ var _slate = __webpack_require__(64);
 
 var _slate2 = _interopRequireDefault(_slate);
 
-var _Alignment = __webpack_require__(69);
+var _renderStyled = __webpack_require__(432);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/* eslint-disable react/react-in-jsx-scope,react/prop-types */
 exports.default = {
   create: function create(text) {
     var textNode = _slate2.default.Raw.deserializeText({
@@ -17539,7 +17515,7 @@ exports.default = {
         var attributes = _ref.attributes,
             children = _ref.children,
             node = _ref.node;
-        return (0, _Alignment.renderAligned)('p', node.data, children, attributes);
+        return (0, _renderStyled.renderStyled)('p', node.data, children, attributes);
       }
     }
   },
@@ -17555,7 +17531,7 @@ exports.default = {
     },
     serialize: function serialize(object, children) {
       if (object.type !== 'paragraph') return undefined;
-      return (0, _Alignment.renderAligned)('p', object.data, children, {});
+      return (0, _renderStyled.renderStyled)('p', object.data, children, {});
     }
   }]
 };
@@ -17587,7 +17563,7 @@ var _Rules = __webpack_require__(430);
 
 var _Rules2 = _interopRequireDefault(_Rules);
 
-var _Alignment = __webpack_require__(69);
+var _renderStyled = __webpack_require__(432);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -17644,7 +17620,7 @@ exports.default = _extends({}, _Events2.default, {
         var attributes = _ref2.attributes,
             children = _ref2.children,
             node = _ref2.node;
-        return (0, _Alignment.renderAligned)('td', node.data, children, attributes);
+        return (0, _renderStyled.renderStyled)('td', node.data, children, attributes);
       }
     }
   },
@@ -17687,7 +17663,7 @@ exports.default = _extends({}, _Events2.default, {
             children
           );
         case 'td':
-          return (0, _Alignment.renderAligned)('td', object.data, children, {});
+          return (0, _renderStyled.renderStyled)('td', object.data, children, {});
         default:
           return undefined;
       }
@@ -79964,26 +79940,82 @@ var wrapInvalidTableChildren = {
   }
 };
 
-var wrapInvalidTableOrphans = {
-  match: function match(_ref2) {
-    var type = _ref2.type;
-    return (0, _contains.contains)(CHILD_KEYS, type);
-  },
-  validate: function validate() {
-    return true;
-  },
-  normalize: function normalize(transform, child) {
-    var state = transform.state;
+// const wrapInvalidTableOrphans = {
+//   match:     ({ type }) => contains(CHILD_KEYS, type),
+//   validate:  () => true,
+//   normalize: (transform, child) => {
+//     const { state } = transform
+//     const parent = state.document.getParent(child.key)
+//     if (contains(CHILDREN[child.type], parent.type)) return undefined
 
-    var parent = state.document.getParent(child.key);
-    if ((0, _contains.contains)(CHILDREN[child.type], parent.type)) return undefined;
+//     // this node is an orphaned table child. replace with <p>
+//     return transform.setNodeByKey(child.key, { type: 'paragraph' })
+//   },
+// }
 
-    // this node is an orphaned table child. replace with <p>
-    return transform.setNodeByKey(child.key, { type: 'paragraph' });
-  }
+exports.default = [wrapInvalidTableChildren];
+
+/***/ }),
+/* 431 */,
+/* 432 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+/* eslint-disable react/react-in-jsx-scope,react/prop-types */
+var renderStyled = exports.renderStyled = function renderStyled(Tag, data, children) {
+  var attributes = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
+
+  var style = data.get('style') || {};
+  return React.createElement(
+    Tag,
+    _extends({ style: style }, attributes),
+    children
+  );
 };
 
-exports.default = [wrapInvalidTableChildren, wrapInvalidTableOrphans];
+exports.default = renderStyled;
+
+/***/ }),
+/* 433 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var toggleStyle = exports.toggleStyle = function toggleStyle(transform, block, property, toggle) {
+  var style = block.data.get('style') || {};
+
+  if (style[property] === toggle) {
+    style[property] = undefined;
+  } else {
+    style[property] = toggle;
+  }
+
+  return transform.setNodeByKey(block.key, {
+    data: _extends({}, block.data, { style: style })
+  });
+};
+
+var getStyle = exports.getStyle = function getStyle(block, property) {
+  var style = block.data.get('style') || {};
+  if (property) return style[property];
+
+  return style;
+};
 
 /***/ })
 /******/ ]);

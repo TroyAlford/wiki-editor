@@ -35,20 +35,20 @@ const wrapInvalidTableChildren = {
   },
 }
 
-const wrapInvalidTableOrphans = {
-  match:     ({ type }) => contains(CHILD_KEYS, type),
-  validate:  () => true,
-  normalize: (transform, child) => {
-    const { state } = transform
-    const parent = state.document.getParent(child.key)
-    if (contains(CHILDREN[child.type], parent.type)) return undefined
+// const wrapInvalidTableOrphans = {
+//   match:     ({ type }) => contains(CHILD_KEYS, type),
+//   validate:  () => true,
+//   normalize: (transform, child) => {
+//     const { state } = transform
+//     const parent = state.document.getParent(child.key)
+//     if (contains(CHILDREN[child.type], parent.type)) return undefined
 
-    // this node is an orphaned table child. replace with <p>
-    return transform.setNodeByKey(child.key, { type: 'paragraph' })
-  },
-}
+//     // this node is an orphaned table child. replace with <p>
+//     return transform.setNodeByKey(child.key, { type: 'paragraph' })
+//   },
+// }
 
 export default [
   wrapInvalidTableChildren,
-  wrapInvalidTableOrphans,
+  // wrapInvalidTableOrphans,
 ]
