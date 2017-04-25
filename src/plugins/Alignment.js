@@ -18,7 +18,6 @@ const toggleFloat = (transform, toggle) => {
 
   if (isWithinTable(transform.state)) {
     block = getTableInfo(transform).table
-    console.log('attempting to apply to table')
   }
 
   const float = block.data.get('float') === toggle ? undefined : toggle
