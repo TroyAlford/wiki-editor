@@ -20,11 +20,11 @@ function onDelete(transform, event, state) {
     return transform.deleteAtRange(range).collapseToStartOf(startBlock).apply()
   }
 
-  if (startOffset === 0 && isCollapsed) {
-    event.preventDefault()
-    return undefined
-  }
-  if (startBlock === endBlock) return undefined
+  // Default: delete the cell itself. This would be wrong. :)
+  if (isCollapsed && startOffset === 0) return state // << Handle, making no change
+
+  // Default: clear the whole cell. This would be wrong, too. :)
+  if (startBlock === endBlock) return undefined // << Pass to default handler
 
   event.preventDefault()
 
