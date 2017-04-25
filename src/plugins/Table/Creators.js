@@ -1,9 +1,5 @@
 import Slate from 'slate'
-
-const range = (start, stop) => Array.from(
-  new Array((stop - start) + 1),
-  (_, i) => i + start
-)
+import { range } from '../../utility/range'
 
 export function createCell() {
   const textNode = Slate.Raw.deserializeText({

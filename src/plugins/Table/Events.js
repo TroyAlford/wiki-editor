@@ -1,15 +1,12 @@
 import Slate from 'slate'
 import Paragraph from '../Paragraph'
+import { flow } from '../../utility/flow'
 import { isWithinTable } from '../Table'
 import { getTableInfo, insertColumn, insertRow, moveTo } from './Actions'
 
 function isHotkeyCommand(event) {
   return (event.metaKey || event.ctrlKey) && event.shiftKey
 }
-
-const flow = (functions, startWith) => (
-  functions.reduce((value, fn) => fn(value), startWith)
-)
 
 function onDelete(transform, event, state) {
   const { startBlock, startOffset, isCollapsed, endBlock } = state
@@ -50,7 +47,7 @@ function onDown(transform, event, state) {
     ], transform)
   }
 
-  if (event.shiftKey && y === height - 1) { // Last Row - move out of table
+  if (y === height - 1) { // Last Row - move out of table
     let sibling = state.document.getNextSibling(table.key)
     let t = transform
 
@@ -179,5 +176,5 @@ export default {
       default:
         return undefined
     }
-  },
+  }
 }

@@ -1,12 +1,11 @@
 /* eslint-disable react/react-in-jsx-scope,react/prop-types */
+import { contains } from '../utility/contains'
 import { isWithinTable } from './Table'
 import { getTableInfo } from './Table/Actions'
 
 const ALIGNMENTS = ['left', 'center', 'right', 'justify']
 const FLOATS = ['left', 'right']
 const NO_FLOAT = ['td', 'tr', 'tbody']
-
-const contains = (array, value) => array.indexOf(value) !== -1
 
 const applyAlignment = (transform, textAlign) => {
   const { startBlock: block } = transform.state
