@@ -1,36 +1,54 @@
 import { contains } from '../../utility/contains'
 
-const VALID_CHILDREN = {
+const PARENTS = {
   table: ['tr', 'thead', 'tbody', 'tfoot'],
   tr:    ['td', 'th'],
 }
-const VALID_PARENTS = {
+const PARENT_KEYS = Object.keys(PARENTS)
+
+const CHILDREN = {
   td: ['tr'],
   th: ['tr'],
   tr: ['table', 'thead', 'tbody', 'tfoot'],
 }
-const DEFAULT_PARENT = Object.keys(VALID_PARENTS).reduce(
-  (o, key) => ({ ...o, [key]: VALID_PARENTS[key][0] })
+const CHILD_KEYS = Object.keys(CHILDREN)
+
+const DEFAULT_PARENT = CHILD_KEYS.reduce(
+  (o, key) => ({ ...o, [key]: CHILDREN[key][0] })
 , {})
 
 const wrapInvalidTableChildren = {
-  match: ({ type }) => contains(Object.keys(VALID_CHILDREN), type),
+  match: ({ type }) => contains(PARENT_KEYS, type),
 
   validate: (parent) => {
     const found = parent.nodes.filter(
-      child => !contains(VALID_CHILDREN[parent.type] || [], child.type)
+      child => !contains(PARENTS[parent.type] || [], child.type)
     )
-    return !found.isEmpty() ? found : null
+    return !found.isEmpty() ? found : undefined
   },
 
   normalize(transform, node, children) {
     return children.reduce((t, child) => {
       const parentTag = DEFAULT_PARENT[child.type] || 'td'
-      return t.wrapBlockByKey(child.key, parentTag)
+      return t.wrapBlockByKey(child.key, parentTag, { normalize: false })
     }, transform)
+  },
+}
+
+const wrapInvalidTableOrphans = {
+  match:     ({ type }) => contains(CHILD_KEYS, type),
+  validate:  () => true,
+  normalize: (transform, child) => {
+    const { state } = transform
+    const parent = state.document.getParent(child.key)
+    if (contains(CHILDREN[child.type], parent.type)) return undefined
+
+    // this node is an orphaned table child. replace with <p>
+    return transform.setNodeByKey(child.key, { type: 'paragraph' })
   },
 }
 
 export default [
   wrapInvalidTableChildren,
+  wrapInvalidTableOrphans,
 ]

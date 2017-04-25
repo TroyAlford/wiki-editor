@@ -8,6 +8,7 @@ const HTML = `
     pewp
   </table>
   <td>pewp</td>
+  <b><td>pewp</td></b>
 `
 
 class Example extends React.Component {
@@ -17,10 +18,7 @@ class Example extends React.Component {
 
   render = () => (
     <div>
-      <WikiEditor
-        html={this.state.html}
-        onHtmlChange={this.handleHtmlChange}
-      />
+      <WikiEditor html={HTML} onHtmlChange={this.handleHtmlChange} />
       <textarea value={this.state.html} />
     </div>
   )
