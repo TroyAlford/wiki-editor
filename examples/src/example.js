@@ -3,14 +3,24 @@ import * as ReactDOM from 'react-dom'
 
 import WikiEditor from '../../src/components/WikiEditor'
 
+const HTML = `
+  <table>
+    pewp
+  </table>
+  <td>pewp</td>
+`
+
 class Example extends React.Component {
-  state = { html: undefined }
+  state = { html: HTML }
 
   handleHtmlChange = html => this.setState({ html })
 
   render = () => (
     <div>
-      <WikiEditor onHtmlChange={this.handleHtmlChange} />
+      <WikiEditor
+        html={this.state.html}
+        onHtmlChange={this.handleHtmlChange}
+      />
       <textarea value={this.state.html} />
     </div>
   )

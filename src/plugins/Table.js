@@ -1,6 +1,7 @@
 /* eslint-disable react/react-in-jsx-scope,react/prop-types */
 import * as Actions from './Table/Actions'
-import Events from './Table/Events'
+import events from './Table/Events'
+import rules from './Table/Rules'
 import { renderAligned } from './Alignment'
 
 const BUTTONS = [
@@ -27,9 +28,10 @@ export function isWithinTable(state) {
 }
 
 export default {
-  ...Events,
+  ...events,
 
   schema: {
+    rules,
     nodes: {
       table: ({ attributes, children, node }) => {
         const float = node.data.get('float') || undefined

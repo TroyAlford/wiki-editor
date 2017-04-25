@@ -17426,6 +17426,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 exports.renderAligned = renderAligned;
 
+var _contains = __webpack_require__(427);
+
 var _Table = __webpack_require__(71);
 
 var _Actions = __webpack_require__(72);
@@ -17435,10 +17437,6 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 var ALIGNMENTS = ['left', 'center', 'right', 'justify'];
 var FLOATS = ['left', 'right'];
 var NO_FLOAT = ['td', 'tr', 'tbody'];
-
-var contains = function contains(array, value) {
-  return array.indexOf(value) !== -1;
-};
 
 var applyAlignment = function applyAlignment(transform, textAlign) {
   var block = transform.state.startBlock;
@@ -17463,7 +17461,7 @@ var toggleFloat = function toggleFloat(transform, toggle) {
 };
 
 function renderAligned(Tag, data, children, attributes) {
-  var float = !contains(NO_FLOAT, Tag) ? data.get('float') : undefined;
+  var float = !(0, _contains.contains)(NO_FLOAT, Tag) ? data.get('float') : undefined;
   var style = {
     textAlign: data.get('textAlign') || 'inherit',
     float: float
@@ -17586,6 +17584,10 @@ var _Events = __webpack_require__(178);
 
 var _Events2 = _interopRequireDefault(_Events);
 
+var _Rules = __webpack_require__(430);
+
+var _Rules2 = _interopRequireDefault(_Rules);
+
 var _Alignment = __webpack_require__(69);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -17612,6 +17614,7 @@ function isWithinTable(state) {
 exports.default = _extends({}, _Events2.default, {
 
   schema: {
+    rules: _Rules2.default,
     nodes: {
       table: function table(_ref) {
         var attributes = _ref.attributes,
@@ -36948,6 +36951,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var HTML = '\n  <table>\n    pewp\n  </table>\n  <td>pewp</td>\n';
+
 var Example = function (_React$Component) {
   _inherits(Example, _React$Component);
 
@@ -36962,13 +36967,16 @@ var Example = function (_React$Component) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Example.__proto__ || Object.getPrototypeOf(Example)).call.apply(_ref, [this].concat(args))), _this), _this.state = { html: undefined }, _this.handleHtmlChange = function (html) {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Example.__proto__ || Object.getPrototypeOf(Example)).call.apply(_ref, [this].concat(args))), _this), _this.state = { html: HTML }, _this.handleHtmlChange = function (html) {
       return _this.setState({ html: html });
     }, _this.render = function () {
       return React.createElement(
         'div',
         null,
-        React.createElement(_WikiEditor2.default, { onHtmlChange: _this.handleHtmlChange }),
+        React.createElement(_WikiEditor2.default, {
+          html: _this.state.html,
+          onHtmlChange: _this.handleHtmlChange
+        }),
         React.createElement('textarea', { value: _this.state.html })
       );
     }, _temp), _possibleConstructorReturn(_this, _ret);
@@ -36997,13 +37005,9 @@ var _slate = __webpack_require__(64);
 
 var _slate2 = _interopRequireDefault(_slate);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _range = __webpack_require__(429);
 
-var range = function range(start, stop) {
-  return Array.from(new Array(stop - start + 1), function (_, i) {
-    return i + start;
-  });
-};
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function createCell() {
   var textNode = _slate2.default.Raw.deserializeText({
@@ -37018,7 +37022,7 @@ function createRow() {
 
   return _slate2.default.Block.create({
     type: 'tr',
-    nodes: range(1, columns).map(function () {
+    nodes: (0, _range.range)(1, columns).map(function () {
       return createCell();
     })
   });
@@ -37029,7 +37033,7 @@ function createTable() {
 
   return _slate2.default.Block.create({
     type: 'table',
-    nodes: range(1, rows).map(function () {
+    nodes: (0, _range.range)(1, rows).map(function () {
       return createRow(columns);
     })
   });
@@ -37054,6 +37058,8 @@ var _Paragraph = __webpack_require__(70);
 
 var _Paragraph2 = _interopRequireDefault(_Paragraph);
 
+var _flow = __webpack_require__(428);
+
 var _Table = __webpack_require__(71);
 
 var _Actions = __webpack_require__(72);
@@ -37063,12 +37069,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function isHotkeyCommand(event) {
   return (event.metaKey || event.ctrlKey) && event.shiftKey;
 }
-
-var flow = function flow(functions, startWith) {
-  return functions.reduce(function (value, fn) {
-    return fn(value);
-  }, startWith);
-};
 
 function onDelete(transform, event, state) {
   var startBlock = state.startBlock,
@@ -37094,7 +37094,7 @@ function onDelete(transform, event, state) {
   var blocks = state.blocks,
       focusBlock = state.focusBlock;
 
-  return flow([function (t) {
+  return (0, _flow.flow)([function (t) {
     return blocks.reduce(function (result, block) {
       if (block.type !== 'td') return result;
       var range = _slate2.default.Selection.create().moveToRangeOf(block);
@@ -37115,14 +37115,14 @@ function onDown(transform, event, state) {
       table = _getTableInfo.table;
 
   if (isHotkeyCommand(event)) {
-    return flow([function (t) {
+    return (0, _flow.flow)([function (t) {
       return (0, _Actions.insertRow)(t, 'below');
     }, function (t) {
       return (0, _Actions.moveTo)(t, x, y + 1);
     }], transform);
   }
 
-  if (event.shiftKey && y === height - 1) {
+  if (y === height - 1) {
     // Last Row - move out of table
     var sibling = state.document.getNextSibling(table.key);
     var t = transform;
@@ -37153,7 +37153,7 @@ function onEnter(transform, event, state) {
 
   if (y === height - 1) {
     // last row
-    return flow([function (t) {
+    return (0, _flow.flow)([function (t) {
       return (0, _Actions.insertRow)(t, 'below');
     }, function (t) {
       return (0, _Actions.moveTo)(t, x, y + 1);
@@ -37169,7 +37169,7 @@ function onLeft(transform, event, state) {
         x = _getTableInfo3.x,
         y = _getTableInfo3.y;
 
-    return flow([function (t) {
+    return (0, _flow.flow)([function (t) {
       return (0, _Actions.insertColumn)(t, 'left');
     }, function (t) {
       return (0, _Actions.moveTo)(t, x, y);
@@ -37185,7 +37185,7 @@ function onRight(transform, event, state) {
         x = _getTableInfo4.x,
         y = _getTableInfo4.y;
 
-    return flow([function (t) {
+    return (0, _flow.flow)([function (t) {
       return (0, _Actions.insertColumn)(t, 'right');
     }, function (t) {
       return (0, _Actions.moveTo)(t, x + 1, y);
@@ -37206,7 +37206,7 @@ function onTab(transform, event, state) {
 
   if (x === width - 1 && y === height - 1) {
     // bottom-right corner
-    return flow([function (t) {
+    return (0, _flow.flow)([function (t) {
       return (0, _Actions.insertRow)(t, 'after');
     }, function (t) {
       return (0, _Actions.moveTo)(t, 0, y + 1);
@@ -37228,7 +37228,7 @@ function onUp(transform, event, state) {
       table = _getTableInfo6.table;
 
   if (isHotkeyCommand(event)) {
-    return flow([function (t) {
+    return (0, _flow.flow)([function (t) {
       return (0, _Actions.insertRow)(t, 'above');
     }, function (t) {
       return (0, _Actions.moveTo)(t, x, y);
@@ -37298,11 +37298,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+var _findWordBoundaries2 = __webpack_require__(426);
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; } /* eslint-disable react/react-in-jsx-scope,react/prop-types */
 
-/* eslint-disable react/react-in-jsx-scope,react/prop-types */
+
 var MAPPINGS = [{ hotkey: 'b', mark: 'bold', tag: 'strong' }, { hotkey: 'd', mark: 'strike', tag: 'del' }, { hotkey: 'i', mark: 'italic', tag: 'em' }, { hotkey: 'u', mark: 'underline', tag: 'u' }, { hotkey: undefined, mark: 'superscript', tag: 'sup' }, { hotkey: undefined, mark: 'subscript', tag: 'sub' }];
 
 var HOTKEYS = MAPPINGS.filter(function (m) {
@@ -37324,19 +37326,6 @@ var TAGS = MAPPINGS.reduce(function (tags, _ref3) {
   return _extends({}, tags, _defineProperty({}, tag, mark));
 }, {});
 
-var findWordBoundaries = function findWordBoundaries(text, position) {
-  var before = position > 0 ? text.slice(0, position) : '';
-  var after = position < text.length ? text.slice(position) : '';
-
-  var offsetLeft = before.split('').reverse().join('').search(/\W/);
-  if (offsetLeft === -1) offsetLeft = before.length;
-
-  var offsetRight = after.search(/\W/);
-  if (offsetRight === -1) offsetRight = after.length;
-
-  return { offsetLeft: offsetLeft, offsetRight: offsetRight };
-};
-
 var applyMark = function applyMark(mark, state) {
   var transform = state.transform();
 
@@ -37344,7 +37333,7 @@ var applyMark = function applyMark(mark, state) {
     var text = (state.anchorInline || state.anchorBlock).text;
     var position = state.anchorOffset;
 
-    var _findWordBoundaries = findWordBoundaries(text, position),
+    var _findWordBoundaries = (0, _findWordBoundaries2.findWordBoundaries)(text, position),
         offsetLeft = _findWordBoundaries.offsetLeft,
         offsetRight = _findWordBoundaries.offsetRight;
 
@@ -79825,6 +79814,157 @@ function config (name) {
 /***/ (function(module, exports) {
 
 /* (ignored) */
+
+/***/ }),
+/* 405 */,
+/* 406 */,
+/* 407 */,
+/* 408 */,
+/* 409 */,
+/* 410 */,
+/* 411 */,
+/* 412 */,
+/* 413 */,
+/* 414 */,
+/* 415 */,
+/* 416 */,
+/* 417 */,
+/* 418 */,
+/* 419 */,
+/* 420 */,
+/* 421 */,
+/* 422 */,
+/* 423 */,
+/* 424 */,
+/* 425 */,
+/* 426 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var findWordBoundaries = exports.findWordBoundaries = function findWordBoundaries(text, position) {
+  var before = position > 0 ? text.slice(0, position) : '';
+  var after = position < text.length ? text.slice(position) : '';
+
+  var offsetLeft = before.split('').reverse().join('').search(/\W/);
+  if (offsetLeft === -1) offsetLeft = before.length;
+
+  var offsetRight = after.search(/\W/);
+  if (offsetRight === -1) offsetRight = after.length;
+
+  return { offsetLeft: offsetLeft, offsetRight: offsetRight };
+};
+
+exports.default = findWordBoundaries;
+
+/***/ }),
+/* 427 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var contains = exports.contains = function contains(array, value) {
+  return array.indexOf(value) !== -1;
+};
+
+exports.default = contains;
+
+/***/ }),
+/* 428 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var flow = exports.flow = function flow(functions, startWith) {
+  return functions.reduce(function (value, fn) {
+    return fn(value);
+  }, startWith);
+};
+
+exports.default = flow;
+
+/***/ }),
+/* 429 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var range = exports.range = function range(start, stop) {
+  return Array.from(new Array(stop - start + 1), function (_, i) {
+    return i + start;
+  });
+};
+
+exports.default = range;
+
+/***/ }),
+/* 430 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _contains = __webpack_require__(427);
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var VALID_CHILDREN = {
+  table: ['tr', 'thead', 'tbody', 'tfoot'],
+  tr: ['td', 'th']
+};
+var VALID_PARENTS = {
+  td: ['tr'],
+  th: ['tr'],
+  tr: ['table', 'thead', 'tbody', 'tfoot']
+};
+var DEFAULT_PARENT = Object.keys(VALID_PARENTS).reduce(function (o, key) {
+  return _extends({}, o, _defineProperty({}, key, VALID_PARENTS[key][0]));
+}, {});
+
+var wrapInvalidTableChildren = {
+  match: function match(_ref) {
+    var type = _ref.type;
+    return (0, _contains.contains)(Object.keys(VALID_CHILDREN), type);
+  },
+
+  validate: function validate(parent) {
+    var found = parent.nodes.filter(function (child) {
+      return !(0, _contains.contains)(VALID_CHILDREN[parent.type] || [], child.type);
+    });
+    return !found.isEmpty() ? found : null;
+  },
+
+  normalize: function normalize(transform, node, children) {
+    return children.reduce(function (t, child) {
+      var parentTag = DEFAULT_PARENT[child.type] || 'td';
+      return t.wrapBlockByKey(child.key, parentTag);
+    }, transform);
+  }
+};
+
+exports.default = [wrapInvalidTableChildren];
 
 /***/ })
 /******/ ]);
