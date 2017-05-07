@@ -3800,6 +3800,12 @@ slash@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/slash/-/slash-1.0.0.tgz#c41f2f6c39fc16d1cd17ad4b5d896114ae470d55"
 
+slate-auto-replace@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/slate-auto-replace/-/slate-auto-replace-0.5.0.tgz#52ecbe4f5ba1838a4aaacc797caa8134118f8f7e"
+  dependencies:
+    type-of "^2.0.1"
+
 slate@^0.19.20:
   version "0.19.20"
   resolved slate-0.19.20.tgz#3d3a7f772b9fe12f8b2de6d646a44e5ab635f5d5

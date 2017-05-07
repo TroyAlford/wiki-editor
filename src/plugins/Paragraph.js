@@ -11,7 +11,6 @@ export default {
     return Slate.Block.create({
       type:  'paragraph',
       nodes: [textNode],
-      data:  { textAlign: 'left' },
     })
   },
 
