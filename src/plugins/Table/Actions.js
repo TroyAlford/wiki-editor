@@ -1,4 +1,5 @@
 import { createCell, createRow, createTable } from './Creators'
+import flow from '../../utility/flow'
 import Paragraph from '../Paragraph'
 
 function forceRange(value, lowerBound, upperBound) {
@@ -80,26 +81,34 @@ export function deleteTable(transform) {
     ? createCell()
     : Paragraph.create()
 
-  return transform.collapseToStartOf(parent)
+  return transform.collapseToStartOf(table)
                   .moveOffsetsTo(0)
                   .insertNodeByKey(parent.key, index, replacement)
                   .removeNodeByKey(table.key)
 }
 
 export function deleteRow(transform) {
-  const { row, height } = getTableInfo(transform)
+  const { row, height, x, y } = getTableInfo(transform)
   if (height === 1) return deleteTable(transform)
 
-  return transform.removeNodeByKey(row.key)
+  const moveToY = y < height - 1 ? y + 1 : height - 1
+  return flow([
+    t => moveTo(t, x, moveToY),
+    t => t.removeNodeByKey(row.key),
+  ], transform)
 }
 
 export function deleteColumn(transform) {
-  const { table, x, width } = getTableInfo(transform)
+  const { table, width, x, y } = getTableInfo(transform)
   const rows = table.nodes
 
   if (width === 1) return deleteTable(transform)
 
-  return rows.reduce((t, row) =>
-    t.removeNodeByKey(row.nodes.get(x).key)
-  , transform)
+  const moveToX = x < width - 1 ? x + 1 : width - 1
+  return flow([
+    t => moveTo(t, moveToX, y),
+    t => rows.reduce((transformRow, row) =>
+      transformRow.removeNodeByKey(row.nodes.get(x).key)
+    , t),
+  ], transform)
 }

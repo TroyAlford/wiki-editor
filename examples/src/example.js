@@ -4,11 +4,7 @@ import * as ReactDOM from 'react-dom'
 import WikiEditor from '../../src/components/WikiEditor'
 
 const HTML = `
-  <table>
-    pewp
-  </table>
-  <td>pewp</td>
-  <b><td>pewp</td></b>
+  <table><tr><td>Pewp</td></tr><tr><td>Poop</td></tr><tr><td>Haha!</td></tr></table>
 `
 
 class Example extends React.Component {
