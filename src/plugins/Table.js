@@ -57,7 +57,12 @@ export default {
         const children = el.children.filter(
           // Remove text-type, whitespace-only children
           child => !(child.type === 'text' && /^\s+$/.test(child.data))
-        )
+        ).map(child => (
+          child.type === 'text'
+            // Trim remaining children to drop leading/trailing whitespace
+            ? { ...child, data: child.data.trim() }
+            : child
+        ))
         return {
           kind:  'block',
           type:  el.tagName,

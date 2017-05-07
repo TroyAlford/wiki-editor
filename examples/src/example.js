@@ -9,7 +9,9 @@ const HTML = `
       <td>test</td>
     </tr>
     <tr>
-      <td>test</td>
+      <td>
+        test
+      </td>
     </tr>
     <tr>
       <td></td>

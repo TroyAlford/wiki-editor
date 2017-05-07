@@ -17571,6 +17571,10 @@ exports.default = _extends({}, _Events2.default, {
         // Remove text-type, whitespace-only children
         function (child) {
           return !(child.type === 'text' && /^\s+$/.test(child.data));
+        }).map(function (child) {
+          return child.type === 'text'
+          // Trim remaining children to drop leading/trailing whitespace
+          ? _extends({}, child, { data: child.data.trim() }) : child;
         });
         return {
           kind: 'block',
@@ -36910,7 +36914,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var HTML = '\n  <table>\n    <tr>\n      <td>test</td>\n    </tr>\n    <tr>\n      <td>test</td>\n    </tr>\n    <tr>\n      <td></td>\n    </tr>\n  </table>\n';
+var HTML = '\n  <table>\n    <tr>\n      <td>test</td>\n    </tr>\n    <tr>\n      <td>\n        test\n      </td>\n    </tr>\n    <tr>\n      <td></td>\n    </tr>\n  </table>\n';
 
 var Example = function (_React$Component) {
   _inherits(Example, _React$Component);
