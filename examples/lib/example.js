@@ -17498,6 +17498,10 @@ var _Rules = __webpack_require__(180);
 
 var _Rules2 = _interopRequireDefault(_Rules);
 
+var _contains = __webpack_require__(183);
+
+var _contains2 = _interopRequireDefault(_contains);
+
 var _renderStyled = __webpack_require__(114);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -17531,10 +17535,10 @@ exports.default = _extends({}, _Events2.default, {
             children = _ref.children,
             node = _ref.node;
 
-        var float = node.data.get('float') || undefined;
+        var style = node.data.get('style') || {};
         return React.createElement(
           'table',
-          _extends({ style: { float: float } }, attributes),
+          _extends({ style: style }, attributes),
           React.createElement(
             'tbody',
             null,
@@ -17562,29 +17566,29 @@ exports.default = _extends({}, _Events2.default, {
 
   serializers: [{
     deserialize: function deserialize(el, next) {
-      var node = {
-        kind: 'block',
-        type: el.tagName,
-        nodes: next(el.children)
-      };
-
-      switch (el.tagName) {
-        case 'table':
-        case 'tr':
-        case 'td':
-          return node;
-        default:
-          return undefined;
+      if ((0, _contains2.default)(['table', 'tr', 'th', 'td'], el.tagName)) {
+        var children = el.children.filter(
+        // Remove text-type, whitespace-only children
+        function (child) {
+          return !(child.type === 'text' && /^\s+$/.test(child.data));
+        });
+        return {
+          kind: 'block',
+          type: el.tagName,
+          nodes: next(children)
+        };
       }
+
+      return undefined;
     },
     serialize: function serialize(object, children) {
       switch (object.type) {
         case 'table':
           // eslint-disable-line no-case-declarations
-          var float = object.data.get('float') || undefined;
+          var style = object.data.get('style') || {};
           return React.createElement(
             'table',
-            { style: { float: float } },
+            { style: style },
             React.createElement(
               'tbody',
               object.attributes,
@@ -17597,8 +17601,9 @@ exports.default = _extends({}, _Events2.default, {
             object.attributes,
             children
           );
+        case 'th':
         case 'td':
-          return (0, _renderStyled.renderStyled)('td', object.data, children, {});
+          return (0, _renderStyled.renderStyled)(object.type, object.data, children, {});
         default:
           return undefined;
       }
@@ -36905,7 +36910,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var HTML = '\n  <table>\n    <tr>\n      <td>test</td>\n    </tr>\n    <tr>\n      <td>test</td>\n    </tr>\n    <tr>\n      <td>test</td>\n    </tr>\n  </table>\n';
+var HTML = '\n  <table>\n    <tr>\n      <td>test</td>\n    </tr>\n    <tr>\n      <td>test</td>\n    </tr>\n    <tr>\n      <td></td>\n    </tr>\n  </table>\n';
 
 var Example = function (_React$Component) {
   _inherits(Example, _React$Component);

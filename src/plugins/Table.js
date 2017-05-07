@@ -2,6 +2,7 @@
 import * as Actions from './Table/Actions'
 import events from './Table/Events'
 import rules from './Table/Rules'
+import contains from '../utility/contains'
 import { renderStyled } from '../utility/renderStyled'
 
 const BUTTONS = [
@@ -34,9 +35,9 @@ export default {
     rules,
     nodes: {
       table: ({ attributes, children, node }) => {
-        const float = node.data.get('float') || undefined
+        const style = node.data.get('style') || {}
         return (
-          <table style={{ float }} {...attributes}>
+          <table style={style} {...attributes}>
             <tbody>{children}</tbody>
           </table>
         )
@@ -52,34 +53,34 @@ export default {
 
   serializers: [{
     deserialize(el, next) {
-      const node = {
-        kind:  'block',
-        type:  el.tagName,
-        nodes: next(el.children),
+      if (contains(['table', 'tr', 'th', 'td'], el.tagName)) {
+        const children = el.children.filter(
+          // Remove text-type, whitespace-only children
+          child => !(child.type === 'text' && /^\s+$/.test(child.data))
+        )
+        return {
+          kind:  'block',
+          type:  el.tagName,
+          nodes: next(children),
+        }
       }
 
-      switch (el.tagName) {
-        case 'table':
-        case 'tr':
-        case 'td':
-          return node
-        default:
-          return undefined
-      }
+      return undefined
     },
     serialize(object, children) {
       switch (object.type) {
         case 'table': // eslint-disable-line no-case-declarations
-          const float = object.data.get('float') || undefined
+          const style = object.data.get('style') || {}
           return (
-            <table style={{ float }}>
+            <table style={style}>
               <tbody {...object.attributes}>{children}</tbody>
             </table>
           )
         case 'tr':
           return <tr {...object.attributes}>{children}</tr>
+        case 'th':
         case 'td':
-          return renderStyled('td', object.data, children, {})
+          return renderStyled(object.type, object.data, children, {})
         default:
           return undefined
       }

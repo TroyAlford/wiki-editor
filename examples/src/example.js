@@ -12,7 +12,7 @@ const HTML = `
       <td>test</td>
     </tr>
     <tr>
-      <td>test</td>
+      <td></td>
     </tr>
   </table>
 `
