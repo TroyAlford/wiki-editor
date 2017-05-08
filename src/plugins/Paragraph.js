@@ -1,14 +1,14 @@
-import Slate from 'slate'
+import { Block, Raw } from 'slate'
 import { renderStyled } from '../utility/renderStyled'
 
 export default {
   create(text) {
-    const textNode = Slate.Raw.deserializeText({
+    const textNode = Raw.deserializeText({
       kind: 'text',
       text: text || '',
     }, { terse: true })
 
-    return Slate.Block.create({
+    return Block.create({
       type:  'paragraph',
       nodes: [textNode],
     })

@@ -17423,20 +17423,16 @@ Object.defineProperty(exports, "__esModule", {
 
 var _slate = __webpack_require__(64);
 
-var _slate2 = _interopRequireDefault(_slate);
-
 var _renderStyled = __webpack_require__(114);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
   create: function create(text) {
-    var textNode = _slate2.default.Raw.deserializeText({
+    var textNode = _slate.Raw.deserializeText({
       kind: 'text',
       text: text || ''
     }, { terse: true });
 
-    return _slate2.default.Block.create({
+    return _slate.Block.create({
       type: 'paragraph',
       nodes: [textNode]
     });
@@ -36913,7 +36909,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var HTML = '\n  <table>\n    <tr>\n      <td>test</td>\n    </tr>\n    <tr>\n      <td>\n        test\n      </td>\n    </tr>\n    <tr>\n      <td></td>\n    </tr>\n  </table>\n';
+var HTML = '\n  <p>This is some stuff with a [test](text) link put in the middle.</p>\n  <a href="foo">Bar</a>\n';
 
 var Example = function (_React$Component) {
   _inherits(Example, _React$Component);
@@ -37522,6 +37518,10 @@ var _Alignment = __webpack_require__(177);
 
 var _Alignment2 = _interopRequireDefault(_Alignment);
 
+var _Anchor = __webpack_require__(415);
+
+var _Anchor2 = _interopRequireDefault(_Anchor);
+
 var _AutoReplacers = __webpack_require__(413);
 
 var _AutoReplacers2 = _interopRequireDefault(_AutoReplacers);
@@ -37546,7 +37546,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-var PLUGINS = [_TextDecorators2.default, _Alignment2.default, _Table2.default, _Paragraph2.default, _HorizontalRule2.default].concat(_toConsumableArray(_AutoReplacers2.default));
+var PLUGINS = [_Anchor2.default, _TextDecorators2.default, _Alignment2.default, _Table2.default, _Paragraph2.default, _HorizontalRule2.default].concat(_toConsumableArray(_AutoReplacers2.default));
 
 var schema = exports.schema = PLUGINS.filter(function (plugin) {
   return plugin.schema;
@@ -80453,6 +80453,159 @@ exports.default = {
       default:
         return undefined;
     }
+  }
+};
+
+/***/ }),
+/* 415 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _flow = __webpack_require__(185);
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; } /* eslint-disable react/react-in-jsx-scope,react/prop-types */
+
+
+function findExpandedAnchors(state) {
+  var anchorRegex = /\[([\w ]+)\]\(([\w\s:/]+)\)/gi;
+  var match = anchorRegex.exec(state.document.text);
+
+  var matches = [];
+  while (match !== null) {
+    var text = match[1];
+    var href = match[2];
+    var node = state.document.getTextAtOffset(match.index);
+
+    var anchorOffset = node.text.indexOf(match[0]);
+    var focusOffset = anchorOffset + match[0].length;
+
+    matches.push({
+      node: node,
+      href: href,
+      text: text,
+      anchorKey: node.key,
+      anchorOffset: anchorOffset,
+      focusKey: node.key,
+      focusOffset: focusOffset
+    });
+
+    match = anchorRegex.exec(state.document.text);
+  }
+  return matches;
+}
+
+exports.default = {
+  schema: {
+    nodes: {
+      anchor: function anchor(_ref) {
+        var node = _ref.node,
+            children = _ref.children;
+        return React.createElement(
+          'a',
+          { href: node.data.get('href') || '#' },
+          children
+        );
+      }
+    }
+  },
+
+  serializers: [{
+    deserialize: function deserialize(el, next) {
+      if (el.tagName !== 'a') return undefined;
+      return {
+        kind: 'inline',
+        type: 'anchor',
+        data: { href: el.attribs.href || '#' },
+        nodes: next(el.children)
+      };
+    },
+    serialize: function serialize(object, children) {
+      if (object.type !== 'anchor') return undefined;
+      return React.createElement(
+        'a',
+        { href: object.data.get('href') || '#' },
+        children
+      );
+    }
+  }],
+
+  onChange: function onChange(state) {
+    var selection = state.selection;
+
+
+    return findExpandedAnchors(state).filter(function (anchor) {
+      return anchor.node.key !== selection.startKey || selection.startOffset < anchor.anchorOffset || selection.endOffset > anchor.focusOffset;
+    }).reduce(function (inner, _ref2) {
+      var text = _ref2.text,
+          href = _ref2.href,
+          node = _ref2.node,
+          selectParams = _objectWithoutProperties(_ref2, ['text', 'href', 'node']);
+
+      return (0, _flow.flow)([function (t) {
+        return t.select(selectParams);
+      }, function (t) {
+        return t.insertText(text);
+      }, function (t) {
+        return t.extend(0 - text.length);
+      }, function (t) {
+        return t.wrapInlineAtRange(t.state.selection, {
+          type: 'anchor', data: { href: href }
+        });
+      }, function (t) {
+        if (selection.anchorKey !== selectParams.anchorKey || selection.endOffset <= selectParams.focusOffset) return t.select(selection);
+
+        // eslint-disable-next-line no-unused-vars
+
+        var _Array$from = Array.from(t.state.document.getTextsAtRange(t.state.selection)),
+            _Array$from2 = _slicedToArray(_Array$from, 2),
+            self = _Array$from2[0],
+            next = _Array$from2[1];
+
+        var offsetAdjust = selectParams.anchorOffset + text.length + href.length + 4;
+
+        return t.moveToStartOf(next).select({
+          anchorKey: next.key,
+          anchorOffset: selection.anchorOffset - offsetAdjust,
+          focusKey: next.key,
+          focusOffset: selection.focusOffset - offsetAdjust
+        });
+      }], inner);
+    }, state.transform()).apply();
+  },
+
+  onSelect: function onSelect(event, data, state) {
+    var anchor = state.document.getClosestInline(data.selection.anchorKey);
+
+    // If nothing to close or open, do nothing
+    if (!anchor || anchor.type !== 'anchor') return undefined;
+
+    if (anchor && anchor.type === 'anchor') {
+      var href = anchor.data.get('href');
+      var markdown = '[' + anchor.text + '](' + href + ')';
+      var offsetAdjust = -1 - 4 - href.length;
+
+      return (0, _flow.flow)([function (t) {
+        return t.collapseToStartOf(anchor);
+      }, function (t) {
+        return t.removeNodeByKey(anchor.key);
+      }, function (t) {
+        return t.insertText(markdown);
+      }, function (t) {
+        return t.extend(offsetAdjust);
+      }, function (t) {
+        return t.moveOffsetsTo(t.state.selection.startOffset, t.state.selection.startOffset);
+      }], state.transform()).apply();
+    }
+
+    return state;
   }
 };
 

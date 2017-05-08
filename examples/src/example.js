@@ -4,19 +4,8 @@ import * as ReactDOM from 'react-dom'
 import WikiEditor from '../../src/components/WikiEditor'
 
 const HTML = `
-  <table>
-    <tr>
-      <td>test</td>
-    </tr>
-    <tr>
-      <td>
-        test
-      </td>
-    </tr>
-    <tr>
-      <td></td>
-    </tr>
-  </table>
+  <p>This is some stuff with a [test](text) link put in the middle.</p>
+  <a href="foo">Bar</a>
 `
 
 class Example extends React.Component {
