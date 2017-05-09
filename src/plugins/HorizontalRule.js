@@ -1,6 +1,7 @@
 import Slate from 'slate'
-import Paragraph from './Paragraph'
+import { Paragraph } from './Paragraph'
 import { renderStyled } from '../utility/renderStyled'
+import { insertAfterAndMoveTo, insertBefore, insertBeforeAndMoveTo } from '../utility/insertAdjacent'
 
 function onDelete(transform, event, state) {
   const hr = state.startBlock
@@ -10,44 +11,27 @@ function onDelete(transform, event, state) {
   let t = transform
 
   if (!sibling) {
-    const parent = state.document.getParent(hr.key)
-    const index = parent.nodes.findIndex(n => n === hr)
     sibling = Paragraph.create()
-    t = t.insertNodeByKey(parent.key, index, sibling)
+    t = insertBefore(t, sibling, hr)
   }
 
-  return t.collapseToStartOf(sibling)
-          .moveOffsetsTo(0)
+  return t.collapseToEndOf(sibling)
           .removeNodeByKey(hr.key)
           .apply()
 }
 function onDown(transform, event, state) {
   const hr = state.startBlock
-  let sibling = state.document.getNextSibling(hr.key)
+  const sibling = state.document.getNextSibling(hr.key)
   if (sibling) return undefined
 
-  const parent = state.document.getParent(hr.key)
-  const hrIndex = parent.nodes.findIndex(n => n === hr)
-
-  sibling = Paragraph.create()
-  return transform.insertNodeByKey(parent.key, hrIndex + 1, sibling)
-                  .collapseToStartOf(sibling)
-                  .moveOffsetsTo(0)
-                  .apply()
+  return insertAfterAndMoveTo(transform, Paragraph.create(), hr).apply()
 }
 function onUp(transform, event, state) {
   const hr = state.startBlock
-  let sibling = state.document.getPreviousSibling(hr.key)
+  const sibling = state.document.getPreviousSibling(hr.key)
   if (sibling) return undefined
 
-  const parent = state.document.getParent(hr.key)
-  const hrIndex = parent.nodes.findIndex(n => n === hr)
-
-  sibling = Paragraph.create()
-  return transform.insertNodeByKey(parent.key, hrIndex, sibling)
-                  .collapseToStartOf(sibling)
-                  .moveOffsetsTo(0)
-                  .apply()
+  return insertBeforeAndMoveTo(transform, Paragraph.create(), hr).apply()
 }
 
 export default {

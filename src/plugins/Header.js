@@ -1,10 +1,38 @@
+import { Paragraph } from './Paragraph'
+import { insertAfterAndMoveTo, insertBefore } from '../utility/insertAdjacent'
+
 /* eslint-disable react/react-in-jsx-scope,react/prop-types */
+
 function renderHeader(header, children) {
   const level = header.data.get('level') || 1
   const style = header.data.get('style') || {}
   const Tag = `h${level}`
 
   return <Tag style={style}>{children}</Tag>
+}
+
+function onDown(transform, event, state) {
+  const header = state.startBlock
+  const sibling = state.document.getNextSibling(header.key)
+  if (sibling) return undefined
+
+  return insertAfterAndMoveTo(transform, Paragraph.create(), header).apply()
+}
+function onEnter(transform, event, state) {
+  const { selection } = state
+  if (!selection.isCollapsed) return undefined
+
+  const header = state.document.getClosestBlock(selection.anchorKey)
+
+  if (selection.startOffset === 0) {
+    return insertBefore(transform, Paragraph.create(), header).apply()
+  }
+
+  if (selection.endOffset === header.text.length) {
+    return insertAfterAndMoveTo(transform, Paragraph.create(), header).apply()
+  }
+
+  return undefined
 }
 
 export default {
@@ -34,70 +62,16 @@ export default {
     },
   }],
 
-  // onChange: (state) => {
-  //   const { selection } = state
+  onKeyDown: (event, data, state) => {
+    if (state.startBlock.type !== 'header') return undefined
 
-  //   return findExpandedAnchors(state)
-  //     .filter(anchor => (
-  //       anchor.node.key !== selection.startKey ||
-  //       selection.startOffset < anchor.anchorOffset ||
-  //       selection.endOffset > anchor.focusOffset
-  //     ))
-  //     .reduce((inner, { text, href, node, ...selectParams }) =>
-  //       flow([
-  //         t => t.select(selectParams),
-  //         t => t.insertText(text),
-  //         t => t.extend(0 - text.length),
-  //         t => t.wrapInlineAtRange(t.state.selection, {
-  //           type: 'anchor', data: { href },
-  //         }),
-  //         (t) => {
-  //           if (
-  //             (selection.anchorKey !== selectParams.anchorKey) ||
-  //             (selection.endOffset <= selectParams.focusOffset)
-  //           ) return t.select(selection)
-
-  //           // eslint-disable-next-line no-unused-vars
-  //           const [self, next] = Array.from(t.state.document.getTextsAtRange(t.state.selection))
-
-  //           const offsetAdjust =
-  //             selectParams.anchorOffset +
-  //             text.length + href.length + 4
-
-  //           return t
-  //             .moveToStartOf(next)
-  //             .select({
-  //               anchorKey:    next.key,
-  //               anchorOffset: selection.anchorOffset - offsetAdjust,
-  //               focusKey:     next.key,
-  //               focusOffset:  selection.focusOffset - offsetAdjust,
-  //             })
-  //         },
-  //       ], inner)
-  //     , state.transform())
-  //     .apply()
-  // },
-
-  // onSelect: (event, data, state) => {
-  //   const anchor = state.document.getClosestInline(data.selection.anchorKey)
-
-  //   // If nothing to close or open, do nothing
-  //   if (!anchor || anchor.type !== 'anchor') return undefined
-
-  //   if (anchor && anchor.type === 'anchor') {
-  //     const href = anchor.data.get('href')
-  //     const markdown = `[${anchor.text}](${href})`
-
-  //     return flow([
-  //       t => t.collapseToStartOf(anchor),
-  //       t => t.removeNodeByKey(anchor.key),
-  //       t => t.insertText(markdown),
-  //       t => t.move(-markdown.length),
-  //       t => t.move(1 + data.selection.startOffset),
-  //     ], state.transform())
-  //     .apply()
-  //   }
-
-  //   return state
-  // },
+    switch (data.key) {
+      case 'enter':
+        return onEnter(state.transform(), event, state)
+      case 'down':
+        return onDown(state.transform(), event, state)
+      default:
+        return undefined
+    }
+  },
 }

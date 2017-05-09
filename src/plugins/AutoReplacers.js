@@ -1,9 +1,13 @@
 import AutoReplace from 'slate-auto-replace'
+import { Paragraph } from './Paragraph'
+import { insertAfter } from '../utility/insertAdjacent'
+import { flow } from '../utility/flow'
 
-const buildReplacer = (trigger, before, replace) => (
+const buildReplacer = (trigger, [before, after], replace) => (
   AutoReplace({
     trigger,
     before,
+    after,
     transform: typeof replace === 'function'
       ? replace
       : transform => transform.insertText(replace),
@@ -11,16 +15,23 @@ const buildReplacer = (trigger, before, replace) => (
 )
 
 export default [
-  buildReplacer(')', /(\(c)$/i, '©'),
-  buildReplacer(')', /(\(r)$/i, '®'),
-  buildReplacer(')', /(\(tm)$/i, '™'),
-  buildReplacer('enter', /^-{2,}$/, t =>
-    t.setBlock({ type: 'hr', isVoid: true })
-  ),
-  buildReplacer(' ', /^#{1,6}/, (t, e, data, matches) => {
-    const [hashes] = matches.before
-    const level = hashes.length
-    const replacement = `Header ${level}`
+  buildReplacer(')', [/(\(c)$/i], '©'),
+  buildReplacer(')', [/(\(r)$/i], '®'),
+  buildReplacer(')', [/(\(tm)$/i], '™'),
+  buildReplacer('enter', [/^-{2,}$/], (transform) => {
+    const paragraph = Paragraph.create()
+    return flow([
+      t => insertAfter(t, paragraph, t.state.anchorBlock),
+      t => t.setBlock({ type: 'hr', isVoid: true }),
+      t => t.collapseToStartOf(paragraph).moveOffsetsTo(0),
+    ], transform)
+  }),
+  buildReplacer(' ', [/^#{1,6}/, /.*$/], (t, e, data, matches) => {
+    const [before] = matches.before
+    const [after] = matches.after
+
+    const level = before.length
+    const replacement = after ? '' : `Header ${level}`
 
     return t.setBlock({ type: 'header', data: { level } })
             .extend(-(level + 1))

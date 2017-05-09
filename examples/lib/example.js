@@ -13962,12 +13962,13 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_54__;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.Paragraph = undefined;
 
 var _slate = __webpack_require__(49);
 
 var _renderStyled = __webpack_require__(74);
 
-exports.default = {
+var Paragraph = exports.Paragraph = {
   create: function create(text) {
     var textNode = _slate.Raw.deserializeText({
       kind: 'text',
@@ -14007,6 +14008,8 @@ exports.default = {
     }
   }]
 };
+
+exports.default = Paragraph;
 
 /***/ }),
 /* 56 */
@@ -37210,26 +37213,47 @@ var _slateAutoReplace = __webpack_require__(384);
 
 var _slateAutoReplace2 = _interopRequireDefault(_slateAutoReplace);
 
+var _Paragraph = __webpack_require__(55);
+
+var _insertAdjacent = __webpack_require__(417);
+
+var _flow = __webpack_require__(73);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var buildReplacer = function buildReplacer(trigger, before, replace) {
+var buildReplacer = function buildReplacer(trigger, _ref, replace) {
+  var _ref2 = _slicedToArray(_ref, 2),
+      before = _ref2[0],
+      after = _ref2[1];
+
   return (0, _slateAutoReplace2.default)({
     trigger: trigger,
     before: before,
+    after: after,
     transform: typeof replace === 'function' ? replace : function (transform) {
       return transform.insertText(replace);
     }
   });
 };
 
-exports.default = [buildReplacer(')', /(\(c)$/i, '©'), buildReplacer(')', /(\(r)$/i, '®'), buildReplacer(')', /(\(tm)$/i, '™'), buildReplacer('enter', /^-{2,}$/, function (t) {
-  return t.setBlock({ type: 'hr', isVoid: true });
-}), buildReplacer(' ', /^#{1,6}/, function (t, e, data, matches) {
+exports.default = [buildReplacer(')', [/(\(c)$/i], '©'), buildReplacer(')', [/(\(r)$/i], '®'), buildReplacer(')', [/(\(tm)$/i], '™'), buildReplacer('enter', [/^-{2,}$/], function (transform) {
+  var paragraph = _Paragraph.Paragraph.create();
+  return (0, _flow.flow)([function (t) {
+    return (0, _insertAdjacent.insertAfter)(t, paragraph, t.state.anchorBlock);
+  }, function (t) {
+    return t.setBlock({ type: 'hr', isVoid: true });
+  }, function (t) {
+    return t.collapseToStartOf(paragraph).moveOffsetsTo(0);
+  }], transform);
+}), buildReplacer(' ', [/^#{1,6}/, /.*$/], function (t, e, data, matches) {
   var _matches$before = _slicedToArray(matches.before, 1),
-      hashes = _matches$before[0];
+      before = _matches$before[0];
 
-  var level = hashes.length;
-  var replacement = 'Header ' + level;
+  var _matches$after = _slicedToArray(matches.after, 1),
+      after = _matches$after[0];
+
+  var level = before.length;
+  var replacement = after ? '' : 'Header ' + level;
 
   return t.setBlock({ type: 'header', data: { level: level } }).extend(-(level + 1)).insertText(replacement).moveOffsetsTo(0, replacement.length);
 })];
@@ -37251,9 +37275,9 @@ var _slate2 = _interopRequireDefault(_slate);
 
 var _Paragraph = __webpack_require__(55);
 
-var _Paragraph2 = _interopRequireDefault(_Paragraph);
-
 var _renderStyled = __webpack_require__(74);
+
+var _insertAdjacent = __webpack_require__(417);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -37264,41 +37288,25 @@ function onDelete(transform, event, state) {
   var t = transform;
 
   if (!sibling) {
-    var parent = state.document.getParent(hr.key);
-    var index = parent.nodes.findIndex(function (n) {
-      return n === hr;
-    });
-    sibling = _Paragraph2.default.create();
-    t = t.insertNodeByKey(parent.key, index, sibling);
+    sibling = _Paragraph.Paragraph.create();
+    t = (0, _insertAdjacent.insertBefore)(t, sibling, hr);
   }
 
-  return t.collapseToStartOf(sibling).moveOffsetsTo(0).removeNodeByKey(hr.key).apply();
+  return t.collapseToEndOf(sibling).removeNodeByKey(hr.key).apply();
 }
 function onDown(transform, event, state) {
   var hr = state.startBlock;
   var sibling = state.document.getNextSibling(hr.key);
   if (sibling) return undefined;
 
-  var parent = state.document.getParent(hr.key);
-  var hrIndex = parent.nodes.findIndex(function (n) {
-    return n === hr;
-  });
-
-  sibling = _Paragraph2.default.create();
-  return transform.insertNodeByKey(parent.key, hrIndex + 1, sibling).collapseToStartOf(sibling).moveOffsetsTo(0).apply();
+  return (0, _insertAdjacent.insertAfterAndMoveTo)(transform, _Paragraph.Paragraph.create(), hr).apply();
 }
 function onUp(transform, event, state) {
   var hr = state.startBlock;
   var sibling = state.document.getPreviousSibling(hr.key);
   if (sibling) return undefined;
 
-  var parent = state.document.getParent(hr.key);
-  var hrIndex = parent.nodes.findIndex(function (n) {
-    return n === hr;
-  });
-
-  sibling = _Paragraph2.default.create();
-  return transform.insertNodeByKey(parent.key, hrIndex, sibling).collapseToStartOf(sibling).moveOffsetsTo(0).apply();
+  return (0, _insertAdjacent.insertBeforeAndMoveTo)(transform, _Paragraph.Paragraph.create(), hr).apply();
 }
 
 exports.default = {
@@ -80632,7 +80640,13 @@ function config (name) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _Paragraph = __webpack_require__(55);
+
+var _insertAdjacent = __webpack_require__(417);
+
 /* eslint-disable react/react-in-jsx-scope,react/prop-types */
+
 function renderHeader(header, children) {
   var level = header.data.get('level') || 1;
   var style = header.data.get('style') || {};
@@ -80643,6 +80657,31 @@ function renderHeader(header, children) {
     { style: style },
     children
   );
+}
+
+function onDown(transform, event, state) {
+  var header = state.startBlock;
+  var sibling = state.document.getNextSibling(header.key);
+  if (sibling) return undefined;
+
+  return (0, _insertAdjacent.insertAfterAndMoveTo)(transform, _Paragraph.Paragraph.create(), header).apply();
+}
+function onEnter(transform, event, state) {
+  var selection = state.selection;
+
+  if (!selection.isCollapsed) return undefined;
+
+  var header = state.document.getClosestBlock(selection.anchorKey);
+
+  if (selection.startOffset === 0) {
+    return (0, _insertAdjacent.insertBefore)(transform, _Paragraph.Paragraph.create(), header).apply();
+  }
+
+  if (selection.endOffset === header.text.length) {
+    return (0, _insertAdjacent.insertAfterAndMoveTo)(transform, _Paragraph.Paragraph.create(), header).apply();
+  }
+
+  return undefined;
 }
 
 exports.default = {
@@ -80674,9 +80713,69 @@ exports.default = {
       if (object.type !== 'header') return undefined;
       return renderHeader(object, children);
     }
-  }]
+  }],
 
+  onKeyDown: function onKeyDown(event, data, state) {
+    if (state.startBlock.type !== 'header') return undefined;
+
+    switch (data.key) {
+      case 'enter':
+        return onEnter(state.transform(), event, state);
+      case 'down':
+        return onDown(state.transform(), event, state);
+      default:
+        return undefined;
+    }
+  }
 };
+
+/***/ }),
+/* 417 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.insertAdjacent = insertAdjacent;
+exports.insertBefore = insertBefore;
+exports.insertAfter = insertAfter;
+exports.insertAdjacentAndMoveTo = insertAdjacentAndMoveTo;
+exports.insertAfterAndMoveTo = insertAfterAndMoveTo;
+exports.insertBeforeAndMoveTo = insertBeforeAndMoveTo;
+function insertAdjacent(transform, insert, adjacentTo) {
+  var indexOffset = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 1;
+
+  var parent = transform.state.document.getParent(adjacentTo.key);
+  var index = parent.nodes.findIndex(function (n) {
+    return n === adjacentTo;
+  });
+  return transform.insertNodeByKey(parent.key, index + indexOffset, insert);
+}
+
+function insertBefore(transform, insert, adjacentTo) {
+  return insertAdjacent(transform, insert, adjacentTo, 0);
+}
+
+function insertAfter(transform, insert, adjacentTo) {
+  return insertAdjacent(transform, insert, adjacentTo, 1);
+}
+
+function insertAdjacentAndMoveTo(transform, insert, adjacentTo) {
+  var indexOffset = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 1;
+
+  return insertAdjacent(transform, insert, adjacentTo, indexOffset).collapseToStartOf(insert).moveOffsetsTo(0);
+}
+
+function insertAfterAndMoveTo(transform, insert, adjacentTo) {
+  return insertAdjacentAndMoveTo(transform, insert, adjacentTo, 1);
+}
+
+function insertBeforeAndMoveTo(transform, insert, adjacentTo) {
+  return insertAdjacentAndMoveTo(transform, insert, adjacentTo, 0);
+}
 
 /***/ })
 /******/ ]);
