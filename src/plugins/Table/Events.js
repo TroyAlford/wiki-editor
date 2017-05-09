@@ -81,6 +81,8 @@ function onEnter(transform, event, state) {
 
 function onH(transform, event, state) {
   if (!isHotkeyCommand(event)) return undefined
+
+  event.preventDefault()
   const cell = state.startBlock
   return transform.setBlock({
     type: cell.type === 'td' ? 'th' : 'td',
