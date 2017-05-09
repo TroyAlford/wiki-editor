@@ -17,4 +17,14 @@ export default [
   buildReplacer('enter', /^-{2,}$/, t =>
     t.setBlock({ type: 'hr', isVoid: true })
   ),
+  buildReplacer(' ', /^#{1,6}/, (t, e, data, matches) => {
+    const [hashes] = matches.before
+    const level = hashes.length
+    const replacement = `Header ${level}`
+
+    return t.setBlock({ type: 'header', data: { level } })
+            .extend(-(level + 1))
+            .insertText(replacement)
+            .moveOffsetsTo(0, replacement.length)
+  }),
 ]
