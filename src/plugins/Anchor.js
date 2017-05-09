@@ -2,7 +2,7 @@
 import { flow } from '../utility/flow'
 
 function findExpandedAnchors(state) {
-  const anchorRegex = /\[([\w ]+)\]\(([\w\s:/]+)\)/gi
+  const anchorRegex = /\[(.+)\]\(([a-z0-9:/.+%-]+)\)/gi
   let match = anchorRegex.exec(state.document.text)
 
   const matches = []
@@ -109,14 +109,13 @@ export default {
     if (anchor && anchor.type === 'anchor') {
       const href = anchor.data.get('href')
       const markdown = `[${anchor.text}](${href})`
-      const offsetAdjust = -1 - 4 - href.length
 
       return flow([
         t => t.collapseToStartOf(anchor),
         t => t.removeNodeByKey(anchor.key),
         t => t.insertText(markdown),
-        t => t.extend(offsetAdjust),
-        t => t.moveOffsetsTo(t.state.selection.startOffset, t.state.selection.startOffset),
+        t => t.move(-markdown.length),
+        t => t.move(1 + data.selection.startOffset),
       ], state.transform())
       .apply()
     }
