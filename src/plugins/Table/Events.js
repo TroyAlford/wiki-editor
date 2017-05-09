@@ -1,6 +1,6 @@
 import Slate from 'slate'
-import Paragraph from '../Paragraph'
 import { flow } from '../../utility/flow'
+import { Paragraph } from '../Paragraph'
 import { isWithinTable } from '../Table'
 import { getTableInfo, insertColumn, insertRow, moveTo } from './Actions'
 
@@ -77,6 +77,14 @@ function onEnter(transform, event, state) {
   }
 
   return moveTo(transform, x, y + 1)
+}
+
+function onH(transform, event, state) {
+  if (!isHotkeyCommand(event)) return undefined
+  const cell = state.startBlock
+  return transform.setBlock({
+    type: cell.type === 'td' ? 'th' : 'td',
+  }).apply()
 }
 
 function onLeft(transform, event, state) {
@@ -165,6 +173,8 @@ export default {
         return onDown(transform, event, state).apply()
       case 'enter':
         return onEnter(transform, event, state).apply()
+      case 'h':
+        return onH(transform, event, state)
       case 'left':
         return onLeft(transform, event, state).apply()
       case 'right':

@@ -21,7 +21,7 @@ export default [
   buildReplacer('enter', [/^-{2,}$/], (transform) => {
     const paragraph = Paragraph.create()
     return flow([
-      t => insertAfter(t, paragraph, t.state.anchorBlock),
+      t => insertAfter(t, paragraph, t.state.startBlock),
       t => t.setBlock({ type: 'hr', isVoid: true }),
       t => t.collapseToStartOf(paragraph).moveOffsetsTo(0),
     ], transform)

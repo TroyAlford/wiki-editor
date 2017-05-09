@@ -25,7 +25,7 @@ const applyAction = (action, state, params) => {
 
 export function isWithinTable(state) {
   if (!state.selection.startKey) return false
-  return (state.startBlock.type === 'td')
+  return (contains(['td', 'th'], state.startBlock.type))
 }
 
 export default {
