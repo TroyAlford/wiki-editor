@@ -34,9 +34,9 @@ export default class WikiEditor extends Component {
   }
 
   renderToolbar = () => (
-    <div className="menu toolbar-menu">
+    <div className={this.props.toolbarClassName}>
       {toolbarButtons.map(group => (
-        <div className="toolbar-button-group">
+        <div className={this.props.toolbarButtonGroupClassName}>
           {group.map((button) => {
             let isVisible = true
             if (typeof button.isVisible === 'function') {
@@ -52,7 +52,8 @@ export default class WikiEditor extends Component {
               : !!button.isActive
 
             const className = [
-              `toolbar-button icon icon-${button.icon}`,
+              this.props.toolbarButtonClassName,
+              `icon icon-${button.icon}`,
               isActive ? 'is-active' : 'is-inactive',
             ].join(' ')
 
@@ -76,7 +77,7 @@ export default class WikiEditor extends Component {
   )
 
   render = () => (
-    <div className="wiki-editor">
+    <div className={this.props.className}>
       {this.renderToolbar()}
       {this.renderEditor()}
     </div>
@@ -84,16 +85,26 @@ export default class WikiEditor extends Component {
 }
 
 WikiEditor.propTypes = {
+  className:   PropTypes.string,
   html:        PropTypes.string,
   placeholder: PropTypes.string,
   spellCheck:  PropTypes.bool,
 
+  toolbarClassName:            PropTypes.string,
+  toolbarButtonGroupClassName: PropTypes.string,
+  toolbarButtonClassName:      PropTypes.string,
+
   onHtmlChange: PropTypes.func,
 }
 WikiEditor.defaultProps = {
+  className:   'wiki-editor',
   html:        '<p></p>',
   placeholder: 'Enter some text...',
   spellCheck:  true,
+
+  toolbarClassName:            'menu toolbar-menu',
+  toolbarButtonGroupClassName: 'toolbar-button-group',
+  toolbarButtonClassName:      'toolbar-button',
 
   onHtmlChange: undefined,
 }
