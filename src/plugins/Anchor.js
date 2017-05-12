@@ -28,6 +28,20 @@ function findExpandedAnchors(state) {
   return matches
 }
 
+function expandAnchor(transform, anchor) {
+  if (!anchor || anchor.type !== 'anchor') return transform
+
+  const href = anchor.data.get('href')
+  const markdown = `[${anchor.text}](${href})`
+
+  return flow([
+    t => t.collapseToStartOf(anchor),
+    t => t.removeNodeByKey(anchor.key),
+    t => t.insertText(markdown),
+    t => t.move(-markdown.length),
+  ], transform)
+}
+
 export default {
   schema: {
     nodes: {
@@ -105,20 +119,10 @@ export default {
     // If nothing to close or open, do nothing
     if (!anchor || anchor.type !== 'anchor') return undefined
 
-    if (anchor && anchor.type === 'anchor') {
-      const href = anchor.data.get('href')
-      const markdown = `[${anchor.text}](${href})`
-
-      return flow([
-        t => t.collapseToStartOf(anchor),
-        t => t.removeNodeByKey(anchor.key),
-        t => t.insertText(markdown),
-        t => t.move(-markdown.length),
-        t => t.move(1 + data.selection.startOffset),
-      ], state.transform())
-      .apply()
-    }
-
-    return state
+    return flow([
+      t => expandAnchor(t, anchor),
+      t => t.move(1 + data.selection.startOffset),
+    ], state.transform())
+    .apply()
   },
 }
