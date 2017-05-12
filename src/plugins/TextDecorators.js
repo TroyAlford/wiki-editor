@@ -24,7 +24,7 @@ const applyMark = (mark, state) => {
   const transform = state.transform()
 
   if (state.selection.isCollapsed) {
-    const text = (state.anchorInline || state.anchorBlock).text
+    const text = state.anchorText.text
     const position = state.anchorOffset
     const { offsetLeft, offsetRight } = findWordBoundaries(text, position)
 
