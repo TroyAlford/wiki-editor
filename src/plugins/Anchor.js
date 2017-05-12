@@ -2,17 +2,16 @@
 import { flow } from '../utility/flow'
 
 function findExpandedAnchors(state) {
-  const anchorRegex = /\[(.+)\]\(([a-z0-9:/.+%-]+)\)/gi
+  const anchorRegex = /\[([^\]]+)\]\(([a-z0-9:/.+%-]+)\)/gi
   let match = anchorRegex.exec(state.document.text)
 
   const matches = []
   while (match !== null) {
-    const text = match[1]
-    const href = match[2]
+    const [full, text, href] = match
     const node = state.document.getTextAtOffset(match.index)
 
-    const anchorOffset = node.text.indexOf(match[0])
-    const focusOffset = anchorOffset + match[0].length
+    const anchorOffset = node.text.indexOf(full)
+    const focusOffset = anchorOffset + full.length
 
     matches.push({
       node,
