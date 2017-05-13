@@ -43,6 +43,8 @@ const applyMark = (mark, state) => {
   return transform.toggleMark(mark).apply()
 }
 
+const isActiveClass = (state, mark) => state.marks.some(m => m.type === mark)
+
 export default {
   onKeyDown(event, data, state) {
     const hotkey = HOTKEYS[data.key]
@@ -76,11 +78,70 @@ export default {
     },
   }],
 
-  toolbarButtons: MAPPINGS.map(({ mark }) => ({
-    icon: mark,
+  renderToolbar: (state, props, setState) => (
+    <div className={props.toolbarButtonGroupClassName}>
+      {MAPPINGS.map(({ mark }) => {
+        const className = [
+          props.toolbarButtonClassName,
+          isActiveClass(state, mark),
+          `icon icon-${mark}`,
+        ].join(' ')
 
-    isActive:  state => state.marks.some(m => m.type === mark),
-    onClick:   state => applyMark(mark, state),
-    isVisible: true,
-  })),
+        const onMouseDown = (event) => {
+          event.preventDefault()
+          setState(applyMark(mark, state))
+        }
+
+        return <button className={className} onMouseDown={onMouseDown} />
+      })}
+    </div>
+  ),
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
