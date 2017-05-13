@@ -27,12 +27,6 @@ export default class WikiEditor extends Component {
     }
   }
 
-  handleToolbar = (event, button) => {
-    event.preventDefault()
-    const state = button.onClick(this.state.state)
-    if (state) this.onChange(state, this.editor.focus)
-  }
-
   handlePluginStateChange = state => this.onChange(state, this.editor.focus)
 
   renderToolbar = () => (
