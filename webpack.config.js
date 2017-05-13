@@ -51,6 +51,7 @@ module.exports = [
   Object.assign({}, bundle, {
     /* Examples */
     entry: `${__dirname}/examples/src/example.js`,
+    externals: {}, // Include react/react-dom
     output: Object.assign({}, bundle.output, {
       filename: 'example.js',
       library: 'example',
