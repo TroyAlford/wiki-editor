@@ -1,7 +1,10 @@
 import { Paragraph } from './Paragraph'
 import { insertAfterAndMoveTo, insertBefore } from '../utility/insertAdjacent'
+import { range } from '../utility/range'
 
 /* eslint-disable react/react-in-jsx-scope,react/prop-types */
+
+const LEVELS = range(1, 6)
 
 function renderHeader(header, children) {
   const level = header.data.get('level') || 1
@@ -96,7 +99,7 @@ export default {
 
   renderToolbar: (state, props, setState) => (
     <div className={props.toolbarButtonGroupClassName}>
-      {[1, 2, 3, 4, 5, 6].map(level =>
+      {LEVELS.map(level =>
         <button
           className={[
             props.toolbarButtonClassName,
