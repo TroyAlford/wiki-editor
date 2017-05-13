@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Editor, Html } from 'slate'
-import plugins, { schema, serializers } from '../plugins'
+import plugins, { schema, serializers } from './plugins'
 
 const HtmlSerializer = new Html({ rules: serializers })
 

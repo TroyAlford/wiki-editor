@@ -8,5 +8,6 @@ $editor-padding: 1rem!default;
 /* Import component SCSS files */
 @import '../fontello/css/wiki-editor-embedded';
 @import '../fontello/css/animation';
-@import 'components/*.scss';
-@import 'plugins/*.scss';
+@import './WikiEditor.scss';
+@import './components/*.scss';
+@import './plugins/*.scss';
