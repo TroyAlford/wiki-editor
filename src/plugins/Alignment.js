@@ -11,29 +11,52 @@ const toggleAlign = (state, alignment) => {
   return toggleStyle(transform, state.startBlock, 'textAlign', alignment).apply()
 }
 
-const toggleFloat = (transform, toggle) => {
-  let { startBlock: block } = transform.state
+const toggleFloat = (state, toggle) => {
+  let { startBlock: block } = state
 
-  if (isWithinTable(transform.state)) {
-    block = getTableInfo(transform).table
+  if (isWithinTable(state)) {
+    block = getTableInfo({ state }).table
   }
 
-  return toggleStyle(transform, block, 'float', toggle).apply()
+  return toggleStyle(state.transform(), block, 'float', toggle).apply()
 }
 
+const isActiveClass = ({ startBlock }, prop, value) => (
+  getStyle(startBlock, prop) === value ? 'is-active' : 'is-inactive'
+)
+
+const toolbarButtons = [
+  ...ALIGNMENTS.map(textAlign => ({
+    styleProp:  'textAlign',
+    styleValue: textAlign,
+    iconPrefix: 'align',
+    onActivate: state => toggleAlign(state, textAlign),
+  })),
+  ...FLOATS.map(float => ({
+    styleProp:  'float',
+    styleValue: float,
+    iconPrefix: 'float',
+    onActivate: state => toggleFloat(state, float),
+  })),
+]
+
 export default {
-  toolbarButtons: [
-    ...ALIGNMENTS.map(textAlign => ({
-      icon:      `align-${textAlign}`,
-      isActive:  state => getStyle(state.startBlock, 'textAlign') === textAlign,
-      onClick:   state => toggleAlign(state, textAlign),
-      isVisible: true,
-    })),
-    ...FLOATS.map(float => ({
-      icon:      `float-${float}`,
-      isActive:  state => getStyle(state.startBlock, 'float') === float,
-      onClick:   state => toggleFloat(state.transform(), float),
-      isVisible: true,
-    })),
-  ],
+  renderToolbar: (state, props, setState) => (
+    <div className={props.toolbarButtonGroupClassName}>
+      {toolbarButtons.map((button) => {
+        const className = [
+          props.toolbarButtonClassName,
+          isActiveClass(state, button.styleProp, button.styleValue),
+          `icon icon-${button.iconPrefix}-${button.styleValue}`,
+        ].join(' ')
+
+        const onMouseDown = (event) => {
+          event.preventDefault()
+          setState(button.onActivate(state))
+        }
+
+        return <button className={className} onMouseDown={onMouseDown} />
+      })}
+    </div>
+  ),
 }

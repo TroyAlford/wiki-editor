@@ -33,8 +33,15 @@ export default class WikiEditor extends Component {
     if (state) this.onChange(state, this.editor.focus)
   }
 
+  handlePluginStateChange = state => this.onChange(state, this.editor.focus)
+
   renderToolbar = () => (
     <div className={this.props.toolbarClassName}>
+      {
+        plugins.filter(p => typeof p.renderToolbar === 'function')
+          .map(p => p.renderToolbar(this.state.state, this.props, this.handlePluginStateChange))
+      }
+
       {toolbarButtons.map(group => (
         <div className={this.props.toolbarButtonGroupClassName}>
           {group.map((button) => {
