@@ -1,7 +1,7 @@
 import { Block, Raw } from 'slate'
 import { renderStyled } from '../utility/renderStyled'
 
-export const Paragraph = {
+export default {
   create(text) {
     const textNode = Raw.deserializeText({
       kind: 'text',
@@ -37,5 +37,3 @@ export const Paragraph = {
     },
   }],
 }
-
-export default Paragraph
