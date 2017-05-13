@@ -43,7 +43,7 @@ const applyMark = (mark, state) => {
   return transform.toggleMark(mark).apply()
 }
 
-const isActiveClass = (state, mark) => state.marks.some(m => m.type === mark)
+const isActive = (state, mark) => state.marks.some(m => m.type === mark)
 
 export default {
   onKeyDown(event, data, state) {
@@ -83,7 +83,7 @@ export default {
       {MAPPINGS.map(({ mark }) => {
         const className = [
           props.toolbarButtonClassName,
-          isActiveClass(state, mark),
+          isActive(state, mark) ? 'is-active' : 'is-inactive',
           `icon icon-${mark}`,
         ].join(' ')
 
@@ -97,51 +97,3 @@ export default {
     </div>
   ),
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

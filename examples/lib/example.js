@@ -39744,7 +39744,7 @@ var applyMark = function applyMark(mark, state) {
   return transform.toggleMark(mark).apply();
 };
 
-var isActiveClass = function isActiveClass(state, mark) {
+var isActive = function isActive(state, mark) {
   return state.marks.some(function (m) {
     return m.type === mark;
   });
@@ -39803,7 +39803,7 @@ exports.default = {
       MAPPINGS.map(function (_ref5) {
         var mark = _ref5.mark;
 
-        var className = [props.toolbarButtonClassName, isActiveClass(state, mark), 'icon icon-' + mark].join(' ');
+        var className = [props.toolbarButtonClassName, isActive(state, mark) ? 'is-active' : 'is-inactive', 'icon icon-' + mark].join(' ');
 
         var onMouseDown = function onMouseDown(event) {
           event.preventDefault();
