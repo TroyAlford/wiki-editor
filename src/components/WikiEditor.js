@@ -37,38 +37,9 @@ export default class WikiEditor extends Component {
 
   renderToolbar = () => (
     <div className={this.props.toolbarClassName}>
-      {
-        plugins.filter(p => typeof p.renderToolbar === 'function')
-          .map(p => p.renderToolbar(this.state.state, this.props, this.handlePluginStateChange))
-      }
-
-      {toolbarButtons.map(group => (
-        <div className={this.props.toolbarButtonGroupClassName}>
-          {group.map((button) => {
-            let isVisible = true
-            if (typeof button.isVisible === 'function') {
-              isVisible = button.isVisible(this.state.state)
-            } else {
-              isVisible = !!button.isVisible
-            }
-
-            if (!isVisible) return null
-
-            const isActive = typeof button.isActive === 'function'
-              ? button.isActive(this.state.state)
-              : !!button.isActive
-
-            const className = [
-              this.props.toolbarButtonClassName,
-              `icon icon-${button.icon}`,
-              isActive ? 'is-active' : 'is-inactive',
-            ].join(' ')
-
-            const onMouseDown = event => this.handleToolbar(event, button)
-            return <button className={className} onMouseDown={onMouseDown}>{button.text}</button>
-          })}
-        </div>
-      ))}
+      {plugins.filter(p => typeof p.renderToolbar === 'function').map(p =>
+        p.renderToolbar(this.state.state, this.props, this.handlePluginStateChange)
+      )}
     </div>
   )
 

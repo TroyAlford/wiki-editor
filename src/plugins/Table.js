@@ -92,15 +92,23 @@ export default {
     },
   }],
 
-  toolbarButtons: BUTTONS.filter(m => m.icon || m.text)
-    .reduce((all, { alwaysVisible, action, icon, text, params = [] }) => [
-      ...all, {
-        icon,
-        text,
-        isActive:  () => false,
-        onClick:   state => applyAction(action, state, params),
-        isVisible: state => alwaysVisible || isWithinTable(state),
-      },
-    ], [])
-  ,
+  renderToolbar: (state, props, setState) => (
+    <div className={props.toolbarButtonGroupClassName}>
+      {BUTTONS.filter(({ alwaysVisible }) => alwaysVisible || isWithinTable(state))
+        .map(({ action, params = [], icon }) => {
+          const className = [
+            props.toolbarButtonClassName,
+            `icon icon-${icon}`,
+          ].join(' ')
+
+          const onMouseDown = (event) => {
+            event.preventDefault()
+            setState(applyAction(action, state, params))
+          }
+
+          return <button className={className} onMouseDown={onMouseDown} />
+        })
+      }
+    </div>
+  ),
 }
