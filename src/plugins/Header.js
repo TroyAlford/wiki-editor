@@ -11,6 +11,25 @@ function renderHeader(header, children) {
   return <Tag style={style}>{children}</Tag>
 }
 
+function setHeaderLevel(state, level) {
+  const transform = state.transform()
+  const block = state.anchorBlock
+
+  if (level === undefined) {
+    return transform.setBlock({ type: 'paragraph', data: { level: undefined } }).apply()
+  }
+
+  if (block.type === 'header' && block.data.get('level') === level) {
+    return transform.setBlock({ type: 'paragraph', data: { level: undefined } }).apply()
+  }
+
+  return transform.setBlock({ type: 'header', data: { level } }).apply()
+}
+
+function isActiveClass({ anchorBlock }, level) {
+  return anchorBlock && anchorBlock.type === 'header' && anchorBlock.data.get('level') === level
+}
+
 function onDown(transform, event, state) {
   const header = state.startBlock
   const sibling = state.document.getNextSibling(header.key)
@@ -74,4 +93,18 @@ export default {
         return undefined
     }
   },
+
+  renderToolbar: (state, props, setState) => (
+    <div className={props.toolbarButtonGroupClassName}>
+      {[1, 2, 3, 4, 5, 6].map(level =>
+        <button
+          className={[
+            props.toolbarButtonClassName,
+            isActiveClass(state, level) ? 'is-active' : 'is-inactive',
+          ].join(' ')}
+          onClick={() => setState(setHeaderLevel(state, level))}
+        >{`H${level}`}</button>
+      )}
+    </div>
+  ),
 }
