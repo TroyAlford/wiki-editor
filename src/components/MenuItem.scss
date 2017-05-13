@@ -1,0 +1,24 @@
+.wiki-editor {
+  .menu.item {
+    background-color: $bg-color-button-inactive;
+    border: 1px solid $border-color-button-inactive;
+    cursor: pointer;
+    margin: 0;
+
+    &.is-active {
+      background-color: $bg-color-button-active;
+      border-color: $border-color-button-active;
+    }
+
+    &:hover {
+      background-color: $bg-color-button-hover;
+      border-color: $border-color-button-hover;
+    }
+
+    &.divider {
+      border-top: 2px groove;
+      cursor: auto;
+      margin: .25rem 0;
+    }
+  }
+}

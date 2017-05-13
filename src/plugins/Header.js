@@ -1,6 +1,8 @@
 import { Paragraph } from './Paragraph'
 import { insertAfterAndMoveTo, insertBefore } from '../utility/insertAdjacent'
 import { range } from '../utility/range'
+import DropdownMenu from '../components/DropdownMenu'
+import MenuItem, { Divider } from '../components/MenuItem'
 
 /* eslint-disable react/react-in-jsx-scope,react/prop-types */
 
@@ -98,16 +100,35 @@ export default {
   },
 
   renderToolbar: (state, props, setState) => (
-    <div className={props.toolbarButtonGroupClassName}>
-      {LEVELS.map(level =>
-        <button
+    <div className={`header-plugin ${props.toolbarButtonGroupClassName}`}>
+      <DropdownMenu
+        label={
+          state.anchorBlock.type === 'header'
+            ? `heading ${state.anchorBlock.data.get('level')}`
+            : state.anchorBlock.type
+        }
+      >
+        <MenuItem
+          tagName="p"
           className={[
-            props.toolbarButtonClassName,
-            isActiveClass(state, level) ? 'is-active' : 'is-inactive',
+            MenuItem.defaultProps.className,
+            state.anchorBlock.type === 'paragraph' ? 'is-active' : 'is-inactive',
           ].join(' ')}
-          onClick={() => setState(setHeaderLevel(state, level))}
-        >{`H${level}`}</button>
-      )}
+          onClick={() => setState(setHeaderLevel(state, undefined))}
+        >{'paragraph'}</MenuItem>
+        <Divider />
+        {LEVELS.map(level =>
+          <MenuItem
+            key={level}
+            tagName={`h${level}`}
+            className={[
+              MenuItem.defaultProps.className,
+              isActiveClass(state, level) ? 'is-active' : 'is-inactive',
+            ].join(' ')}
+            onClick={() => setState(setHeaderLevel(state, level))}
+          >{`heading ${level}`}</MenuItem>
+        )}
+      </DropdownMenu>
     </div>
   ),
 }
