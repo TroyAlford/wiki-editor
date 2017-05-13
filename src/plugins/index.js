@@ -30,8 +30,4 @@ export const serializers = PLUGINS
   .filter(plugin => Array.isArray(plugin.serializers))
   .reduce((all, plugin) => [...all, ...plugin.serializers], [])
 
-export const toolbarButtons = PLUGINS
-  .filter(p => Array.isArray(p.toolbarButtons))
-  .reduce((all, p) => [...all, p.toolbarButtons], [])
-
 export default PLUGINS
