@@ -1,8 +1,12 @@
 /* eslint-disable react/react-in-jsx-scope,react/prop-types */
 import { flow } from '../utility/flow'
 
-function findExpandedAnchors(state) {
-  const anchorRegex = /\[([^\]]+)\]\(([a-z0-9:/.+%-]+)\)/gi
+const anchorRegex = /\[([^\]]+)\]\(([a-z0-9:/.+%-]+)\)/gi
+
+export function findExpandedAnchors(state) {
+  const { lastIndex } = anchorRegex
+  anchorRegex.lastIndex = undefined
+
   let match = anchorRegex.exec(state.document.text)
 
   const matches = []
@@ -14,18 +18,41 @@ function findExpandedAnchors(state) {
     const focusOffset = anchorOffset + full.length
 
     matches.push({
-      node,
-      href,
-      text,
-      anchorKey: node.key,
+      anchorKey:      node.key,
+      documentOffset: match.index,
+      focusKey:       node.key,
+
       anchorOffset,
-      focusKey:  node.key,
       focusOffset,
+      full,
+      href,
+      node,
+      text,
     })
 
     match = anchorRegex.exec(state.document.text)
   }
+
+  anchorRegex.lastIndex = lastIndex
   return matches
+}
+
+export function isInExpandedAnchor(state) {
+  const { lastIndex } = anchorRegex
+  const { startOffset = 0, endOffset = 0 } = state
+  const { text } = state.document
+
+  anchorRegex.lastIndex = 0
+  const match = anchorRegex.exec(text)
+  if (!match) return false
+
+  const [full] = match
+
+  anchorRegex.lastIndex = lastIndex
+  return Boolean(
+    startOffset >= match.index &&
+    endOffset <= match.index + full.length
+  )
 }
 
 function expandAnchor(transform, anchor) {
