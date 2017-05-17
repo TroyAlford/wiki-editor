@@ -19,7 +19,7 @@ class Example extends React.Component {
   render = () => (
     <div>
       <WikiEditor html={HTML} onHtmlChange={this.handleHtmlChange} />
-      <textarea value={this.state.html} />
+      <textarea readOnly value={this.state.html} />
     </div>
   )
 }
