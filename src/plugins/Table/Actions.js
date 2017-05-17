@@ -1,6 +1,6 @@
 import { createCell, createRow, createTable } from './Creators'
 import { flow } from '../../utility/flow'
-import { Paragraph } from '../Paragraph'
+import Paragraph from '../Paragraph'
 
 function forceRange(value, lowerBound, upperBound) {
   if (value < lowerBound) return lowerBound
