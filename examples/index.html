@@ -2,6 +2,25 @@
 <html>
  <head>
   <meta charset="utf-8">
+  <link
+    href="https://fonts.googleapis.com/css?family=Ubuntu"
+    rel="stylesheet"
+  />
+  <style type="text/css">
+    .wiki-editor + textarea {
+      box-sizing: border-box;
+      display: block;
+      min-height: 200px;
+      width: 100%;
+    }
+  </style>
+
+ </head>
+ <body>
+  <div id="application">
+    <!-- components will render here -->
+  </div>
+ </body>
   <script type="text/javascript">
     /* eslint-disable */
     var base = document.location.host
@@ -23,29 +42,15 @@
         base = loc.join('/')
     }
 
-    document.write("<base href='" + base + "' />")
-  </script>
-  <link href="lib/wiki-editor.css" rel="stylesheet" />
-  <link
-    href="https://fonts.googleapis.com/css?family=Ubuntu"
-    rel="stylesheet"
-  />
-
-  <style type="text/css">
-    .wiki-editor + textarea {
-      box-sizing: border-box;
-      display: block;
-      min-height: 200px;
-      width: 100%;
+    function writeScript(url) {
+      document.write("<script type='text/javascript' src='" + base + url + "'>")
+      document.write("</" + "script>")
     }
-  </style>
+    function writeStylesheet(url) {
+      document.write("<link href='" + base + url + "' rel='stylesheet' />")
+    }
 
- </head>
- <body>
-  <div id="application">
-    <!-- components will render here -->
-  </div>
-
-  <script type="text/javascript" src="examples/lib/example.js"></script>
- </body>
+    writeScript('examples/lib/example.js')
+    writeStylesheet('lib/wiki-editor.css')
+  </script>
 </html>
