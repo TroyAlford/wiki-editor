@@ -92,7 +92,7 @@ export default {
           setState(applyMark(mark, state))
         }
 
-        return <button className={className} onMouseDown={onMouseDown} />
+        return <button key={mark} className={className} onMouseDown={onMouseDown} />
       })}
     </div>
   ),

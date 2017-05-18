@@ -55,7 +55,7 @@ export default {
           setState(button.onActivate(state))
         }
 
-        return <button className={className} onMouseDown={onMouseDown} />
+        return <button key={button.styleValue} className={className} onMouseDown={onMouseDown} />
       })}
     </div>
   ),

@@ -106,7 +106,7 @@ export default {
             setState(applyAction(action, state, params))
           }
 
-          return <button className={className} onMouseDown={onMouseDown} />
+          return <button key={icon} className={className} onMouseDown={onMouseDown} />
         })
       }
     </div>
