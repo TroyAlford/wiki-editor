@@ -55,7 +55,8 @@ export default {
           setState(button.onActivate(state))
         }
 
-        return <button key={button.styleValue} className={className} onMouseDown={onMouseDown} />
+        const key = `${button.styleProp}-${button.styleValue}`
+        return <button key={key} className={className} onMouseDown={onMouseDown} />
       })}
     </div>
   ),
