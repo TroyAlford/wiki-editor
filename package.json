@@ -1,8 +1,9 @@
 {
   "name": "wiki-editor",
+  "keywords": ["slate", "react", "wysiwyg", "wiki"],
   "version": "0.0.1",
   "description": "React/Slate WYSIWYG Editor",
-  "main": "index.js",
+  "main": "lib/wiki-editor.js",
   "repository": "git@github.com:TroyAlford/wiki-editor.git",
   "author": "Troy Alford <troy@troyalford.com>",
   "license": "MIT",
