@@ -40,7 +40,9 @@
     "build-css": "node-sass src/wiki-editor.scss --output-style compressed --source-map true --source-map-embed --importer node_modules/node-sass-glob-importer/dist/cli.js -o lib",
     "prebuild": "mkdir -p ./lib && rm -rf ./lib/*",
     "watch-css": "nodemon --watch ./src -e scss --exec 'yarn build-css'",
-    "test": "jest"
+    "preversion": "yarn test",
+    "test": "jest",
+    "version": "yarn build && git add -A ./lib"
   },
   "jest": {}
 }
