@@ -5,6 +5,7 @@ import Blockquote from './Blockquote'
 import Div from './Div'
 import Header from './Header'
 import HorizontalRule from './HorizontalRule'
+import Image from './Image'
 import Paragraph from './Paragraph'
 import Span from './Span'
 import Table from './Table'
@@ -16,11 +17,14 @@ const PLUGINS = [
   TextDecorators,
   Alignment,
   Table,
+
   Blockquote,
   Div,
+  Image,
   Paragraph,
   Span,
   HorizontalRule,
+
   ...AutoReplacers,
 ]
 
