@@ -1,4 +1,6 @@
-Master: [![](https://circleci.com/gh/TroyAlford/wiki-editor/tree/master.svg?style=shield&circle-token=5bc81f2dd54fb564946ce1520076f242c0c1529e)](https://circleci.com/gh/TroyAlford/wiki-editor) | Develop: [![](https://circleci.com/gh/TroyAlford/wiki-editor/tree/develop.svg?style=shield&circle-token=5bc81f2dd54fb564946ce1520076f242c0c1529e)](https://circleci.com/gh/TroyAlford/wiki-editor)
+| **Master** | **Develop** |
+|   :---:    |    :---:    |
+| <img src="https://circleci.com/gh/TroyAlford/wiki-editor/tree/master.svg?style=shield&circle-token=5bc81f2dd54fb564946ce1520076f242c0c1529e" /> | <img class="float-left" src="https://circleci.com/gh/TroyAlford/wiki-editor/tree/develop.svg?style=shield&circle-token=5bc81f2dd54fb564946ce1520076f242c0c1529e" /> |
 
 # Wiki-Editor
 A React/Slate WYSIWYG editor
