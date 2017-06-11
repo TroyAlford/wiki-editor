@@ -19,14 +19,23 @@ function setHeaderLevel(state, level) {
   const block = state.anchorBlock
 
   if (level === undefined) {
-    return transform.setBlock({ type: 'paragraph', data: { level: undefined } }).apply()
+    return transform.setBlock({
+      type: 'paragraph',
+      data: block.data.merge({ level: undefined }),
+    }).apply()
   }
 
   if (block.type === 'header' && block.data.get('level') === level) {
-    return transform.setBlock({ type: 'paragraph', data: { level: undefined } }).apply()
+    return transform.setBlock({
+      type: 'paragraph',
+      data: block.data.merge({ level: undefined }),
+    }).apply()
   }
 
-  return transform.setBlock({ type: 'header', data: { level } }).apply()
+  return transform.setBlock({
+    type: 'header',
+    data: block.data.merge({ level }),
+  }).apply()
 }
 
 function isActiveClass({ anchorBlock }, level) {
