@@ -8,7 +8,7 @@ export const toggleStyle = (transform, block, property, toggle) => {
   }
 
   return transform.setNodeByKey(block.key, {
-    data: { ...block.data, style },
+    data: block.data.merge({ style }),
   })
 }
 
