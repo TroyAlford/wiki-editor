@@ -29,6 +29,17 @@ export function isWithinTable(state) {
   return (contains(['td', 'th'], state.startBlock.type))
 }
 
+const renderCell = (Tag, { attributes = {}, children, data, node }) =>
+  renderStyled(Tag, {
+    attributes: {
+      ...attributes,
+      colSpan: (data || node.data).get('colSpan'),
+      rowSpan: (data || node.data).get('rowSpan'),
+    },
+    children,
+    data: data || node.data,
+  })
+
 export default {
   ...events,
 
@@ -46,9 +57,8 @@ export default {
 
       tr: props => <tr {...props.attributes}>{props.children}</tr>,
 
-      td: ({ attributes, children, node }) => (
-        renderStyled('td', { data: node.data, children, attributes })
-      ),
+      th: (props) => renderCell('th', props),
+      td: (props) => renderCell('td', props),
     },
   },
 
@@ -64,10 +74,17 @@ export default {
             ? { ...child, data: child.data.trim() }
             : child
         ))
+
+        const data = {}
+        if (el.tagName === 'th' || el.tagName === 'td') {
+          data.colSpan = el.attribs.colspan
+          data.rowSpan = el.attribs.rowspan
+        }
+
         return {
           kind:  'block',
           type:  el.tagName,
-          data:  getStyleData(el),
+          data:  { ...data, ...getStyleData(el) },
           nodes: next(children),
         }
       }
@@ -87,7 +104,14 @@ export default {
           return <tr {...object.attributes}>{children}</tr>
         case 'th':
         case 'td':
-          return renderStyled(object.type, { data: object.data, children })
+          return renderCell(object.type, {
+            children,
+            data: object.data,
+            attributes: {
+              colSpan: object.data.get('colSpan'),
+              rowSpan: object.data.get('rowSpan'),
+            },
+          })
         default:
           return undefined
       }
