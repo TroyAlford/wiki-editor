@@ -1,5 +1,6 @@
 import { Block, Raw } from 'slate'
-import { getStyleData, renderStyled } from '../utility/renderStyled'
+import getStyleData from '../utility/getStyleData'
+import renderStyled from '../utility/renderStyled'
 
 export default {
   schema: {
@@ -22,7 +23,7 @@ export default {
     },
     serialize(object, children) {
       if (object.type !== 'blockquote') return undefined
-      return renderStyled('blockquote', object.data, children, {})
+      return renderStyled('blockquote', { data: object.data, children })
     },
   }],
 }

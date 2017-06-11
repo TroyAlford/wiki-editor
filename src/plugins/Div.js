@@ -1,5 +1,6 @@
 import { Block, Raw } from 'slate'
-import { getStyleData, renderStyled } from '../utility/renderStyled'
+import getStyleData from '../utility/getStyleData'
+import renderStyled from '../utility/renderStyled'
 
 export default {
   create(text) {
@@ -17,7 +18,7 @@ export default {
   schema: {
     nodes: {
       div: ({ attributes, children, node }) => (
-        renderStyled('div', node.data, children, attributes)
+        renderStyled('div', { data: node.data, children, attributes })
       ),
     },
   },

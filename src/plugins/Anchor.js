@@ -1,6 +1,7 @@
 /* eslint-disable react/react-in-jsx-scope,react/prop-types */
 import { flow } from '../utility/flow'
-import { getStyleData } from '../utility/renderStyled'
+import getStyleData from '../utility/getStyleData'
+import renderStyled from '../utility/renderStyled'
 
 const anchorRegex = /\[([^\]]+)\]\(([a-z0-9-._~:/?#@!$&'*\+,;=%]+)\)/gi
 
@@ -93,8 +94,11 @@ export default {
     },
     serialize(object, children) {
       if (object.type !== 'anchor') return undefined
-      return renderStyled('a', object.data, children, { href: object.data.get('href') })
-      // return <a href={object.data.get('href') || '#'}>{children}</a>
+      return renderStyled('a', {
+        children,
+        data: object.data,
+        attributes: { href: object.data.get('href') }
+      })
     },
   }],
 

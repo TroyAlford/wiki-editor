@@ -1,5 +1,6 @@
 import { Block, Raw } from 'slate'
-import { getStyleData, renderStyled } from '../utility/renderStyled'
+import getStyleData from '../utility/getStyleData'
+import renderStyled from '../utility/renderStyled'
 
 export default {
   create(text) {
@@ -17,7 +18,7 @@ export default {
   schema: {
     nodes: {
       paragraph: ({ attributes, children, node }) => (
-        renderStyled('p', node.data, children, attributes)
+        renderStyled('p', { data: node.data, children, attributes })
       ),
     },
   },
@@ -34,7 +35,7 @@ export default {
     },
     serialize(object, children) {
       if (object.type !== 'paragraph') return undefined
-      return renderStyled('p', object.data, children, {})
+      return renderStyled('p', { data: object.data, children })
     },
   }],
 }

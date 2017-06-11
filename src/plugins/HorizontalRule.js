@@ -1,6 +1,7 @@
 import Slate from 'slate'
 import { Paragraph } from './Paragraph'
-import { getStyleData, renderStyled } from '../utility/renderStyled'
+import getStyleData from '../utility/getStyleData'
+import renderStyled from '../utility/renderStyled'
 import { insertAfterAndMoveTo, insertBefore, insertBeforeAndMoveTo } from '../utility/insertAdjacent'
 
 function onDelete(transform, event, state) {
@@ -42,7 +43,7 @@ export default {
   schema: {
     nodes: {
       hr: ({ node }) => (
-        renderStyled('hr', node.data)
+        renderStyled('hr', { data: node.data })
       ),
     },
   },

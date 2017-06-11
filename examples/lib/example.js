@@ -10375,7 +10375,15 @@ Object.defineProperty(exports, "__esModule", {
 
 var _slate = __webpack_require__(52);
 
+var _getStyleData = __webpack_require__(437);
+
+var _getStyleData2 = _interopRequireDefault(_getStyleData);
+
 var _renderStyled = __webpack_require__(80);
+
+var _renderStyled2 = _interopRequireDefault(_renderStyled);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
   create: function create(text) {
@@ -10397,7 +10405,7 @@ exports.default = {
         var attributes = _ref.attributes,
             children = _ref.children,
             node = _ref.node;
-        return (0, _renderStyled.renderStyled)('p', node.data, children, attributes);
+        return (0, _renderStyled2.default)('p', { data: node.data, children: children, attributes: attributes });
       }
     }
   },
@@ -10408,13 +10416,13 @@ exports.default = {
       return {
         kind: 'block',
         type: 'paragraph',
-        data: (0, _renderStyled.getStyleData)(el),
+        data: (0, _getStyleData2.default)(el),
         nodes: next(el.children)
       };
     },
     serialize: function serialize(object, children) {
       if (object.type !== 'paragraph') return undefined;
-      return (0, _renderStyled.renderStyled)('p', object.data, children, {});
+      return (0, _renderStyled2.default)('p', { data: object.data, children: children });
     }
   }]
 };
@@ -18417,7 +18425,7 @@ exports.default = _extends({}, _Events2.default, {
         var attributes = _ref2.attributes,
             children = _ref2.children,
             node = _ref2.node;
-        return (0, _renderStyled.renderStyled)('td', node.data, children, attributes);
+        return (0, _renderStyled.renderStyled)('td', { data: node.data, children: children, attributes: attributes });
       }
     }
   },
@@ -18466,7 +18474,7 @@ exports.default = _extends({}, _Events2.default, {
           );
         case 'th':
         case 'td':
-          return (0, _renderStyled.renderStyled)(object.type, object.data, children, {});
+          return (0, _renderStyled.renderStyled)(object.type, { data: object.data, children: children });
         default:
           return undefined;
       }
@@ -18730,35 +18738,39 @@ function insertBeforeAndMoveTo(transform, insert, adjacentTo) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.renderStyled = exports.getStyleData = undefined;
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; /* eslint-disable react/react-in-jsx-scope,react/prop-types */
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; /* eslint-disable react/react-in-jsx-scope,react/prop-types */
 
 
-var _parseStyle = __webpack_require__(436);
+var _react = __webpack_require__(8);
 
-var _parseStyle2 = _interopRequireDefault(_parseStyle);
+var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var getStyleData = exports.getStyleData = function getStyleData(_ref) {
-  var attribs = _ref.attribs,
-      style = _ref.style;
-  return {
-    className: (attribs.class || '').split(' ').filter(function (cn) {
-      return cn;
-    }).join(' '),
-    style: (0, _parseStyle2.default)(attribs.style || {})
-  };
-};
+exports.default = function (Tag) {
+  var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+      _ref$data = _ref.data,
+      data = _ref$data === undefined ? new Map() : _ref$data,
+      _ref$children = _ref.children,
+      children = _ref$children === undefined ? [] : _ref$children,
+      _ref$attributes = _ref.attributes,
+      attributes = _ref$attributes === undefined ? {} : _ref$attributes;
 
-var renderStyled = exports.renderStyled = function renderStyled(Tag, data, children) {
-  var attributes = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
+  if (!Tag || typeof Tag !== 'string') throw new Error('Tag is required');
 
-  var style = data.get('style') || {};
-  var className = data.get('className') || undefined;
+  var dataMap = void 0;
+  if (data instanceof Map) dataMap = data;else if ((typeof data === 'undefined' ? 'undefined' : _typeof(data)) === 'object') dataMap = new Map(Object.entries(data));else dataMap = new Map();
+  // const dataMap = data instanceof Map ? data :
+  //                 typeof data === 'object' ? new Map(Object.entries(data)) :
+  //                 new Map()
 
-  return React.createElement(
+  var style = dataMap.get('style') || {};
+  var className = dataMap.get('className') || undefined;
+
+  return _react2.default.createElement(
     Tag,
     _extends({}, attributes, { className: className, style: style }),
     children || []
@@ -39004,7 +39016,15 @@ exports.isInExpandedAnchor = isInExpandedAnchor;
 
 var _flow = __webpack_require__(58);
 
+var _getStyleData = __webpack_require__(437);
+
+var _getStyleData2 = _interopRequireDefault(_getStyleData);
+
 var _renderStyled = __webpack_require__(80);
+
+var _renderStyled2 = _interopRequireDefault(_renderStyled);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
@@ -39108,14 +39128,17 @@ exports.default = {
       return {
         kind: 'inline',
         type: 'anchor',
-        data: _extends({ href: el.attribs.href || '#' }, (0, _renderStyled.getStyleData)(el)),
+        data: _extends({ href: el.attribs.href || '#' }, (0, _getStyleData2.default)(el)),
         nodes: next(el.children)
       };
     },
     serialize: function serialize(object, children) {
       if (object.type !== 'anchor') return undefined;
-      return renderStyled('a', object.data, children, { href: object.data.get('href') });
-      // return <a href={object.data.get('href') || '#'}>{children}</a>
+      return (0, _renderStyled2.default)('a', {
+        children: children,
+        data: object.data,
+        attributes: { href: object.data.get('href') }
+      });
     }
   }],
 
@@ -39279,7 +39302,13 @@ var _insertAdjacent = __webpack_require__(79);
 
 var _range = __webpack_require__(123);
 
+var _getStyleData = __webpack_require__(437);
+
+var _getStyleData2 = _interopRequireDefault(_getStyleData);
+
 var _renderStyled = __webpack_require__(80);
+
+var _renderStyled2 = _interopRequireDefault(_renderStyled);
 
 var _DropdownMenu = __webpack_require__(192);
 
@@ -39296,7 +39325,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var LEVELS = (0, _range.range)(1, 6);
 
 function renderHeader(header, children) {
-  return (0, _renderStyled.renderStyled)('h' + header.data.get('level'), header.data, children);
+  return (0, _renderStyled2.default)('h' + header.data.get('level'), { data: header.data, children: children });
 }
 
 function setHeaderLevel(state, level) {
@@ -39366,7 +39395,7 @@ exports.default = {
       return {
         kind: 'block',
         type: 'header',
-        data: _extends({ level: matches[1] }, (0, _renderStyled.getStyleData)(el)),
+        data: _extends({ level: matches[1] }, (0, _getStyleData2.default)(el)),
         nodes: next(el.children)
       };
     },
@@ -39446,7 +39475,13 @@ var _slate2 = _interopRequireDefault(_slate);
 
 var _Paragraph = __webpack_require__(33);
 
+var _getStyleData = __webpack_require__(437);
+
+var _getStyleData2 = _interopRequireDefault(_getStyleData);
+
 var _renderStyled = __webpack_require__(80);
+
+var _renderStyled2 = _interopRequireDefault(_renderStyled);
 
 var _insertAdjacent = __webpack_require__(79);
 
@@ -39490,7 +39525,7 @@ exports.default = {
     nodes: {
       hr: function hr(_ref) {
         var node = _ref.node;
-        return (0, _renderStyled.renderStyled)('hr', node.data);
+        return (0, _renderStyled2.default)('hr', { data: node.data });
       }
     }
   },
@@ -39501,13 +39536,13 @@ exports.default = {
       return {
         kind: 'block',
         type: 'hr',
-        data: (0, _renderStyled.getStyleData)(el),
+        data: (0, _getStyleData2.default)(el),
         isVoid: true
       };
     },
     serialize: function serialize(object) {
       if (object.type !== 'hr') return undefined;
-      return (0, _renderStyled.renderStyled)('hr', object.data);
+      return (0, _renderStyled2.default)('hr', object.data);
     }
   }],
 
@@ -82712,7 +82747,15 @@ Object.defineProperty(exports, "__esModule", {
 
 var _slate = __webpack_require__(52);
 
+var _getStyleData = __webpack_require__(437);
+
+var _getStyleData2 = _interopRequireDefault(_getStyleData);
+
 var _renderStyled = __webpack_require__(80);
+
+var _renderStyled2 = _interopRequireDefault(_renderStyled);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
   schema: {
@@ -82721,7 +82764,7 @@ exports.default = {
         var attributes = _ref.attributes,
             children = _ref.children,
             node = _ref.node;
-        return (0, _renderStyled.renderStyled)('blockquote', node.data, children, attributes);
+        return (0, _renderStyled2.default)('blockquote', node.data, children, attributes);
       }
     }
   },
@@ -82732,13 +82775,13 @@ exports.default = {
       return {
         kind: 'block',
         type: 'blockquote',
-        data: (0, _renderStyled.getStyleData)(el),
+        data: (0, _getStyleData2.default)(el),
         nodes: next(el.children)
       };
     },
     serialize: function serialize(object, children) {
       if (object.type !== 'blockquote') return undefined;
-      return (0, _renderStyled.renderStyled)('blockquote', object.data, children, {});
+      return (0, _renderStyled2.default)('blockquote', { data: object.data, children: children });
     }
   }]
 };
@@ -82756,7 +82799,15 @@ Object.defineProperty(exports, "__esModule", {
 
 var _slate = __webpack_require__(52);
 
+var _getStyleData = __webpack_require__(437);
+
+var _getStyleData2 = _interopRequireDefault(_getStyleData);
+
 var _renderStyled = __webpack_require__(80);
+
+var _renderStyled2 = _interopRequireDefault(_renderStyled);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
   create: function create(text) {
@@ -82778,7 +82829,7 @@ exports.default = {
         var attributes = _ref.attributes,
             children = _ref.children,
             node = _ref.node;
-        return (0, _renderStyled.renderStyled)('div', node.data, children, attributes);
+        return (0, _renderStyled2.default)('div', { data: node.data, children: children, attributes: attributes });
       }
     }
   },
@@ -82789,13 +82840,13 @@ exports.default = {
       return {
         kind: 'block',
         type: 'div',
-        data: (0, _renderStyled.getStyleData)(el),
+        data: (0, _getStyleData2.default)(el),
         nodes: next(el.children)
       };
     },
     serialize: function serialize(object, children) {
       if (object.type !== 'div') return undefined;
-      return (0, _renderStyled.renderStyled)('div', object.data, children, {});
+      return (0, _renderStyled2.default)('div', object.data, children, {});
     }
   }]
 };
@@ -82813,7 +82864,15 @@ Object.defineProperty(exports, "__esModule", {
 
 var _slate = __webpack_require__(52);
 
+var _getStyleData = __webpack_require__(437);
+
+var _getStyleData2 = _interopRequireDefault(_getStyleData);
+
 var _renderStyled = __webpack_require__(80);
+
+var _renderStyled2 = _interopRequireDefault(_renderStyled);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
   create: function create(text) {
@@ -82835,7 +82894,7 @@ exports.default = {
         var attributes = _ref.attributes,
             children = _ref.children,
             node = _ref.node;
-        return (0, _renderStyled.renderStyled)('span', node.data, children, attributes);
+        return (0, _renderStyled2.default)('span', { data: node.data, children: children, attributes: attributes });
       }
     }
   },
@@ -82846,13 +82905,13 @@ exports.default = {
       return {
         kind: 'inline',
         type: 'span',
-        data: (0, _renderStyled.getStyleData)(el),
+        data: (0, _getStyleData2.default)(el),
         nodes: next(el.children)
       };
     },
     serialize: function serialize(object, children) {
       if (object.type !== 'span') return undefined;
-      return (0, _renderStyled.renderStyled)('span', object.data, children, {});
+      return (0, _renderStyled2.default)('span', { data: object.data, children: children });
     }
   }]
 };
@@ -82919,6 +82978,35 @@ function parseStyle(style) {
       return undefined;
   }
 }
+
+/***/ }),
+/* 437 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _parseStyle = __webpack_require__(436);
+
+var _parseStyle2 = _interopRequireDefault(_parseStyle);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+exports.default = function (_ref) {
+	var attribs = _ref.attribs;
+	return {
+		className: [].concat(_toConsumableArray(new Set((attribs.class || '').split(' ').filter(function (cn) {
+			return cn;
+		})))).join(' '),
+		style: (0, _parseStyle2.default)(attribs.style || {})
+	};
+};
 
 /***/ })
 /******/ ]);

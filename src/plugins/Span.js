@@ -1,5 +1,6 @@
 import { Block, Raw } from 'slate'
-import { getStyleData, renderStyled } from '../utility/renderStyled'
+import getStyleData from '../utility/getStyleData'
+import renderStyled from '../utility/renderStyled'
 
 export default {
   create(text) {
@@ -17,7 +18,7 @@ export default {
   schema: {
     nodes: {
       span: ({ attributes, children, node }) => (
-        renderStyled('span', node.data, children, attributes)
+        renderStyled('span', { data: node.data, children, attributes })
       ),
     },
   },
@@ -34,7 +35,7 @@ export default {
     },
     serialize(object, children) {
       if (object.type !== 'span') return undefined
-      return renderStyled('span', object.data, children, {})
+      return renderStyled('span', { data: object.data, children })
     },
   }],
 }
