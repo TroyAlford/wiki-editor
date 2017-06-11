@@ -13,6 +13,7 @@
   "author": "Troy Alford <troy@troyalford.com>",
   "license": "MIT",
   "dependencies": {
+    "cheerio": "^1.0.0-rc.1",
     "immutable": "^3.8.1",
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
