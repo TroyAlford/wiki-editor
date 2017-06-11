@@ -15,11 +15,13 @@ machine:
   timezone:
     America/Los_Angeles
 
-compile:
-  override:
-    - NODE_ENV=production yarn build
-
 test:
   override:
     - yarn test
     - yarn build
+
+deployment:
+  production:
+    branch: master
+    commands:
+      - git add lib/. examples/lib/. && git commit -m 'Adding CI-built /lib files'
