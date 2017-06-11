@@ -10,8 +10,8 @@ import MenuItem, { Divider } from '../components/MenuItem'
 
 const LEVELS = range(1, 6)
 
-function renderHeader(header, children) {
-  return renderStyled(`h${header.data.get('level')}`, { data: header.data, children })
+function renderHeader({ data }, children) {
+  return renderStyled(`h${data.get('level')}`, { data, children })
 }
 
 function setHeaderLevel(state, level) {

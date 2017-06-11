@@ -18748,12 +18748,14 @@ var _react = __webpack_require__(8);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _immutable = __webpack_require__(7);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function (Tag) {
   var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
       _ref$data = _ref.data,
-      data = _ref$data === undefined ? new Map() : _ref$data,
+      data = _ref$data === undefined ? new _immutable.Map() : _ref$data,
       _ref$children = _ref.children,
       children = _ref$children === undefined ? [] : _ref$children,
       _ref$attributes = _ref.attributes,
@@ -18761,11 +18763,7 @@ exports.default = function (Tag) {
 
   if (!Tag || typeof Tag !== 'string') throw new Error('Tag is required');
 
-  var dataMap = void 0;
-  if (data instanceof Map) dataMap = data;else if ((typeof data === 'undefined' ? 'undefined' : _typeof(data)) === 'object') dataMap = new Map(Object.entries(data));else dataMap = new Map();
-  // const dataMap = data instanceof Map ? data :
-  //                 typeof data === 'object' ? new Map(Object.entries(data)) :
-  //                 new Map()
+  var dataMap = data instanceof _immutable.Map ? data : (typeof data === 'undefined' ? 'undefined' : _typeof(data)) === 'object' ? new _immutable.Map(data) : new _immutable.Map();
 
   var style = dataMap.get('style') || {};
   var className = dataMap.get('className') || undefined;
@@ -39324,8 +39322,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var LEVELS = (0, _range.range)(1, 6);
 
-function renderHeader(header, children) {
-  return (0, _renderStyled2.default)('h' + header.data.get('level'), { data: header.data, children: children });
+function renderHeader(_ref, children) {
+  var data = _ref.data;
+
+  return (0, _renderStyled2.default)('h' + data.get('level'), { data: data, children: children });
 }
 
 function setHeaderLevel(state, level) {
@@ -39343,8 +39343,8 @@ function setHeaderLevel(state, level) {
   return transform.setBlock({ type: 'header', data: { level: level } }).apply();
 }
 
-function isActiveClass(_ref, level) {
-  var anchorBlock = _ref.anchorBlock;
+function isActiveClass(_ref2, level) {
+  var anchorBlock = _ref2.anchorBlock;
 
   return anchorBlock && anchorBlock.type === 'header' && anchorBlock.data.get('level') === level;
 }
@@ -39377,9 +39377,9 @@ function onEnter(transform, event, state) {
 exports.default = {
   schema: {
     nodes: {
-      header: function header(_ref2) {
-        var node = _ref2.node,
-            children = _ref2.children;
+      header: function header(_ref3) {
+        var node = _ref3.node,
+            children = _ref3.children;
         return renderHeader(node, children);
       }
     }
