@@ -11,6 +11,7 @@ const HTML = `
 <p>This is some stuff with a [test](text) link put in the middle.</p>\
 <p><a href="foo">Bar</a></p>\
 <p><a href="with" class="class names">Test</a></p>\
+<p><img src="http://lorempixel.com/100/100/" /></p>\
 `
 
 class Example extends React.Component {
