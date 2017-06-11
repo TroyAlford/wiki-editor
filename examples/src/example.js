@@ -9,6 +9,7 @@ window.ReactDOM = ReactDOM
 const HTML = `
   <p>This is some stuff with a [test](text) link put in the middle.</p>
   <a href="foo">Bar</a>
+  <a href="with" class="class names">Test</a>
 `
 
 class Example extends React.Component {

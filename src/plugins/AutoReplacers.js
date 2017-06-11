@@ -26,6 +26,17 @@ export default [
       t => t.collapseToStartOf(paragraph).moveOffsetsTo(0),
     ], transform)
   }),
+  buildReplacer(' ', [/^>/, /.*$/], (t, e, data, matches) => {
+    const [before] = matches.before
+    const [after] = matches.after
+
+    const replacement = after ? '' : `Blockquote`
+
+    return t.setBlock({ type: 'blockquote' })
+            .extend(-2)
+            .insertText(replacement)
+            .moveOffsetsTo(0, replacement.length)
+  }),
   buildReplacer(' ', [/^#{1,6}/, /.*$/], (t, e, data, matches) => {
     const [before] = matches.before
     const [after] = matches.after
