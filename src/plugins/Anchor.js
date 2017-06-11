@@ -1,7 +1,7 @@
 /* eslint-disable react/react-in-jsx-scope,react/prop-types */
 import { flow } from '../utility/flow'
 
-const anchorRegex = /\[([^\]]+)\]\(([a-z0-9:/.+%-]+)\)/gi
+const anchorRegex = /\[([^\]]+)\]\(([a-z0-9-._~:/?#@!$&'*\+,;=%]+)\)/gi
 
 export function findExpandedAnchors(state) {
   const { lastIndex } = anchorRegex
