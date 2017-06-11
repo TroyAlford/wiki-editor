@@ -40,6 +40,7 @@
     "jest-cli": "^19.0.2",
     "node-sass": "^4.5.2",
     "node-sass-glob-importer": "^3.0.2",
+    "nodemon": "^1.11.0",
     "react-addons-test-utils": "^15.5.1",
     "webpack": "^2.4.1"
   },

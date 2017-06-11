@@ -11,8 +11,13 @@ dependencies:
 machine:
   environment:
     PATH: "${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
+    NODE_ENV: production
   timezone:
     America/Los_Angeles
+
+compile:
+  override:
+    - NODE_ENV=production yarn build
 
 test:
   override:
