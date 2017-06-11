@@ -46,19 +46,15 @@ export default {
   schema: {
     rules,
     nodes: {
-      table: ({ attributes, children, node }) => {
-        const style = node.data.get('style') || {}
-        return (
-          <table style={style} {...attributes}>
-            <tbody>{children}</tbody>
-          </table>
-        )
-      },
+      table: ({ children, node: { data } }) => renderStyled('table', {
+        children: <tbody>{children}</tbody>,
+        data,
+      }),
 
-      tr: props => <tr {...props.attributes}>{props.children}</tr>,
+      tr: ({ children, node: { data }}) => renderStyled('tr', { children, data }),
 
-      th: (props) => renderCell('th', props),
-      td: (props) => renderCell('td', props),
+      th: props => renderCell('th', props),
+      td: props => renderCell('td', props),
     },
   },
 
@@ -92,26 +88,19 @@ export default {
       return undefined
     },
     serialize(object, children) {
+      const data = object.data || new Map()
+
       switch (object.type) {
         case 'table': // eslint-disable-line no-case-declarations
-          const style = object.data.get('style') || {}
-          return (
-            <table style={style}>
-              <tbody {...object.attributes}>{children}</tbody>
-            </table>
-          )
+          return renderStyled(object.type, {
+            children: <tbody>{children}</tbody>,
+            data,
+          })
         case 'tr':
-          return <tr {...object.attributes}>{children}</tr>
+          return renderStyled(object.type, { children, data })
         case 'th':
         case 'td':
-          return renderCell(object.type, {
-            children,
-            data: object.data,
-            attributes: {
-              colSpan: object.data.get('colSpan'),
-              rowSpan: object.data.get('rowSpan'),
-            },
-          })
+          return renderCell(object.type, { children, data })
         default:
           return undefined
       }
