@@ -1,7 +1,7 @@
 /* eslint-disable react/react-in-jsx-scope,react/prop-types */
 import { flow } from '../utility/flow'
 
-const anchorRegex = /\[([^\]]+)\]\(([a-z0-9:/.+%-]+)\)/gi
+const anchorRegex = /\[([^\]]+)\]\(([a-z0-9-._~:/?#@!$&'*\+,;=%]+)\)/gi
 
 export function findExpandedAnchors(state) {
   const { lastIndex } = anchorRegex
@@ -98,6 +98,16 @@ export default {
 
   onChange: (state) => {
     const { selection } = state
+    let transform = state.transform()
+
+    // If nothing to close or open, do nothing
+    const anchor = state.document.getClosestInline(state.selection.anchorKey)
+    if (anchor && anchor.type === 'anchor') {
+      transform = flow([
+        t => expandAnchor(t, anchor),
+        t => t.move(1 + state.selection.startOffset),
+      ], transform)
+    }
 
     return findExpandedAnchors(state)
       .filter(anchor => (
@@ -136,7 +146,7 @@ export default {
               })
           },
         ], inner)
-      , state.transform())
+      , transform)
       .apply()
   },
 
