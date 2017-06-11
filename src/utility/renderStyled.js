@@ -1,11 +1,10 @@
 /* eslint-disable react/react-in-jsx-scope,react/prop-types */
-export const getStyleData = ({ attribs, style }) => {
-	if (attribs.style) debugger;
-	return {
-		className: (attribs.class || '').split(' ').filter(cn => cn).join(' '),
-		style: style || {},
-	}
-}
+import parseStyle from './parseStyle'
+
+export const getStyleData = ({ attribs, style }) => ({
+	className: (attribs.class || '').split(' ').filter(cn => cn).join(' '),
+	style: parseStyle(attribs.style || {}),
+})
 
 export const renderStyled = (Tag, data, children, attributes = {}) => {
   const style = data.get('style') || {}
@@ -13,5 +12,3 @@ export const renderStyled = (Tag, data, children, attributes = {}) => {
 
   return <Tag {...attributes } {...{ className, style }}>{children || []}</Tag>
 }
-
-export default renderStyled

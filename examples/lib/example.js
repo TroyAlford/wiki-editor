@@ -10408,6 +10408,7 @@ exports.default = {
       return {
         kind: 'block',
         type: 'paragraph',
+        data: (0, _renderStyled.getStyleData)(el),
         nodes: next(el.children)
       };
     },
@@ -18436,6 +18437,7 @@ exports.default = _extends({}, _Events2.default, {
         return {
           kind: 'block',
           type: el.tagName,
+          data: getStyleData(el),
           nodes: next(children)
         };
       }
@@ -18728,26 +18730,40 @@ function insertBeforeAndMoveTo(transform, insert, adjacentTo) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.renderStyled = exports.getStyleData = undefined;
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; /* eslint-disable react/react-in-jsx-scope,react/prop-types */
 
-/* eslint-disable react/react-in-jsx-scope,react/prop-types */
+
+var _parseStyle = __webpack_require__(436);
+
+var _parseStyle2 = _interopRequireDefault(_parseStyle);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var getStyleData = exports.getStyleData = function getStyleData(_ref) {
+  var attribs = _ref.attribs,
+      style = _ref.style;
+  return {
+    className: (attribs.class || '').split(' ').filter(function (cn) {
+      return cn;
+    }).join(' '),
+    style: (0, _parseStyle2.default)(attribs.style || {})
+  };
+};
+
 var renderStyled = exports.renderStyled = function renderStyled(Tag, data, children) {
   var attributes = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
 
   var style = data.get('style') || {};
-  if (children) {
-    return React.createElement(
-      Tag,
-      _extends({ style: style }, attributes),
-      children
-    );
-  }
+  var className = data.get('className') || undefined;
 
-  return React.createElement(Tag, _extends({ style: style }, attributes));
+  return React.createElement(
+    Tag,
+    _extends({}, attributes, { className: className, style: style }),
+    children || []
+  );
 };
-
-exports.default = renderStyled;
 
 /***/ }),
 /* 81 */
@@ -38700,7 +38716,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 window.React = React;
 window.ReactDOM = ReactDOM;
 
-var HTML = '\n  <p>This is some stuff with a [test](text) link put in the middle.</p>\n  <a href="foo">Bar</a>\n  <a href="with" class="class names">Test</a>\n';
+var HTML = '\n  <h1 class="header-class" style="color: red;">Header 1</h1>\n  <p>This is some stuff with a [test](text) link put in the middle.</p>\n  <a href="foo">Bar</a>\n  <a href="with" class="class names">Test</a>\n';
 
 var Example = function (_React$Component) {
   _inherits(Example, _React$Component);
@@ -38978,6 +38994,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); /* eslint-disable react/react-in-jsx-scope,react/prop-types */
 
 
@@ -38985,6 +39003,8 @@ exports.findExpandedAnchors = findExpandedAnchors;
 exports.isInExpandedAnchor = isInExpandedAnchor;
 
 var _flow = __webpack_require__(58);
+
+var _renderStyled = __webpack_require__(80);
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
@@ -39088,17 +39108,14 @@ exports.default = {
       return {
         kind: 'inline',
         type: 'anchor',
-        data: { href: el.attribs.href || '#' },
+        data: _extends({ href: el.attribs.href || '#' }, (0, _renderStyled.getStyleData)(el)),
         nodes: next(el.children)
       };
     },
     serialize: function serialize(object, children) {
       if (object.type !== 'anchor') return undefined;
-      return React.createElement(
-        'a',
-        { href: object.data.get('href') || '#' },
-        children
-      );
+      return renderStyled('a', object.data, children, { href: object.data.get('href') });
+      // return <a href={object.data.get('href') || '#'}>{children}</a>
     }
   }],
 
@@ -39254,11 +39271,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _Paragraph = __webpack_require__(33);
 
 var _insertAdjacent = __webpack_require__(79);
 
 var _range = __webpack_require__(123);
+
+var _renderStyled = __webpack_require__(80);
 
 var _DropdownMenu = __webpack_require__(192);
 
@@ -39275,15 +39296,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var LEVELS = (0, _range.range)(1, 6);
 
 function renderHeader(header, children) {
-  var level = header.data.get('level') || 1;
-  var style = header.data.get('style') || {};
-  var Tag = 'h' + level;
-
-  return React.createElement(
-    Tag,
-    { style: style },
-    children
-  );
+  return (0, _renderStyled.renderStyled)('h' + header.data.get('level'), header.data, children);
 }
 
 function setHeaderLevel(state, level) {
@@ -39353,7 +39366,7 @@ exports.default = {
       return {
         kind: 'block',
         type: 'header',
-        data: { level: matches[1] },
+        data: _extends({ level: matches[1] }, (0, _renderStyled.getStyleData)(el)),
         nodes: next(el.children)
       };
     },
@@ -39488,6 +39501,7 @@ exports.default = {
       return {
         kind: 'block',
         type: 'hr',
+        data: (0, _renderStyled.getStyleData)(el),
         isVoid: true
       };
     },
@@ -40055,6 +40069,10 @@ var _Blockquote = __webpack_require__(432);
 
 var _Blockquote2 = _interopRequireDefault(_Blockquote);
 
+var _Div = __webpack_require__(433);
+
+var _Div2 = _interopRequireDefault(_Div);
+
 var _Header = __webpack_require__(197);
 
 var _Header2 = _interopRequireDefault(_Header);
@@ -40066,6 +40084,10 @@ var _HorizontalRule2 = _interopRequireDefault(_HorizontalRule);
 var _Paragraph = __webpack_require__(33);
 
 var _Paragraph2 = _interopRequireDefault(_Paragraph);
+
+var _Span = __webpack_require__(434);
+
+var _Span2 = _interopRequireDefault(_Span);
 
 var _Table = __webpack_require__(77);
 
@@ -40079,7 +40101,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-var PLUGINS = [_Anchor2.default, _Header2.default, _TextDecorators2.default, _Alignment2.default, _Table2.default, _Blockquote2.default, _Paragraph2.default, _HorizontalRule2.default].concat(_toConsumableArray(_AutoReplacers2.default));
+var PLUGINS = [_Anchor2.default, _Header2.default, _TextDecorators2.default, _Alignment2.default, _Table2.default, _Blockquote2.default, _Div2.default, _Paragraph2.default, _Span2.default, _HorizontalRule2.default].concat(_toConsumableArray(_AutoReplacers2.default));
 
 var schema = exports.schema = PLUGINS.filter(function (plugin) {
   return plugin.schema;
@@ -82710,6 +82732,7 @@ exports.default = {
       return {
         kind: 'block',
         type: 'blockquote',
+        data: (0, _renderStyled.getStyleData)(el),
         nodes: next(el.children)
       };
     },
@@ -82719,6 +82742,183 @@ exports.default = {
     }
   }]
 };
+
+/***/ }),
+/* 433 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _slate = __webpack_require__(52);
+
+var _renderStyled = __webpack_require__(80);
+
+exports.default = {
+  create: function create(text) {
+    var textNode = _slate.Raw.deserializeText({
+      kind: 'text',
+      text: text || ''
+    }, { terse: true });
+
+    return _slate.Block.create({
+      type: 'div',
+      nodes: [textNode]
+    });
+  },
+
+
+  schema: {
+    nodes: {
+      div: function div(_ref) {
+        var attributes = _ref.attributes,
+            children = _ref.children,
+            node = _ref.node;
+        return (0, _renderStyled.renderStyled)('div', node.data, children, attributes);
+      }
+    }
+  },
+
+  serializers: [{
+    deserialize: function deserialize(el, next) {
+      if (el.tagName !== 'div') return undefined;
+      return {
+        kind: 'block',
+        type: 'div',
+        data: (0, _renderStyled.getStyleData)(el),
+        nodes: next(el.children)
+      };
+    },
+    serialize: function serialize(object, children) {
+      if (object.type !== 'div') return undefined;
+      return (0, _renderStyled.renderStyled)('div', object.data, children, {});
+    }
+  }]
+};
+
+/***/ }),
+/* 434 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _slate = __webpack_require__(52);
+
+var _renderStyled = __webpack_require__(80);
+
+exports.default = {
+  create: function create(text) {
+    var textNode = _slate.Raw.deserializeText({
+      kind: 'text',
+      text: text || ''
+    }, { terse: true });
+
+    return _slate.Block.create({
+      type: 'span',
+      nodes: [textNode]
+    });
+  },
+
+
+  schema: {
+    nodes: {
+      span: function span(_ref) {
+        var attributes = _ref.attributes,
+            children = _ref.children,
+            node = _ref.node;
+        return (0, _renderStyled.renderStyled)('span', node.data, children, attributes);
+      }
+    }
+  },
+
+  serializers: [{
+    deserialize: function deserialize(el, next) {
+      if (el.tagName !== 'span') return undefined;
+      return {
+        kind: 'inline',
+        type: 'span',
+        data: (0, _renderStyled.getStyleData)(el),
+        nodes: next(el.children)
+      };
+    },
+    serialize: function serialize(object, children) {
+      if (object.type !== 'span') return undefined;
+      return (0, _renderStyled.renderStyled)('span', object.data, children, {});
+    }
+  }]
+};
+
+/***/ }),
+/* 435 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = camelCase;
+function camelCase(string) {
+  return string.replace(/([A-Z])([A-Z])/g, '$1 $2').replace(/([a-z])([A-Z])/g, '$1 $2').replace(/[^a-zA-Z\u00C0-\u00ff]/g, ' ').toLowerCase().split(' ').filter(function (value) {
+    return value;
+  }).map(function (s, i) {
+    return i > 0 ? s[0].toUpperCase() + s.slice(1) : s;
+  }).join('');
+}
+
+/***/ }),
+/* 436 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+exports.default = parseStyle;
+
+var _camelCase = __webpack_require__(435);
+
+var _camelCase2 = _interopRequireDefault(_camelCase);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function parseStyle(style) {
+  switch (typeof style === 'undefined' ? 'undefined' : _typeof(style)) {
+    case 'string':
+      return style.split(';').filter(function (r) {
+        return r;
+      }).reduce(function (map, rule) {
+        var name = rule.slice(0, rule.indexOf(':')).trim();
+        var value = rule.slice(rule.indexOf(':') + 1).trim();
+
+        return _extends({}, map, _defineProperty({}, (0, _camelCase2.default)(name), value));
+      }, {});
+    case 'object':
+      return style;
+
+    default:
+      return undefined;
+  }
+}
 
 /***/ })
 /******/ ]);

@@ -7,6 +7,7 @@ window.React = React
 window.ReactDOM = ReactDOM
 
 const HTML = `
+  <h1 class="header-class" style="color: red;">Header 1</h1>
   <p>This is some stuff with a [test](text) link put in the middle.</p>
   <a href="foo">Bar</a>
   <a href="with" class="class names">Test</a>
