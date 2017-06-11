@@ -42,10 +42,10 @@
     "node-sass-glob-importer": "^3.0.2",
     "nodemon": "^1.11.0",
     "react-addons-test-utils": "^15.5.1",
-    "webpack": "^2.4.1"
+    "webpack": "^2.6.1"
   },
   "scripts": {
-    "build": "yarn prebuild && NODE_ENV=production webpack",
+    "build": "yarn prebuild && NODE_ENV=production yarn webpack",
     "build-css": "node-sass src/wiki-editor.scss --output-style compressed --source-map true --source-map-embed --importer node_modules/node-sass-glob-importer/dist/cli.js -o lib",
     "prebuild": "mkdir -p ./lib && rm -rf ./lib/*",
     "watch-css": "nodemon --watch ./src -e scss --exec 'yarn build-css'",
