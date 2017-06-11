@@ -24,5 +24,7 @@ test:
 deployment:
   production:
     branch: master
+    pre:
+      - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
     commands:
       - git add lib/. examples/lib/. && git commit -m 'Adding CI-built /lib files'
