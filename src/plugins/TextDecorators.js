@@ -48,8 +48,7 @@ const isActive = (state, mark) => state.marks.some(m => m.type === mark)
 export default {
   onKeyDown(event, data, state) {
     const hotkey = HOTKEYS[data.key]
-    if (!(event.metaKey || event.ctrlKey) || hotkey === undefined)
-      return undefined
+    if (!(event.metaKey || event.ctrlKey) || hotkey === undefined) { return undefined }
 
     event.preventDefault()
     return applyMark(hotkey.mark, state)

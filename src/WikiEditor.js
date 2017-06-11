@@ -69,6 +69,8 @@ WikiEditor.propTypes = {
 
   onHtmlChange: PropTypes.func,
 }
+
+/* eslint react/no-unused-prop-types: "off" */
 WikiEditor.defaultProps = {
   className:   'wiki-editor',
   html:        '<p></p>',

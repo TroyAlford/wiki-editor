@@ -27,10 +27,9 @@ export default [
     ], transform)
   }),
   buildReplacer(' ', [/^>/, /.*$/], (t, e, data, matches) => {
-    const [before] = matches.before
     const [after] = matches.after
 
-    const replacement = after ? '' : `Blockquote`
+    const replacement = after ? '' : 'Blockquote'
 
     return t.setBlock({ type: 'blockquote' })
             .extend(-2)

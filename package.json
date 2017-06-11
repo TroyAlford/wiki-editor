@@ -41,19 +41,25 @@
     "node-sass": "^4.5.2",
     "node-sass-glob-importer": "^3.0.2",
     "nodemon": "^1.11.0",
+    "pre-commit": "^1.2.2",
     "publish": "^0.6.0",
     "react-addons-test-utils": "^15.5.1",
     "webpack": "^2.6.1"
   },
   "scripts": {
-    "publish-to-npm": "publish",
     "build": "NODE_ENV=production webpack",
     "build-css": "node-sass src/wiki-editor.scss --output-style compressed --source-map true --source-map-embed --importer node_modules/node-sass-glob-importer/dist/cli.js -o lib",
+    "lint": "eslint --fix --ignore-pattern /node_modules/,/lib/ ./src/",
     "prebuild": "mkdir -p ./lib ./examples/lib && rm -rf ./lib/* ./examples/lib/*",
-    "watch-css": "nodemon --watch ./src -e scss --exec 'yarn build-css'",
     "preversion": "yarn test",
+    "publish-to-npm": "publish",
     "test": "jest",
-    "version": "yarn build && git add -A ./lib"
+    "version": "yarn build && git add -A ./lib",
+    "watch-css": "nodemon --watch ./src -e scss --exec 'yarn build-css'"
   },
+  "pre-commit": [
+    "lint",
+    "test"
+  ],
   "jest": {}
 }

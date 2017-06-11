@@ -13,7 +13,10 @@ const MenuItem = ({ children, className, onClick, tagName: TagName, ...props }) 
 )
 
 MenuItem.propTypes = {
-  children:  PropTypes.any,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(React.PropTypes.node),
+    PropTypes.node,
+  ]),
   className: PropTypes.string,
   onClick:   PropTypes.func.isRequired,
   tagName:   PropTypes.string,

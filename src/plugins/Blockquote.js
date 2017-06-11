@@ -1,4 +1,3 @@
-import { Block, Raw } from 'slate'
 import getStyleData from '../utility/getStyleData'
 import renderStyled from '../utility/renderStyled'
 

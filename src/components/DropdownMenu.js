@@ -24,8 +24,11 @@ export default class DropdownMenu extends Component {
 
 DropdownMenu.propTypes = {
   className: PropTypes.string,
-  children:  PropTypes.any,
-  label:     PropTypes.string.isRequired,
+  children:  PropTypes.oneOfType([
+    PropTypes.arrayOf(React.PropTypes.node),
+    PropTypes.node,
+  ]),
+  label: PropTypes.string.isRequired,
 }
 DropdownMenu.defaultProps = {
   className: 'menu dropdown',

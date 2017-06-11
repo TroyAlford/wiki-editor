@@ -3,7 +3,7 @@ import * as Actions from './Table/Actions'
 import events from './Table/Events'
 import rules from './Table/Rules'
 import { contains } from '../utility/contains'
-import { renderStyled } from '../utility/renderStyled'
+import { getStyleData, renderStyled } from '../utility/renderStyled'
 
 const BUTTONS = [
   { icon: 'add-table', action: 'insertTable', params: [1, 1], alwaysVisible: true },

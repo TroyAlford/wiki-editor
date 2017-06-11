@@ -3,7 +3,7 @@ import { flow } from '../utility/flow'
 import getStyleData from '../utility/getStyleData'
 import renderStyled from '../utility/renderStyled'
 
-const anchorRegex = /\[([^\]]+)\]\(([a-z0-9-._~:/?#@!$&'*\+,;=%]+)\)/gi
+const anchorRegex = /\[([^\]]+)\]\(([a-z0-9-._~:/?#@!$&'*+,;=%]+)\)/gi
 
 export function findExpandedAnchors(state) {
   const { lastIndex } = anchorRegex
@@ -96,8 +96,8 @@ export default {
       if (object.type !== 'anchor') return undefined
       return renderStyled('a', {
         children,
-        data: object.data,
-        attributes: { href: object.data.get('href') }
+        data:       object.data,
+        attributes: { href: object.data.get('href') },
       })
     },
   }],
@@ -116,10 +116,10 @@ export default {
     }
 
     return findExpandedAnchors(state)
-      .filter(anchor => (
-        anchor.node.key !== selection.startKey ||
-        selection.startOffset < anchor.anchorOffset ||
-        selection.endOffset > anchor.focusOffset
+      .filter(a => (
+        a.node.key !== selection.startKey ||
+        selection.startOffset < a.anchorOffset ||
+        selection.endOffset > a.focusOffset
       ))
       .reduce((inner, { text, href, node, ...selectParams }) =>
         flow([
