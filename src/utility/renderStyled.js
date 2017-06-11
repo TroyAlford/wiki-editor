@@ -2,7 +2,12 @@
 import React from 'react'
 import { Map } from 'immutable'
 
-export default (Tag, { data = new Map(), children = [], attributes = {} } = {}) => {
+export default (Tag, {
+  attributes = {},
+  children = [],
+  data = new Map(),
+  isVoid = false,
+} = {}) => {
   if (!Tag || typeof Tag !== 'string') throw new Error('Tag is required')
 
   const dataMap =
@@ -13,5 +18,6 @@ export default (Tag, { data = new Map(), children = [], attributes = {} } = {}) 
   const style = dataMap.get('style') || {}
   const className = dataMap.get('className') || undefined
 
-  return <Tag {...attributes} {...{ className, style }}>{children || []}</Tag>
+  if (isVoid) return <Tag {...attributes} {...{ className, style }} />
+  return <Tag {...attributes} {...{ className, style }}>{children}</Tag>
 }
