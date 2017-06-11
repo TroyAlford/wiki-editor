@@ -1,6 +1,11 @@
 {
   "name": "wiki-editor",
-  "keywords": ["slate", "react", "wysiwyg", "wiki"],
+  "keywords": [
+    "slate",
+    "react",
+    "wysiwyg",
+    "wiki"
+  ],
   "version": "0.0.1",
   "description": "React/Slate WYSIWYG Editor",
   "main": "lib/wiki-editor.js",
@@ -8,6 +13,8 @@
   "author": "Troy Alford <troy@troyalford.com>",
   "license": "MIT",
   "dependencies": {
+    "cheerio": "^1.0.0-rc.1",
+    "immutable": "^3.8.1",
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
@@ -29,17 +36,18 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^4.0.0",
     "eslint-plugin-react": "^6.10.3",
-    "jest": "^19.0.2",
+    "jest": "^20.0.4",
     "jest-cli": "^19.0.2",
     "node-sass": "^4.5.2",
     "node-sass-glob-importer": "^3.0.2",
+    "nodemon": "^1.11.0",
     "react-addons-test-utils": "^15.5.1",
-    "webpack": "^2.4.1"
+    "webpack": "^2.6.1"
   },
   "scripts": {
-    "build": "yarn prebuild && NODE_ENV=production webpack",
+    "build": "NODE_ENV=production webpack",
     "build-css": "node-sass src/wiki-editor.scss --output-style compressed --source-map true --source-map-embed --importer node_modules/node-sass-glob-importer/dist/cli.js -o lib",
-    "prebuild": "mkdir -p ./lib && rm -rf ./lib/*",
+    "prebuild": "mkdir -p ./lib ./examples/lib && rm -rf ./lib/* ./examples/lib/*",
     "watch-css": "nodemon --watch ./src -e scss --exec 'yarn build-css'",
     "preversion": "yarn test",
     "test": "jest",

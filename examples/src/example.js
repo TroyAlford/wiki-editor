@@ -7,8 +7,10 @@ window.React = React
 window.ReactDOM = ReactDOM
 
 const HTML = `
-  <p>This is some stuff with a [test](text) link put in the middle.</p>
-  <a href="foo">Bar</a>
+<h1 class="header-class" style="color: red;">Header 1</h1>\
+<p>This is some stuff with a [test](text) link put in the middle.</p>\
+<p><a href="foo">Bar</a></p>\
+<p><a href="with" class="class names">Test</a></p>\
 `
 
 class Example extends React.Component {

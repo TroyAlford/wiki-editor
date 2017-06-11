@@ -1,6 +1,8 @@
 import { Paragraph } from './Paragraph'
 import { insertAfterAndMoveTo, insertBefore } from '../utility/insertAdjacent'
 import { range } from '../utility/range'
+import getStyleData from '../utility/getStyleData'
+import renderStyled from '../utility/renderStyled'
 import DropdownMenu from '../components/DropdownMenu'
 import MenuItem, { Divider } from '../components/MenuItem'
 
@@ -8,12 +10,8 @@ import MenuItem, { Divider } from '../components/MenuItem'
 
 const LEVELS = range(1, 6)
 
-function renderHeader(header, children) {
-  const level = header.data.get('level') || 1
-  const style = header.data.get('style') || {}
-  const Tag = `h${level}`
-
-  return <Tag style={style}>{children}</Tag>
+function renderHeader({ data }, children) {
+  return renderStyled(`h${data.get('level')}`, { data, children })
 }
 
 function setHeaderLevel(state, level) {
@@ -76,7 +74,7 @@ export default {
       return {
         kind:  'block',
         type:  'header',
-        data:  { level: matches[1] },
+        data:  { level: matches[1], ...getStyleData(el) },
         nodes: next(el.children),
       }
     },

@@ -1,9 +1,12 @@
 import Alignment from './Alignment'
 import Anchor from './Anchor'
 import AutoReplacers from './AutoReplacers'
+import Blockquote from './Blockquote'
+import Div from './Div'
 import Header from './Header'
 import HorizontalRule from './HorizontalRule'
 import Paragraph from './Paragraph'
+import Span from './Span'
 import Table from './Table'
 import TextDecorators from './TextDecorators'
 
@@ -13,7 +16,10 @@ const PLUGINS = [
   TextDecorators,
   Alignment,
   Table,
+  Blockquote,
+  Div,
   Paragraph,
+  Span,
   HorizontalRule,
   ...AutoReplacers,
 ]

@@ -11,10 +11,18 @@ dependencies:
 machine:
   environment:
     PATH: "${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
+  node:
+    version: 6.9.1
   timezone:
     America/Los_Angeles
 
 test:
   override:
     - yarn test
-    - yarn build
+    - NODE_ENV=production yarn build
+
+deployment:
+  production:
+    branch: master
+    commands:
+      - git add lib/. examples/lib/. && git commit -m 'Adding CI-built /lib files'
