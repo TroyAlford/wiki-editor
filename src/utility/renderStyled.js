@@ -1,11 +1,17 @@
 /* eslint-disable react/react-in-jsx-scope,react/prop-types */
+export const getStyleData = ({ attribs, style }) => {
+	if (attribs.style) debugger;
+	return {
+		className: (attribs.class || '').split(' ').filter(cn => cn).join(' '),
+		style: style || {},
+	}
+}
+
 export const renderStyled = (Tag, data, children, attributes = {}) => {
   const style = data.get('style') || {}
-  if (children) {
-    return <Tag style={style} {...attributes}>{children}</Tag>
-  }
+  const className = data.get('className') || undefined
 
-  return <Tag style={style} {...attributes} />
+  return <Tag {...attributes } {...{ className, style }}>{children || []}</Tag>
 }
 
 export default renderStyled
