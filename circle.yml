@@ -22,9 +22,9 @@ test:
     - NODE_ENV=production yarn build
 
 deployment:
-  production:
+  npm:
     branch: master
-    pre:
-      - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
     commands:
-      - git add lib/. examples/lib/. && git commit -m 'Adding CI-built /lib files'
+      # login using environment variables
+      - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> ~/.npmrc
+      - yarn publish-to-npm
