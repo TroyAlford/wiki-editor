@@ -9,32 +9,32 @@ export default {
     }, { terse: true })
 
     return Block.create({
-      type:  'paragraph',
+      type:  'div',
       nodes: [textNode],
     })
   },
 
   schema: {
     nodes: {
-      paragraph: ({ attributes, children, node }) => (
-        renderStyled('p', node.data, children, attributes)
+      div: ({ attributes, children, node }) => (
+        renderStyled('div', node.data, children, attributes)
       ),
     },
   },
 
   serializers: [{
     deserialize(el, next) {
-      if (el.tagName !== 'p') return undefined
+      if (el.tagName !== 'div') return undefined
       return {
         kind:  'block',
-        type:  'paragraph',
+        type:  'div',
         data:  getStyleData(el),
         nodes: next(el.children),
       }
     },
     serialize(object, children) {
-      if (object.type !== 'paragraph') return undefined
-      return renderStyled('p', object.data, children, {})
+      if (object.type !== 'div') return undefined
+      return renderStyled('div', object.data, children, {})
     },
   }],
 }

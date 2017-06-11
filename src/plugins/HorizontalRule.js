@@ -1,6 +1,6 @@
 import Slate from 'slate'
 import { Paragraph } from './Paragraph'
-import { renderStyled } from '../utility/renderStyled'
+import { getStyleData, renderStyled } from '../utility/renderStyled'
 import { insertAfterAndMoveTo, insertBefore, insertBeforeAndMoveTo } from '../utility/insertAdjacent'
 
 function onDelete(transform, event, state) {
@@ -53,6 +53,7 @@ export default {
       return {
         kind:   'block',
         type:   'hr',
+        data:   getStyleData(el),
         isVoid: true,
       }
     },

@@ -66,6 +66,7 @@ export default {
         return {
           kind:  'block',
           type:  el.tagName,
+          data:  getStyleData(el),
           nodes: next(children),
         }
       }

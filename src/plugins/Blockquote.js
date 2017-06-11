@@ -1,5 +1,5 @@
 import { Block, Raw } from 'slate'
-import { renderStyled } from '../utility/renderStyled'
+import { getStyleData, renderStyled } from '../utility/renderStyled'
 
 export default {
   schema: {
@@ -16,6 +16,7 @@ export default {
       return {
         kind:  'block',
         type:  'blockquote',
+        data:  getStyleData(el),
         nodes: next(el.children),
       }
     },

@@ -9,32 +9,32 @@ export default {
     }, { terse: true })
 
     return Block.create({
-      type:  'paragraph',
+      type:  'span',
       nodes: [textNode],
     })
   },
 
   schema: {
     nodes: {
-      paragraph: ({ attributes, children, node }) => (
-        renderStyled('p', node.data, children, attributes)
+      span: ({ attributes, children, node }) => (
+        renderStyled('span', node.data, children, attributes)
       ),
     },
   },
 
   serializers: [{
     deserialize(el, next) {
-      if (el.tagName !== 'p') return undefined
+      if (el.tagName !== 'span') return undefined
       return {
-        kind:  'block',
-        type:  'paragraph',
+        kind:  'inline',
+        type:  'span',
         data:  getStyleData(el),
         nodes: next(el.children),
       }
     },
     serialize(object, children) {
-      if (object.type !== 'paragraph') return undefined
-      return renderStyled('p', object.data, children, {})
+      if (object.type !== 'span') return undefined
+      return renderStyled('span', object.data, children, {})
     },
   }],
 }
