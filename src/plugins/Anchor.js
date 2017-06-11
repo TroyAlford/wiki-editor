@@ -98,6 +98,16 @@ export default {
 
   onChange: (state) => {
     const { selection } = state
+    let transform = state.transform()
+
+    // If nothing to close or open, do nothing
+    const anchor = state.document.getClosestInline(state.selection.anchorKey)
+    if (anchor && anchor.type === 'anchor') {
+      transform = flow([
+        t => expandAnchor(t, anchor),
+        t => t.move(1 + state.selection.startOffset),
+      ], transform)
+    }
 
     return findExpandedAnchors(state)
       .filter(anchor => (
@@ -136,7 +146,7 @@ export default {
               })
           },
         ], inner)
-      , state.transform())
+      , transform)
       .apply()
   },
 
