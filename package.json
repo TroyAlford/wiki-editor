@@ -1,6 +1,11 @@
 {
   "name": "wiki-editor",
-  "keywords": ["slate", "react", "wysiwyg", "wiki"],
+  "keywords": [
+    "slate",
+    "react",
+    "wysiwyg",
+    "wiki"
+  ],
   "version": "0.0.1",
   "description": "React/Slate WYSIWYG Editor",
   "main": "lib/wiki-editor.js",
@@ -8,6 +13,7 @@
   "author": "Troy Alford <troy@troyalford.com>",
   "license": "MIT",
   "dependencies": {
+    "immutable": "^3.8.1",
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
