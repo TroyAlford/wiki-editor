@@ -51,7 +51,7 @@ export default {
         data,
       }),
 
-      tr: ({ children, node: { data }}) => renderStyled('tr', { children, data }),
+      tr: ({ children, node: { data } }) => renderStyled('tr', { children, data }),
 
       th: props => renderCell('th', props),
       td: props => renderCell('td', props),
