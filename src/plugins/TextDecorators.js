@@ -6,8 +6,8 @@ const MAPPINGS = [
   { hotkey: 'd', mark: 'strike', tag: 'del' },
   { hotkey: 'i', mark: 'italic', tag: 'em' },
   { hotkey: 'u', mark: 'underline', tag: 'u' },
-  { hotkey: undefined, mark: 'superscript', tag: 'sup' },
-  { hotkey: undefined, mark: 'subscript', tag: 'sub' },
+  { hotkey: 'up', mark: 'superscript', tag: 'sup' },
+  { hotkey: 'down', mark: 'subscript', tag: 'sub' },
 ]
 
 const HOTKEYS = MAPPINGS.filter(m => m.hotkey).reduce(
@@ -48,7 +48,8 @@ const isActive = (state, mark) => state.marks.some(m => m.type === mark)
 export default {
   onKeyDown(event, data, state) {
     const hotkey = HOTKEYS[data.key]
-    if (!event.metaKey || hotkey === undefined) return undefined
+    if (!(event.metaKey || event.ctrlKey) || hotkey === undefined)
+      return undefined
 
     event.preventDefault()
     return applyMark(hotkey.mark, state)

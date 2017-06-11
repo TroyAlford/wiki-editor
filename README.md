@@ -40,9 +40,9 @@ Provides keyboard navigation, toolbar support, and hotkeys for editing `<table>`
 * Delete Table
 
 ### TextDecorators
-* Bold: `Ctrl` or `⌘` + `b`
-* Italic: `Ctrl` or `⌘` + `i`
-* Strike: `Ctrl` or `⌘` + `d`
-* Underline: `Ctrl` or `⌘` + `u`
-* Superscript
-* Subscript
+* Toggle Bold: `Ctrl` or `⌘` + `b`
+* Toggle Italic: `Ctrl` or `⌘` + `i`
+* Toggle Strike: `Ctrl` or `⌘` + `d`
+* Toggle Underline: `Ctrl` or `⌘` + `u`
+* Toggle Superscript: `Ctrl` or `⌘` + `Up`
+* Toggle Subscript: `Ctrl` or `⌘` + `Down`
