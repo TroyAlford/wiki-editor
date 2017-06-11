@@ -8,10 +8,14 @@ const HtmlSerializer = new Html({ rules: serializers })
 export default class WikiEditor extends Component {
   constructor(props) {
     super(props)
+
     this.state = {
-      state: HtmlSerializer.deserialize(props.html),
-      schema,
+      state: HtmlSerializer.deserialize(props.html || props.defaultHtml),
     }
+  }
+
+  componentDidMount() {
+    if (this.props.autoFocus) this.editor.focus()
   }
 
   componentWillReceiveProps(props) {
@@ -82,6 +86,11 @@ const schemaType = PropTypes.shape({
   })),
 })
 
+const schemaPropType = PropTypes.oneOfType([
+  schemaType,
+  PropTypes.arrayOf(schemaType),
+])
+
 const pluginType = PropTypes.shape({
   onBeforeChange: PropTypes.func,
   onBeforeInput:  PropTypes.func,
@@ -94,18 +103,18 @@ const pluginType = PropTypes.shape({
   onPaste:        PropTypes.func,
   onSelect:       PropTypes.func,
   render:         PropTypes.func,
-  schema:         PropTypes.arrayOf(schemaType),
+  schema:         schemaPropType,
 })
 
 WikiEditor.propTypes = {
   autoFocus:   PropTypes.bool,
   className:   PropTypes.string,
   corePlugins: PropTypes.arrayOf(pluginType),
-  coreSchema:  schemaType,
+  coreSchema:  schemaPropType,
   placeholder: PropTypes.string,
   plugins:     PropTypes.arrayOf(pluginType),
   readOnly:    PropTypes.bool,
-  schema:      schemaType,
+  schema:      schemaPropType,
   spellCheck:  PropTypes.bool,
 
   toolbarClassName:            PropTypes.string,
@@ -114,7 +123,8 @@ WikiEditor.propTypes = {
 
   onHtmlChange: PropTypes.func,
 
-  html: PropTypes.string,
+  defaultHtml: PropTypes.string,
+  html:        PropTypes.string,
 }
 
 /* eslint react/no-unused-prop-types: "off" */
@@ -135,5 +145,6 @@ WikiEditor.defaultProps = {
 
   onHtmlChange: undefined,
 
-  html: '<p></p>',
+  defaultHtml: '<p></p>',
+  html:        undefined,
 }
