@@ -42,7 +42,7 @@ const toolbarButtons = [
 
 export default {
   renderToolbar: (state, props, setState) => (
-    <div className={props.toolbarButtonGroupClassName}>
+    <div key="alignment-toolbar" className={props.toolbarButtonGroupClassName}>
       {toolbarButtons.map((button) => {
         const className = [
           props.toolbarButtonClassName,

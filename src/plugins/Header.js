@@ -107,7 +107,7 @@ export default {
   },
 
   renderToolbar: (state, props, setState) => (
-    <div className={`header-plugin ${props.toolbarButtonGroupClassName}`}>
+    <div key="header-toolbar" className={`header-plugin ${props.toolbarButtonGroupClassName}`}>
       <DropdownMenu
         label={
           state.anchorBlock.type === 'header'

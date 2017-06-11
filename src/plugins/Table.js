@@ -3,7 +3,8 @@ import * as Actions from './Table/Actions'
 import events from './Table/Events'
 import rules from './Table/Rules'
 import { contains } from '../utility/contains'
-import { getStyleData, renderStyled } from '../utility/renderStyled'
+import getStyleData from '../utility/getStyleData'
+import renderStyled from '../utility/renderStyled'
 
 const BUTTONS = [
   { icon: 'add-table', action: 'insertTable', params: [1, 1], alwaysVisible: true },
@@ -94,7 +95,7 @@ export default {
   }],
 
   renderToolbar: (state, props, setState) => (
-    <div className={props.toolbarButtonGroupClassName}>
+    <div key="table-toolbar" className={props.toolbarButtonGroupClassName}>
       {BUTTONS.filter(({ alwaysVisible }) => alwaysVisible || isWithinTable(state))
         .map(({ action, params = [], icon }) => {
           const className = [

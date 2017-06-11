@@ -79,7 +79,7 @@ export default {
   }],
 
   renderToolbar: (state, props, setState) => (
-    <div className={props.toolbarButtonGroupClassName}>
+    <div key="decorator-toolbar" className={props.toolbarButtonGroupClassName}>
       {MAPPINGS.map(({ mark }) => {
         const className = [
           props.toolbarButtonClassName,

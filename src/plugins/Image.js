@@ -4,18 +4,18 @@ import renderStyled from '../utility/renderStyled'
 export default {
   schema: {
     nodes: {
-      img: ({ attributes, node }) => (
+      img: ({ node }) => (
         renderStyled('img', {
           attributes: { src: node.data.get('src') },
-          data: node.data,
-          isVoid: true,
+          data:       node.data,
+          isVoid:     true,
         })
       ),
     },
   },
 
   serializers: [{
-    deserialize(el, next) {
+    deserialize(el) {
       if (el.tagName !== 'img') return undefined
       return {
         kind:   'inline',
@@ -24,12 +24,12 @@ export default {
         isVoid: true,
       }
     },
-    serialize(object, children) {
+    serialize(object) {
       if (object.type !== 'img') return undefined
       return renderStyled('img', {
         attributes: { src: object.data.get('src') },
-        data: object.data,
-        isVoid: true
+        data:       object.data,
+        isVoid:     true,
       })
     },
   }],
