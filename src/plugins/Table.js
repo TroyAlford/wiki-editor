@@ -46,7 +46,7 @@ export default {
       tr: props => <tr {...props.attributes}>{props.children}</tr>,
 
       td: ({ attributes, children, node }) => (
-        renderStyled('td', node.data, children, attributes)
+        renderStyled('td', { data: node.data, children, attributes })
       ),
     },
   },
@@ -66,6 +66,7 @@ export default {
         return {
           kind:  'block',
           type:  el.tagName,
+          data:  getStyleData(el),
           nodes: next(children),
         }
       }
@@ -85,7 +86,7 @@ export default {
           return <tr {...object.attributes}>{children}</tr>
         case 'th':
         case 'td':
-          return renderStyled(object.type, object.data, children, {})
+          return renderStyled(object.type, { data: object.data, children })
         default:
           return undefined
       }
