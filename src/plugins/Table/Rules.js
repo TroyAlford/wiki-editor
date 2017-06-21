@@ -4,8 +4,6 @@ import { flow } from '../../utility/flow'
 const PARENTS = {
   table: ['tr', 'thead', 'tbody', 'tfoot'],
   tr:    ['td', 'th'],
-  th:    ['paragraph'],
-  td:    ['paragraph'],
 }
 const PARENT_KEYS = Object.keys(PARENTS)
 
