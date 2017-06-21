@@ -1,4 +1,6 @@
 import { createCell, createRow, createTable } from './Creators'
+import { isWithinTable } from '../Table'
+import { contains } from '../../utility/contains'
 import { flow } from '../../utility/flow'
 import Paragraph from '../Paragraph'
 
@@ -13,11 +15,15 @@ function inCellOnlyError(fnName) {
 }
 
 export function getTableInfo({ state }) {
-  const cell = state.startBlock
-  if (cell.type !== 'td') inCellOnlyError('getTableInfo')
+  if (!isWithinTable(state)) inCellOnlyError('getTableInfo')
 
-  const row = state.document.getParent(cell.key)
-  const table = state.document.getParent(row.key)
+  const doc = state.document
+  const ancestors = doc.getAncestors(state.startKey).reverse()
+
+  const table = ancestors.filter(a => a.type === 'table').get(0)
+  const row = ancestors.filter(a => a.type === 'tr').get(0)
+  const cell = ancestors.filter(a => contains(['td', 'th'], a.type)).get(0)
+
   return {
     cell,
     row,

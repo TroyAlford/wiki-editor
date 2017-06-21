@@ -25,8 +25,12 @@ const applyAction = (action, state, params) => {
 }
 
 export function isWithinTable(state) {
-  if (!state.selection.startKey) return false
-  return (contains(['td', 'th'], state.startBlock.type))
+  const doc = state.document
+  const ancestors = state.document.getAncestors(state.selection.startKey)
+  const tableParents = ancestors.filter(a =>
+    contains(['table', 'tbody', 'tr', 'th', 'td'], a.type)
+  )
+  return Boolean(tableParents.size)
 }
 
 const renderCell = (Tag, { attributes = {}, children, data, node }) =>
