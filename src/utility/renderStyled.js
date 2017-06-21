@@ -15,9 +15,10 @@ export default (Tag, {
     (typeof data === 'object' && new Map(data)) ||
     new Map()
 
-  const style = dataMap.get('style') || {}
+  let style = dataMap.get('style') || {}
+  if (style instanceof Map) style = style.toObject()
   const className = dataMap.get('className') || undefined
 
-  if (isVoid) return <Tag {...attributes} {...{ className, style }} />
-  return <Tag {...attributes} {...{ className, style }}>{children}</Tag>
+  if (isVoid) return <Tag {...attributes} className={className} style={style} />
+  return <Tag {...attributes}  className={className} style={style}>{children}</Tag>
 }

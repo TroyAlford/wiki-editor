@@ -1,14 +1,19 @@
-export const toggleStyle = (transform, block, property, toggle) => {
-  const style = block.data.get('style') || {}
+import { Map } from 'immutable'
 
-  if (style[property] === toggle) {
-    style[property] = undefined
+export const toggleStyle = (transform, block, property, toggle) => {
+  let style = block.data.get('style') || {}
+  if (style instanceof Map) style = style.toObject()
+
+  const updated = { ...style }
+
+  if (updated[property] === toggle) {
+    updated[property] = undefined
   } else {
-    style[property] = toggle
+    updated[property] = toggle
   }
 
   return transform.setNodeByKey(block.key, {
-    data: block.data.merge({ style }),
+    data: block.data.merge({ style: updated }),
   })
 }
 
