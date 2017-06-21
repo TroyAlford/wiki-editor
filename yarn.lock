@@ -4319,7 +4319,7 @@ preserve@^0.2.0:
 
 prettify-html@TroyAlford/prettify-html:
   version "0.0.1-alpha.1"
-  resolved "https://codeload.github.com/TroyAlford/prettify-html/tar.gz/7ca80859fa2f477c792178ec3152d6c2ab17a69d"
+  resolved "https://codeload.github.com/TroyAlford/prettify-html/tar.gz/ca81bc8f8535da220e57d3545f5a51f41c9e30a5"
   dependencies:
     cheerio "^0.22.0"
     is-blank "^1.1.0"
