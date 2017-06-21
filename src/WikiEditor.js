@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Editor, Html } from 'slate'
 import plugins, { schema, serializers } from './plugins'
+import prettify from 'prettify-html'
 
 const HtmlSerializer = new Html({ rules: serializers })
 
@@ -28,7 +29,11 @@ export default class WikiEditor extends Component {
     this.setState({ state }, callback)
 
     if (typeof this.props.onHtmlChange === 'function') {
-      this.props.onHtmlChange(HtmlSerializer.serialize(state))
+      const html = this.props.prettifyHTML
+        ? prettify(HtmlSerializer.serialize(state))
+        : HtmlSerializer.serialize(state)
+
+      this.props.onHtmlChange(html)
     }
   }
 
@@ -107,15 +112,16 @@ const pluginType = PropTypes.shape({
 })
 
 WikiEditor.propTypes = {
-  autoFocus:   PropTypes.bool,
-  className:   PropTypes.string,
-  corePlugins: PropTypes.arrayOf(pluginType),
-  coreSchema:  schemaPropType,
-  placeholder: PropTypes.string,
-  plugins:     PropTypes.arrayOf(pluginType),
-  readOnly:    PropTypes.bool,
-  schema:      schemaPropType,
-  spellCheck:  PropTypes.bool,
+  autoFocus:    PropTypes.bool,
+  className:    PropTypes.string,
+  corePlugins:  PropTypes.arrayOf(pluginType),
+  coreSchema:   schemaPropType,
+  placeholder:  PropTypes.string,
+  plugins:      PropTypes.arrayOf(pluginType),
+  prettifyHTML: PropTypes.bool,
+  readOnly:     PropTypes.bool,
+  schema:       schemaPropType,
+  spellCheck:   PropTypes.bool,
 
   toolbarClassName:            PropTypes.string,
   toolbarButtonGroupClassName: PropTypes.string,
@@ -129,15 +135,16 @@ WikiEditor.propTypes = {
 
 /* eslint react/no-unused-prop-types: "off" */
 WikiEditor.defaultProps = {
-  autoFocus:   true,
-  className:   'wiki-editor',
-  corePlugins: plugins,
-  coreSchema:  schema,
-  placeholder: 'Enter some text...',
-  plugins:     [],
-  readOnly:    false,
-  schema:      {},
-  spellCheck:  true,
+  autoFocus:    true,
+  className:    'wiki-editor',
+  corePlugins:  plugins,
+  coreSchema:   schema,
+  placeholder:  'Enter some text...',
+  plugins:      [],
+  prettifyHTML: true,
+  readOnly:     false,
+  schema:       {},
+  spellCheck:   true,
 
   toolbarClassName:            'menu toolbar-menu',
   toolbarButtonGroupClassName: 'toolbar-button-group',
