@@ -6,7 +6,7 @@
     "wysiwyg",
     "wiki"
   ],
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "React/Slate WYSIWYG Editor",
   "main": "lib/wiki-editor.min.js",
   "repository": "git@github.com:TroyAlford/wiki-editor.git",
@@ -58,7 +58,6 @@
     "watch-css": "nodemon --watch ./src -e scss --exec 'yarn build-css'"
   },
   "pre-commit": [
-    "lint",
     "test"
   ],
   "jest": {}
