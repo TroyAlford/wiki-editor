@@ -13,6 +13,21 @@ export default {
         renderStyled('li', { data: node.data, children, attributes })
       ),
     },
+    rules: [{
+      match: ({ type }) => type === 'list',
+
+      validate: (parent) => {
+        const hasInvalidChildren = Boolean(parent.nodes.filter(c => c.type !== 'li').size)
+        return hasInvalidChildren ? parent.nodes : undefined
+      },
+
+      normalize: (transform, node, children) => (
+        children.reduce((t, child) =>
+          t.wrapBlockByKey(child.key, 'li', { normalize: false }),
+          transform
+        )
+      ),
+    }],
   },
 
   serializers: [{
