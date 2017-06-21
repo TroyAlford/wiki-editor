@@ -2,22 +2,26 @@ $bg-color-defocused-selection: $palette-gray!default;
 
 $bg-color-button-inactive:     transparent!default;
 $bg-color-button-active:       $palette-light-blue!default;
-$bg-color-button-hover:        darken($bg-color-button-active, 5%);
+$bg-color-button-hover:        darken($bg-color-button-active, 5%)!default;
 $fg-color-button-text:         $palette-black!default;
 
 $border-color-button-inactive: transparent!default;
 $border-color-button-active:   $palette-dark-blue!default;
-$border-color-button-hover:    darken($border-color-button-active, 5%);
+$border-color-button-hover:    darken($border-color-button-active, 5%)!default;
 
 .wiki-editor {
   .menu.toolbar-menu {
     .toolbar-button-group {
       display: inline-flex;
-    }
-    .toolbar-button-group + .toolbar-button-group {
-      border-left: 2px groove;
-      margin-left: .5rem;
-      padding-left: .5rem;
+      border-right:  2px groove;
+      margin-right:  .5rem;
+      padding: 0 .25rem;
+
+      &:last-child {
+        border-right: 0;
+        margin-right: 0;
+        padding-right: 0;
+      }
     }
 
     .toolbar-button {

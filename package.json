@@ -49,14 +49,14 @@
   },
   "scripts": {
     "build": "NODE_ENV=production webpack",
-    "build-css": "node-sass src/wiki-editor.scss --output-style compressed --source-map true --source-map-embed --importer node_modules/node-sass-glob-importer/dist/cli.js -o lib",
-    "lint": "eslint --fix --ignore-pattern /node_modules/,/lib/ ./src/",
+    "build-css": "node-sass source/wiki-editor.scss --output-style compressed --source-map true --source-map-embed --importer node_modules/node-sass-glob-importer/dist/cli.js -o lib",
+    "lint": "eslint --fix --ignore-pattern /node_modules/,/lib/ ./source/",
     "prebuild": "mkdir -p ./lib ./examples/lib && rm -rf ./lib/* ./examples/lib/*",
     "preversion": "yarn test",
     "publish-to-npm": "publish",
     "test": "jest",
     "version": "yarn build && git add -A ./lib",
-    "watch-css": "nodemon --watch ./src -e scss --exec 'yarn build-css'"
+    "watch-css": "nodemon --watch ./source -e scss --exec 'yarn build-css'"
   },
   "pre-commit": [
     "test"
