@@ -9,17 +9,12 @@ window.ReactDOM = ReactDOM
 const HTML = `
 <h1 class="header-class" style="color: red;">Header 1</h1>
 <p>This is some stuff with a [test](text) link put in the middle.</p>
+<ul><li>List Item</li></ul>
 <table class="blah">
-  <tr>
-    <th colspan="2">Test</th>
-  </tr>
-  <tr>
-    <td>Left</td><td>Right</td>
-  </tr>
+  <tr><th colspan="2"><img src="http://lorempixel.com/100/100/" /></th></tr>
+  <tr><td>Left</td><td>Right</td></tr>
 </table>
-<p><a href="foo">Bar</a></p>
-<p><a href="with" class="class names">Test</a></p>
-<p><img src="http://lorempixel.com/100/100/" /></p>
+<p><a href="foo" class="class names">Bar</a></p>
 `
 
 class Example extends React.Component {
