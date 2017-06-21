@@ -10,12 +10,12 @@ function forceRange(value, lowerBound, upperBound) {
   return value
 }
 
-function inCellOnlyError(fnName) {
+function inTableOnlyError(fnName) {
   throw new Error(`${fnName} can only be applied from within a cell`)
 }
 
 export function getTableInfo({ state }) {
-  if (!isWithinTable(state)) inCellOnlyError('getTableInfo')
+  if (!isWithinTable(state)) inTableOnlyError('getTableInfo')
 
   const doc = state.document
   const ancestors = doc.getAncestors(state.startKey).reverse()
@@ -39,7 +39,7 @@ export function getTableInfo({ state }) {
 
 export function moveTo(transform, targetX, targetY) {
   const { state } = transform
-  if (state.startBlock.type !== 'td') inCellOnlyError('moveTo')
+  if (!isWithinTable(state)) inTableOnlyError('moveTo')
 
   const tableInfo = getTableInfo(transform)
 
@@ -77,7 +77,7 @@ export function insertTable(transform, columns = 2, rows = 2) {
 
 export function deleteTable(transform) {
   const { state } = transform
-  if (state.startBlock.type !== 'td') inCellOnlyError('deleteTable')
+  if (!isWithinTable(state)) inTableOnlyError('deleteTable')
 
   const { table } = getTableInfo(transform)
   const parent = state.document.getParent(table.key)
