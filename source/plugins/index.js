@@ -6,6 +6,7 @@ import Div from './Div'
 import Header from './Header'
 import HorizontalRule from './HorizontalRule'
 import Image from './Image'
+import List from './List'
 import Paragraph from './Paragraph'
 import Span from './Span'
 import Table from './Table'
@@ -21,6 +22,7 @@ const PLUGINS = [
   Blockquote,
   Div,
   Image,
+  List,
   Paragraph,
   Span,
   HorizontalRule,
