@@ -6,6 +6,8 @@ import prettify from 'prettify-html'
 
 const HtmlSerializer = new Html({ rules: serializers })
 
+export { prettify }
+
 export default class WikiEditor extends Component {
   constructor(props) {
     super(props)
