@@ -39,7 +39,7 @@ module.exports = [
   Object.assign({}, bundle, {
     /* Main JS Bundle */
     devtool: 'source-map',
-    entry: `${__dirname}/src/${component}.js`,
+    entry: `${__dirname}/source/${component}.js`,
     output: Object.assign({}, bundle.output, {
       filename: `${library}.js`,
       library,
@@ -50,7 +50,7 @@ module.exports = [
 
   Object.assign({}, bundle, {
     /* Examples */
-    entry: `${__dirname}/examples/src/example.js`,
+    entry: `${__dirname}/examples/source/example.js`,
     externals: {}, // Include react/react-dom
     output: Object.assign({}, bundle.output, {
       filename: 'example.js',
@@ -65,7 +65,7 @@ if (PRODUCTION) {
   module.exports.push(
     Object.assign({}, bundle, {
       /* Main JS Bundle, minified */
-      entry: `${__dirname}/src/${component}.js`,
+      entry: `${__dirname}/source/${component}.js`,
       output: Object.assign({}, bundle.output, {
         filename: `${library}.min.js`,
         library,
