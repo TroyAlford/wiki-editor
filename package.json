@@ -20,10 +20,12 @@
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "slate": "^0.30.6",
-    "slate-auto-replace": "^0.9.0"
+    "slate-auto-replace": "^0.9.0",
+    "slate-react": "^0.10.11"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
+    "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.1",
     "babel-loader": "^7.1.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
@@ -45,7 +47,6 @@
     "nodemon": "^1.11.0",
     "pre-commit": "^1.2.2",
     "publish": "^0.6.0",
-    "react-addons-test-utils": "^15.6.0",
     "webpack": "^3.0.0"
   },
   "scripts": {
@@ -57,6 +58,7 @@
     "publish-to-npm": "publish",
     "test": "jest",
     "version": "yarn build && git add -A ./lib",
+    "watch": "SOURCEMAP=true yarn prebuild && (yarn-watch-css & yarn webpack -- --watch)",
     "watch-css": "nodemon --watch ./source -e scss --exec 'yarn build-css'"
   },
   "pre-commit": [

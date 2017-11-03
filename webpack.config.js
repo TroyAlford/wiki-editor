@@ -32,8 +32,15 @@ const bundle = {
     libraryTarget:  'umd',
     umdNamedDefine: true,
   },
-  plugins: [new webpack.optimize.UglifyJsPlugin({ minimize: true })],
 }
+
+if (PRODUCTION) bundle.plugins = [
+  new webpack.optimize.UglifyJsPlugin({ minimize: true }),
+  new webpack.optimize.ModuleConcatenationPlugin(),
+  new webpack.DefinePlugin({
+    'process.env.NODE_ENV': JSON.stringify(ENVIRONMENT),
+  }),
+]
 
 module.exports = [
   Object.assign({}, bundle, {
@@ -45,7 +52,6 @@ module.exports = [
       library,
       path: `${__dirname}/lib`,
     }),
-    plugins: [],
   }),
 
   Object.assign({}, bundle, {
@@ -57,7 +63,6 @@ module.exports = [
       library: 'example',
       path: `${__dirname}/examples/lib`,
     }),
-    plugins: [],
   })
 ]
 
