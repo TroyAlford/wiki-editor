@@ -1,7 +1,12 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 
 export default class DropdownMenu extends Component {
+  defaultProps = {
+    className: 'menu dropdown',
+    children:  [],
+    label:     'Menu',
+  }
+
   state = { expanded: false }
 
   toggleExpanded = (event) => {
@@ -22,16 +27,16 @@ export default class DropdownMenu extends Component {
   }
 }
 
-DropdownMenu.propTypes = {
-  className: PropTypes.string,
-  children:  PropTypes.oneOfType([
-    PropTypes.arrayOf(React.PropTypes.node),
-    PropTypes.node,
-  ]),
-  label: PropTypes.string.isRequired,
-}
-DropdownMenu.defaultProps = {
-  className: 'menu dropdown',
-  children:  [],
-  label:     'Menu',
+if (process.node.NODE_ENV !== 'production') {
+  /* eslint-disable global-require, react/require-default-props */
+  const PropTypes = require('prop-types')
+
+  DropdownMenu.propTypes = {
+    className: PropTypes.string,
+    children:  PropTypes.oneOfType([
+      PropTypes.arrayOf(PropTypes.node),
+      PropTypes.node,
+    ]),
+    label: PropTypes.string.isRequired,
+  }
 }
