@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 export default class DropdownMenu extends Component {
-  defaultProps = {
+  static defaultProps = {
     className: 'menu dropdown',
     children:  [],
     label:     'Menu',
@@ -27,7 +27,7 @@ export default class DropdownMenu extends Component {
   }
 }
 
-if (process.node.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production') {
   /* eslint-disable global-require, react/require-default-props */
   const PropTypes = require('prop-types')
 
@@ -37,6 +37,6 @@ if (process.node.NODE_ENV !== 'production') {
       PropTypes.arrayOf(PropTypes.node),
       PropTypes.node,
     ]),
-    label: PropTypes.string.isRequired,
+    label: PropTypes.string,
   }
 }

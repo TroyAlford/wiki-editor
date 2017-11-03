@@ -1,20 +1,21 @@
 import React, { Component } from 'react'
-import { Editor, Html } from 'slate'
+import { Editor } from 'slate-react'
+import Html from 'slate-html-serializer'
 import plugins, { schema, serializers } from './plugins'
 
 const HtmlSerializer = new Html({ rules: serializers })
 
 export default class WikiEditor extends Component {
-  defaultProps = {
-    autoFocus:    true,
-    className:    'wiki-editor',
-    corePlugins:  plugins,
-    coreSchema:   schema,
-    placeholder:  'Enter some text...',
-    plugins:      [],
-    readOnly:     false,
-    schema:       {},
-    spellCheck:   true,
+  static defaultProps = {
+    autoFocus:   true,
+    className:   'wiki-editor',
+    corePlugins: plugins,
+    coreSchema:  schema,
+    placeholder: 'Enter some text...',
+    plugins:     [],
+    readOnly:    false,
+    schema:      {},
+    spellCheck:  true,
 
     toolbarClassName:            'menu toolbar-menu',
     toolbarButtonGroupClassName: 'toolbar-button-group',
@@ -88,6 +89,7 @@ export default class WikiEditor extends Component {
 }
 
 if (process.env.NODE_ENV !== 'production') {
+  /* eslint-disable global-require, react/require-default-props */
   const PropTypes = require('prop-types')
 
   const schemaType = PropTypes.shape({
@@ -128,15 +130,15 @@ if (process.env.NODE_ENV !== 'production') {
   })
 
   WikiEditor.propTypes = {
-    autoFocus:    PropTypes.bool,
-    className:    PropTypes.string,
-    corePlugins:  PropTypes.arrayOf(pluginType),
-    coreSchema:   schemaPropType,
-    placeholder:  PropTypes.string,
-    plugins:      PropTypes.arrayOf(pluginType),
-    readOnly:     PropTypes.bool,
-    schema:       schemaPropType,
-    spellCheck:   PropTypes.bool,
+    autoFocus:   PropTypes.bool,
+    className:   PropTypes.string,
+    corePlugins: PropTypes.arrayOf(pluginType),
+    coreSchema:  schemaPropType,
+    placeholder: PropTypes.string,
+    plugins:     PropTypes.arrayOf(pluginType),
+    readOnly:    PropTypes.bool,
+    schema:      schemaPropType,
+    spellCheck:  PropTypes.bool,
 
     toolbarClassName:            PropTypes.string,
     toolbarButtonGroupClassName: PropTypes.string,
