@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Editor } from 'slate-react'
 import Html from 'slate-html-serializer'
-import plugins, { schema, serializers } from './plugins'
+import plugins, { schema, serializers } from './plugins/index'
 
 const HtmlSerializer = new Html({ rules: serializers })
 
@@ -53,13 +53,13 @@ export default class WikiEditor extends Component {
 
   handlePluginStateChange = state => this.onChange(state, this.editor.focus)
 
-  renderToolbar = () => (
-    <div className={this.props.toolbarClassName}>
-      {plugins.filter(p => typeof p.renderToolbar === 'function').map(p =>
-        p.renderToolbar(this.state.state, this.props, this.handlePluginStateChange)
-      )}
-    </div>
-  )
+  renderToolbar = () => (<div>Toolbar</div>)
+  //   <div className={this.props.toolbarClassName}>
+  //     {plugins.filter(p => typeof p.renderToolbar === 'function').map(p =>
+  //       p.renderToolbar(this.state.state, this.props, this.handlePluginStateChange)
+  //     )}
+  //   </div>
+  // )
 
   renderEditor = () => (
     <Editor

@@ -3,6 +3,13 @@
     "transform-class-properties",
     "transform-object-rest-spread"
   ],
-  "presets": ["env", "react", "jest"],
-  "highlightCode": true
+  "presets": [
+    ["env", { "modules": false }],
+    "react"
+  ],
+  "env": {
+    "test": {
+      "presets": ["env", "react", "jest"]
+    }
+  }
 }
