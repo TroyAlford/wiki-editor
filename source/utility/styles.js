@@ -2,7 +2,7 @@ import { Map } from 'immutable'
 
 export const toggleStyle = (transform, block, property, toggle) => {
   let style = block.data.get('style') || {}
-  if (style instanceof Map) style = style.toObject()
+  if (style instanceof Map) style = style.toJS()
 
   const updated = { ...style }
 
@@ -13,12 +13,13 @@ export const toggleStyle = (transform, block, property, toggle) => {
   }
 
   return transform.setNodeByKey(block.key, {
-    data: block.data.merge({ style: updated }),
+    data: block.data.merge({ style: Map(updated) }),
   })
 }
 
 export const getStyle = (block, property) => {
-  const style = block.data.get('style') || {}
+  let style = block.data.get('style') || {}
+  if (style instanceof Map) style = style.toJS()
   if (property) return style[property]
 
   return style
