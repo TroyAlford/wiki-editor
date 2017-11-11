@@ -44,11 +44,9 @@ const bundle = {
 }
 
 if (PRODUCTION) bundle.plugins.push(
-  new webpack.LoaderOptionsPlugin({
-    minimize: true,
-    debug: false,
-  }),
-  new webpack.optimize.ModuleConcatenationPlugin()
+  new webpack.LoaderOptionsPlugin({ minimize: true, debug: false }),
+  new webpack.optimize.ModuleConcatenationPlugin(),
+  new webpack.DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify(ENVIRONMENT) })
 )
 
 module.exports = [

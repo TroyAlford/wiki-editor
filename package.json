@@ -56,6 +56,7 @@
     "publish-to-npm": "publish",
     "test": "jest",
     "version": "yarn build && git add -A ./lib",
+    "watch": "yarn prebuild && (yarn watch-css & SOURCEMAP=true yarn webpack --watch",
     "watch-css": "nodemon --watch ./source -e scss --exec 'yarn build-css'"
   },
   "pre-commit": [
