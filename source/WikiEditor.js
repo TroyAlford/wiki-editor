@@ -1,20 +1,34 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { Editor, Html } from 'slate'
 import plugins, { schema, serializers } from './plugins'
-import prettify from 'prettify-html'
 
 const HtmlSerializer = new Html({ rules: serializers })
 
-export { prettify }
-
 export default class WikiEditor extends Component {
+  static defaultProps = {
+    autoFocus:   true,
+    className:   'wiki-editor',
+    corePlugins: plugins,
+    coreSchema:  schema,
+    placeholder: 'Enter some text...',
+    plugins:     [],
+    readOnly:    false,
+    schema:      {},
+    spellCheck:  true,
+
+    toolbarClassName:            'menu toolbar-menu',
+    toolbarButtonGroupClassName: 'toolbar-button-group',
+    toolbarButtonClassName:      'toolbar-button',
+
+    onHtmlChange: undefined,
+
+    defaultHtml: '<p></p>',
+    html:        undefined,
+  }
+
   constructor(props) {
     super(props)
-
-    this.state = {
-      state: HtmlSerializer.deserialize(props.html || props.defaultHtml),
-    }
+    this.state = { state: HtmlSerializer.deserialize(props.html || props.defaultHtml) }
   }
 
   componentDidMount() {
@@ -31,10 +45,7 @@ export default class WikiEditor extends Component {
     this.setState({ state }, callback)
 
     if (typeof this.props.onHtmlChange === 'function') {
-      const html = this.props.prettifyHTML
-        ? prettify(HtmlSerializer.serialize(state))
-        : HtmlSerializer.serialize(state)
-
+      const html = HtmlSerializer.serialize(state)
       this.props.onHtmlChange(html)
     }
   }
@@ -76,84 +87,65 @@ export default class WikiEditor extends Component {
   )
 }
 
-const schemaType = PropTypes.shape({
-  nodes: PropTypes.shape({}),
-  marks: PropTypes.shape({}),
-  rules: PropTypes.arrayOf(PropTypes.shape({
-    decorate:  PropTypes.func,
-    match:     PropTypes.func,
-    normalize: PropTypes.func,
-    render:    PropTypes.oneOfType([
-      PropTypes.func,
-      PropTypes.node,
-      PropTypes.shape({}),
-      PropTypes.string,
-    ]),
-    validate: PropTypes.func,
-  })),
-})
+if (process.env.NODE_ENV !== 'production') {
+  /* eslint-disable global-require */
+  const PropTypes = require('prop-types')
 
-const schemaPropType = PropTypes.oneOfType([
-  schemaType,
-  PropTypes.arrayOf(schemaType),
-])
+  const schemaType = PropTypes.shape({
+    nodes: PropTypes.shape({}),
+    marks: PropTypes.shape({}),
+    rules: PropTypes.arrayOf(PropTypes.shape({
+      decorate:  PropTypes.func,
+      match:     PropTypes.func,
+      normalize: PropTypes.func,
+      render:    PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.node,
+        PropTypes.shape({}),
+        PropTypes.string,
+      ]),
+      validate: PropTypes.func,
+    })),
+  })
 
-const pluginType = PropTypes.shape({
-  onBeforeChange: PropTypes.func,
-  onBeforeInput:  PropTypes.func,
-  onBlur:         PropTypes.func,
-  onChange:       PropTypes.func,
-  onCopy:         PropTypes.func,
-  onCut:          PropTypes.func,
-  onDrop:         PropTypes.func,
-  onKeyDown:      PropTypes.func,
-  onPaste:        PropTypes.func,
-  onSelect:       PropTypes.func,
-  render:         PropTypes.func,
-  schema:         schemaPropType,
-})
+  const schemaPropType = PropTypes.oneOfType([
+    schemaType,
+    PropTypes.arrayOf(schemaType),
+  ])
 
-WikiEditor.propTypes = {
-  autoFocus:    PropTypes.bool,
-  className:    PropTypes.string,
-  corePlugins:  PropTypes.arrayOf(pluginType),
-  coreSchema:   schemaPropType,
-  placeholder:  PropTypes.string,
-  plugins:      PropTypes.arrayOf(pluginType),
-  prettifyHTML: PropTypes.bool,
-  readOnly:     PropTypes.bool,
-  schema:       schemaPropType,
-  spellCheck:   PropTypes.bool,
+  const pluginType = PropTypes.shape({
+    onBeforeChange: PropTypes.func,
+    onBeforeInput:  PropTypes.func,
+    onBlur:         PropTypes.func,
+    onChange:       PropTypes.func,
+    onCopy:         PropTypes.func,
+    onCut:          PropTypes.func,
+    onDrop:         PropTypes.func,
+    onKeyDown:      PropTypes.func,
+    onPaste:        PropTypes.func,
+    onSelect:       PropTypes.func,
+    render:         PropTypes.func,
+    schema:         schemaPropType,
+  })
 
-  toolbarClassName:            PropTypes.string,
-  toolbarButtonGroupClassName: PropTypes.string,
-  toolbarButtonClassName:      PropTypes.string,
+  WikiEditor.propTypes = {
+    autoFocus:   PropTypes.bool,
+    className:   PropTypes.string,
+    corePlugins: PropTypes.arrayOf(pluginType),
+    coreSchema:  schemaPropType,
+    placeholder: PropTypes.string,
+    plugins:     PropTypes.arrayOf(pluginType),
+    readOnly:    PropTypes.bool,
+    schema:      schemaPropType,
+    spellCheck:  PropTypes.bool,
 
-  onHtmlChange: PropTypes.func,
+    toolbarClassName:            PropTypes.string,
+    toolbarButtonGroupClassName: PropTypes.string,
+    toolbarButtonClassName:      PropTypes.string,
 
-  defaultHtml: PropTypes.string,
-  html:        PropTypes.string,
-}
+    onHtmlChange: PropTypes.func,
 
-/* eslint react/no-unused-prop-types: "off" */
-WikiEditor.defaultProps = {
-  autoFocus:    true,
-  className:    'wiki-editor',
-  corePlugins:  plugins,
-  coreSchema:   schema,
-  placeholder:  'Enter some text...',
-  plugins:      [],
-  prettifyHTML: true,
-  readOnly:     false,
-  schema:       {},
-  spellCheck:   true,
-
-  toolbarClassName:            'menu toolbar-menu',
-  toolbarButtonGroupClassName: 'toolbar-button-group',
-  toolbarButtonClassName:      'toolbar-button',
-
-  onHtmlChange: undefined,
-
-  defaultHtml: '<p></p>',
-  html:        undefined,
+    defaultHtml: PropTypes.string,
+    html:        PropTypes.string,
+  }
 }
