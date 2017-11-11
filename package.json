@@ -23,9 +23,9 @@
     "slate-auto-replace": "^0.5.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.24.1",
+    "babel-cli": "^6.26.0",
     "babel-eslint": "^7.2.3",
-    "babel-loader": "^7.1.0",
+    "babel-loader": "^7.1.2",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-polyfill": "^6.26.0",
@@ -46,7 +46,7 @@
     "pre-commit": "^1.2.2",
     "publish": "^0.6.0",
     "react-addons-test-utils": "^15.6.0",
-    "webpack": "^3.0.0"
+    "webpack": "^3.8.1"
   },
   "scripts": {
     "build": "NODE_ENV=production webpack",
