@@ -6,7 +6,7 @@
     "wysiwyg",
     "wiki"
   ],
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "React/Slate WYSIWYG Editor",
   "main": "lib/wiki-editor.min.js",
   "repository": "git@github.com:TroyAlford/wiki-editor.git",
