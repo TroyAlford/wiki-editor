@@ -46,13 +46,17 @@ export function moveTo(transform, targetX, targetY) {
   const x = forceRange(targetX, 0, tableInfo.width - 1)
   const y = forceRange(targetY, 0, tableInfo.height - 1)
 
-  const cell = tableInfo.table.nodes.get(y).nodes.get(x)
+  let row = tableInfo.table.nodes.get(y)
+  if (!row) row = tableInfo.table.nodes.get(tableInfo.y)
+
+  let cell = row.nodes.get(x)
+  if (!cell) cell = row.nodes.get(row.length - 1)
+  if (!cell) return transform
 
   let { startOffset } = state
   if (startOffset > cell.length) startOffset = cell.length
 
   return transform.collapseToEndOf(cell)
-                  .moveOffsetsTo(startOffset) // eslint-disable-line indent
 }
 
 export function insertColumn(transform, where = 'left') {
