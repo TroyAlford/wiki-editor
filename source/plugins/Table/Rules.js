@@ -16,7 +16,7 @@ const CHILD_KEYS = Object.keys(CHILDREN)
 
 const DEFAULT_PARENT = CHILD_KEYS.reduce(
   (o, key) => ({ ...o, [key]: CHILDREN[key][0] })
-, {})
+, {}) // eslint-disable-line indent
 
 // Rule to ensure that tables are nested TABLE > TBODY > TR > TD|TH
 const enforceTableParentingRules = {
@@ -36,7 +36,7 @@ const enforceTableParentingRules = {
 
     return flow([
       // Wrap this element, if needed, in an appropriate parent
-      t => {
+      (t) => {
         if (parent && contains(CHILDREN[node.type], parent.type)) return t
         return t.wrapBlockByKey(node.key, DEFAULT_PARENT[node.type], { normalize: false })
       },
@@ -45,9 +45,8 @@ const enforceTableParentingRules = {
       t => children.reduce((inner, child) => {
         const parentTag = DEFAULT_PARENT[child.type] || 'td'
         return inner.wrapBlockByKey(child.key, parentTag, { normalize: false })
-      }, t)
+      }, t),
     ], transform)
-
   },
 }
 
@@ -65,8 +64,8 @@ const wrapCellContents = {
   normalize(transform, node, children) {
     return children.reduce((t, child) =>
       t.wrapBlockByKey(child.key, 'paragraph', { normalize: false })
-    , transform)
-  }
+    , transform) // eslint-disable-line indent
+  },
 }
 
 export default [

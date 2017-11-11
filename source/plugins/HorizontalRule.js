@@ -16,9 +16,11 @@ function onDelete(transform, event, state) {
     t = insertBefore(t, sibling, hr)
   }
 
+  /* eslint-disable indent */
   return t.collapseToEndOf(sibling)
           .removeNodeByKey(hr.key)
           .apply()
+  /* eslint-enable indent */
 }
 function onDown(transform, event, state) {
   const hr = state.startBlock
