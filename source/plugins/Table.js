@@ -25,7 +25,6 @@ const applyAction = (action, state, params) => {
 }
 
 export function isWithinTable(state) {
-  const doc = state.document
   const ancestors = state.document.getAncestors(state.selection.startKey)
   const tableParents = ancestors.filter(a =>
     contains(['table', 'tbody', 'tr', 'th', 'td'], a.type)

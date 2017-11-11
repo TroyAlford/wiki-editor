@@ -122,9 +122,9 @@ export default {
             state.anchorBlock.type === 'paragraph' ? 'is-active' : 'is-inactive',
           ].join(' ')}
           onClick={() => setState(setHeaderLevel(state, undefined))}
-        >{'paragraph'}</MenuItem>
+        >paragraph</MenuItem>
         <Divider />
-        {LEVELS.map(level =>
+        {LEVELS.map(level => (
           <MenuItem
             key={level}
             tagName={`h${level}`}
@@ -134,7 +134,7 @@ export default {
             ].join(' ')}
             onClick={() => setState(setHeaderLevel(state, level))}
           >{`heading ${level}`}</MenuItem>
-        )}
+        ))}
       </DropdownMenu>
     </div>
   ),

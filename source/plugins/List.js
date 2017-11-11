@@ -24,7 +24,7 @@ export default {
       normalize: (transform, node, children) => (
         children.reduce((t, child) =>
           t.wrapBlockByKey(child.key, 'li', { normalize: false }),
-          transform
+          transform // eslint-disable-line indent
         )
       ),
     }],

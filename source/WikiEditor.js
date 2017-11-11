@@ -12,13 +12,10 @@ export default class WikiEditor extends Component {
     coreSchema:  schema,
     placeholder: 'Enter some text...',
     plugins:     [],
-    readOnly:    false,
     schema:      {},
     spellCheck:  true,
 
-    toolbarClassName:            'menu toolbar-menu',
-    toolbarButtonGroupClassName: 'toolbar-button-group',
-    toolbarButtonClassName:      'toolbar-button',
+    toolbarClassName: 'menu toolbar-menu',
 
     onHtmlChange: undefined,
 
@@ -135,13 +132,10 @@ if (process.env.NODE_ENV !== 'production') {
     coreSchema:  schemaPropType,
     placeholder: PropTypes.string,
     plugins:     PropTypes.arrayOf(pluginType),
-    readOnly:    PropTypes.bool,
     schema:      schemaPropType,
     spellCheck:  PropTypes.bool,
 
-    toolbarClassName:            PropTypes.string,
-    toolbarButtonGroupClassName: PropTypes.string,
-    toolbarButtonClassName:      PropTypes.string,
+    toolbarClassName: PropTypes.string,
 
     onHtmlChange: PropTypes.func,
 
