@@ -31,10 +31,12 @@ export default [
 
     const replacement = after ? '' : 'Blockquote'
 
+    /* eslint-disable indent */
     return t.setBlock({ type: 'blockquote' })
             .extend(-2)
             .insertText(replacement)
             .moveOffsetsTo(0, replacement.length)
+    /* eslint-enable indent */
   }),
   buildReplacer(' ', [/^#{1,6}/, /.*$/], (t, e, data, matches) => {
     const [before] = matches.before
@@ -43,9 +45,11 @@ export default [
     const level = before.length
     const replacement = after ? '' : `Header ${level}`
 
+    /* eslint-disable indent */
     return t.setBlock({ type: 'header', data: { level } })
             .extend(-(level + 1))
             .insertText(replacement)
             .moveOffsetsTo(0, replacement.length)
+    /* eslint-enable indent */
   }),
 ]

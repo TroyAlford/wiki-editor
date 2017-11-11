@@ -1,4 +1,4 @@
-/* eslint-disable react/react-in-jsx-scope,react/prop-types */
+/* eslint-disable react/react-in-jsx-scope, react/prop-types */
 import { findWordBoundaries } from '../utility/findWordBoundaries'
 
 const MAPPINGS = [
@@ -10,6 +10,7 @@ const MAPPINGS = [
   { hotkey: 'down', mark: 'subscript', tag: 'sub' },
 ]
 
+/* eslint-disable indent */
 const HOTKEYS = MAPPINGS.filter(m => m.hotkey).reduce(
   (all, { hotkey, ...other }) => ({ ...all, [hotkey]: other })
 , {})
@@ -19,12 +20,14 @@ const MARKS = MAPPINGS.reduce(
 const TAGS = MAPPINGS.reduce(
   (tags, { mark, tag }) => ({ ...tags, [tag]: mark })
 , {})
+/* eslint-enable indent */
 
+/* eslint-disable indent */
 const applyMark = (mark, state) => {
   const transform = state.transform()
 
   if (state.selection.isCollapsed) {
-    const text = state.anchorText.text
+    const { text } = state.anchorText
     const position = state.anchorOffset
     const { offsetLeft, offsetRight } = findWordBoundaries(text, position)
 
@@ -42,6 +45,7 @@ const applyMark = (mark, state) => {
 
   return transform.toggleMark(mark).apply()
 }
+/* eslint-enable indent */
 
 const isActive = (state, mark) => state.marks.some(m => m.type === mark)
 

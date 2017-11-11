@@ -52,7 +52,7 @@ export function moveTo(transform, targetX, targetY) {
   if (startOffset > cell.length) startOffset = cell.length
 
   return transform.collapseToEndOf(cell)
-                  .moveOffsetsTo(startOffset)
+                  .moveOffsetsTo(startOffset) // eslint-disable-line indent
 }
 
 export function insertColumn(transform, where = 'left') {
@@ -62,7 +62,7 @@ export function insertColumn(transform, where = 'left') {
   const insertAt = where === 'right' ? x + 1 : x
   return rows.reduce((t, row) =>
     t.insertNodeByKey(row.key, insertAt, createCell())
-  , transform)
+  , transform) // eslint-disable-line indent
 }
 
 export function insertRow(transform, where = 'below') {
@@ -87,10 +87,12 @@ export function deleteTable(transform) {
     ? createCell()
     : Paragraph.create()
 
+  /* eslint-disable indent */
   return transform.collapseToStartOf(table)
                   .moveOffsetsTo(0)
                   .insertNodeByKey(parent.key, index, replacement)
                   .removeNodeByKey(table.key)
+  /* eslint-enable indent */
 }
 
 export function deleteRow(transform) {
@@ -115,6 +117,7 @@ export function deleteColumn(transform) {
     t => moveTo(t, moveToX, y),
     t => rows.reduce((transformRow, row) =>
       transformRow.removeNodeByKey(row.nodes.get(x).key)
-    , t),
+    , t), // eslint-disable-line indent
+
   ], transform)
 }

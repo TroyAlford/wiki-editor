@@ -152,7 +152,7 @@ export default {
               })
           },
         ], inner)
-      , transform)
+      , transform) // eslint-disable-line indent
       .apply()
   },
 
@@ -166,6 +166,6 @@ export default {
       t => expandAnchor(t, anchor),
       t => t.move(1 + data.selection.startOffset),
     ], state.transform())
-    .apply()
+    .apply() // eslint-disable-line indent
   },
 }
