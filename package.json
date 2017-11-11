@@ -48,7 +48,7 @@
     "webpack": "^3.8.1"
   },
   "scripts": {
-    "build": "NODE_ENV=production webpack",
+    "build": "yarn build-css && NODE_ENV=production webpack",
     "build-css": "node-sass source/wiki-editor.scss --output-style compressed --source-map true --source-map-embed --importer node_modules/node-sass-glob-importer/dist/cli.js -o lib",
     "lint": "eslint --fix --ignore-pattern /node_modules/,/lib/ ./source/",
     "prebuild": "mkdir -p ./lib ./examples/lib && rm -rf ./lib/* ./examples/lib/*",
