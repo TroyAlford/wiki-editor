@@ -62,14 +62,14 @@ import renderStyled from '../utility/renderStyled'
 //   return undefined
 // }
 
-function renderHeader({ data }, children) {
+function renderHeader({ data, children }) {
   return renderStyled(`h${data.get('level')}`, { data, children })
 }
 
 export default {
-  renderNode({ node, children }) {
-    if (node.type !== 'header') return undefined
-    return renderHeader(node, children)
+  renderNode({ node: { type, data }, children }) {
+    if (type !== 'header') return undefined
+    return renderHeader({ data, children })
   },
 
   serializers: [{
@@ -86,9 +86,9 @@ export default {
         nodes: next(el.childNodes),
       }
     },
-    serialize(node, children) {
-      if (node.type !== 'header') return undefined
-      return renderHeader(node, children)
+    serialize({ type, data }, children) {
+      if (type !== 'header') return undefined
+      return renderHeader({ data, children })
     },
   }],
 
