@@ -1,6 +1,7 @@
 import parseStyle from './parseStyle'
+import unique from './unique'
 
-export default ({ attribs }) => ({
-  className: [...new Set((attribs.class || '').split(' ').filter(cn => cn))].join(' '),
-  style:     parseStyle(attribs.style || {}),
+export default ({ attributes = {}, classList = [] }) => ({
+  className: unique(Array.from(classList)).join(' '),
+  style:     parseStyle(attributes.style || {}),
 })
