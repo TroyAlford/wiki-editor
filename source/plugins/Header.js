@@ -67,10 +67,9 @@ function onEnter(transform, event, state) {
 }
 
 export default {
-  schema: {
-    nodes: {
-      header: ({ node, children }) => renderHeader(node, children),
-    },
+  renderNode({ node, children }) {
+    if (node.type !== 'header') return undefined
+    return renderHeader(node, children)
   },
 
   serializers: [{
@@ -84,12 +83,12 @@ export default {
         kind:  'block',
         type:  'header',
         data:  { level: matches[1], ...getStyleData(el) },
-        nodes: next(el.children),
+        nodes: next(el.childNodes),
       }
     },
-    serialize(object, children) {
-      if (object.type !== 'header') return undefined
-      return renderHeader(object, children)
+    serialize(node, children) {
+      if (node.type !== 'header') return undefined
+      return renderHeader(node, children)
     },
   }],
 
