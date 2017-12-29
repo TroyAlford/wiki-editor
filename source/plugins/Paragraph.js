@@ -15,12 +15,9 @@ export default {
     })
   },
 
-  schema: {
-    nodes: {
-      paragraph: ({ attributes, children, node }) => (
-        renderStyled('p', { data: node.data, children, attributes })
-      ),
-    },
+  renderNode({ node, children }) {
+    if (node.type === 'paragraph') return undefined
+    return renderStyled('p', { children, data: node.data })
   },
 
   serializers: [{
@@ -33,9 +30,9 @@ export default {
         nodes: next(el.children),
       }
     },
-    serialize(object, children) {
-      if (object.type !== 'paragraph') return undefined
-      return renderStyled('p', { data: object.data, children })
+    serialize({ type, data }, children) {
+      if (type !== 'paragraph') return undefined
+      return renderStyled('p', { data, children })
     },
   }],
 }
